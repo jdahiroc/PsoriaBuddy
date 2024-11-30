@@ -10,6 +10,7 @@ export const db = getFirestore();
 
 // Create the authentication context to provide global auth state
 export const AuthContext = createContext();
+
 // Create the authentication provider to manage auth state
 export const AuthProvider = ({ children }) => {
   // State to store the current user object

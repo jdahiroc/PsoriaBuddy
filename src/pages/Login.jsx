@@ -1,6 +1,6 @@
 // React Component
 import { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 // Emailjs
 import emailjs from "@emailjs/browser";
@@ -68,18 +68,44 @@ const LoginWithOtpVerification = () => {
   const [resendTimer, setResendTimer] = useState(60); // Timer for OTP resend
   const [canResend, setCanResend] = useState(false); // Resend button enabled/disabled state
 
-  // Access AuthContext for authentication-related data and functions
-  const { isOtpVerified, setIsOtpVerified, currentUser, setCurrentUser } =
-    useContext(AuthContext);
-
-  // React Router's navigation hook
-  const navigate = useNavigate();
-
   // Ant Design message component for notifications
   const [messageApi, contextHolder] = message.useMessage();
   // This will fix the ant message WARNING!
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [messageType, setMessageType] = useState(null);
+
+  // Access AuthContext for authentication-related data and functions
+  const { isOtpVerified, setIsOtpVerified, currentUser, setCurrentUser } =
+    useContext(AuthContext);
+
+  // React Router's navigation hook
+  const location = useLocation();
+
+  // Reset OTP stage if redirected from logout
+  useEffect(() => {
+    if (location.state?.resetOtpStage) {
+      setIsOtpStage(false); // Reset the OTP stage
+    }
+  }, [location]);
+
+  // Navigates users based on their userType and verification status after OTP verification
+  useEffect(() => {
+    if (isOtpVerified && currentUser) {
+      // Initialize currentUsers
+      const { userType, isVerified } = currentUser;
+      if (userType === "Patient") {
+        // Default patient path
+        location("/u/profile", { replace: true });
+      } else if (userType === "Dermatologist") {
+        location(isVerified ? "/d/profile" : "/d/verify", {
+          // Default derma path
+          replace: true,
+        });
+      } else if (userType === "Admin") {
+        location("/a/dashboard", { replace: true }); // Default admin path
+      }
+    }
+  }, [isOtpVerified, currentUser, location]);
 
   // Starts countdown for OTP resend functionality
   useEffect(() => {
@@ -93,28 +119,11 @@ const LoginWithOtpVerification = () => {
     }
   }, [resendTimer]);
 
-  // Navigates users based on their userType and verification status after OTP verification
-  useEffect(() => {
-    if (isOtpVerified && currentUser) {
-      const { userType, isVerified } = currentUser;
-
-      if (userType === "Patient") { // Default patient path
-        navigate("/u/profile", { replace: true });
-      } else if (userType === "Dermatologist") {
-        navigate(isVerified ? "/d/profile" : "/d/verify", { // Default derma path
-          replace: true,
-        });
-      } else if (userType === "Admin") {
-        navigate("/a/dashboard", { replace: true }); // Default admin path
-      }
-    }
-  }, [isOtpVerified, currentUser, navigate]);
-
   // Displays notifications using Ant Design message component
   useEffect(() => {
     if (notificationMessage) {
       message[messageType](notificationMessage);
-      setNotificationMessage(null); 
+      setNotificationMessage(null);
     }
   }, [notificationMessage, messageType]);
 
@@ -147,25 +156,27 @@ const LoginWithOtpVerification = () => {
 
       if (userSnap.exists()) {
         const userData = userSnap.data();
-        setCurrentUser({ ...user, ...userData });
 
-        // Generate OTP and save it to Firestore
+        // Check if the user is already OTP verified
+        if (userData.isOtpVerified) {
+          setIsOtpVerified(true);
+          setCurrentUser({ ...user, ...userData });
+          return;
+        }
+
+        // Generate and send OTP
         const otpCode = generateOtp();
         await setDoc(
           userRef,
           { otp: otpCode, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) },
           { merge: true }
         );
-
-        // Send OTP to user's email
         await sendEmailWithOtp(patientEmail, otpCode);
 
-        // Show success message when email sent successfully
+        // Show success message and set OTP stage
         setMessageType("success");
         setNotificationMessage("OTP has been sent to your email address.");
-
-        // Transition to OTP stage
-        setIsOtpStage(true);
+        setIsOtpStage(true); // Ensure transition to OTP stage happens here
       } else {
         setMessageType("error");
         setNotificationMessage("User data not found in Firestore.");
