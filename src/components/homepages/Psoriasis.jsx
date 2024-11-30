@@ -1,8 +1,21 @@
+//  Styles
 import "../../styles/psoriasis.css";
-
+//  Assets
 import WomanPsoriasis from "../../assets/homepage/woman-psoriasis.png";
+//  React Hooks
+import React, { useState } from "react";
 
 const Psoriasis = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleDownload = () => {
+    setIsLoading(true);
+    // Short delay to show the loader
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+  };
+
   return (
     <>
       <div className="psoriasis-container">
@@ -24,11 +37,20 @@ const Psoriasis = () => {
                 </p>
               </div>
               <div className="psoriasis-download-button">
-              <a
-                  href="/files/psoriasis-guide.pdf" 
-                  download="Psoriasis-Guide.pdf" 
+                <a
+                  href="/files/psoriasis-guide.pdf"
+                  download="Psoriasis-Guide.pdf"
+                  onClick={handleDownload}
                 >
-                  <button>Download PDF</button>
+                  <button disabled={isLoading}>
+                    {isLoading ? (
+                      <>
+                        <span className="spinner"></span> Preparing...
+                      </>
+                    ) : (
+                      "Download PDF"
+                    )}
+                  </button>
                 </a>
               </div>
             </div>
