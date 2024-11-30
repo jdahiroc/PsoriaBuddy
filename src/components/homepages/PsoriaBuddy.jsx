@@ -1,8 +1,8 @@
 // Styles
 import "../../styles/psoriabuddy.css";
 // Assets
-import laptop1 from "../../assets/homepage/laptop1.png";
-import laptop2 from "../../assets/homepage/laptop2.png";
+import laptop1 from "../../assets/homepage/Laptop1.png";
+import laptop2 from "../../assets/homepage/Laptop2.png";
 //  React Hooks
 import { useNavigate } from "react-router-dom";
 //  Firebase
