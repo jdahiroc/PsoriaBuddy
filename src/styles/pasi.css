@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.pasi-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f5faff;
+}
+
+.pasi-container-content {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  gap: 85px;
+}
+
+/* left section */
+.pasi-left-section {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 100px;
+}
+
+.pasi-heading {
+  display: flex;
+  justify-content: flex-start;
+  width: 450px;
+}
+
+.pasi-heading h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 47px;
+  font-weight: 700;
+  color: #0b0b0c;
+  text-transform: uppercase;
+}
+.pasi-heading h1 span {
+  color: #008bf2;
+  opacity: 87%;
+}
+
+.pasi-list {
+  display: flex;
+  flex-direction: column;
+  width: 480px;
+  padding-top: 1em;
+}
+.pasi-list li {
+  font-family: "Inter", sans-serif;
+  font-size: 19px;
+  font-weight: 400;
+  opacity: 82%;
+  line-height: 1.5;
+}
+
+/* right section */
+.pasi-right-content {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pasi-right-content img {
+  width: 650px;
+  height: auto;
+  object-fit: cover;
+}

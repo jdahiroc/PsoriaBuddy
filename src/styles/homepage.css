@@ -1,0 +1,119 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+* {
+  scrollbar-width: thin;
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+}
+
+.logo {
+  margin-left: 90px;
+  height: auto;
+  width: 250px;
+}
+
+.auth-links {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.login-btn,
+.signup-btn {
+  font-family: "Inter", sans-serif;
+  text-decoration: none;
+  padding: 10px 10px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 17px;
+  height: 52px;
+  width: 110px;
+}
+
+.login-btn,
+.signup-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-btn {
+  background-color: #ffffff;
+  color: #333;
+}
+
+.signup-btn {
+  background-color: #0b0b0c;
+  opacity: 82%;
+  color: #fff;
+  margin-right: 90px;
+}
+
+.home-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image {
+  text-align: center;
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  max-width: 500px;
+  max-height: 450px;
+}
+
+.hero h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 67px;
+  font-weight: 800;
+  opacity: 82%;
+  color: #0b0b0c;
+  letter-spacing: 5%;
+  line-height: 127.1%;
+  display: flex;
+  justify-content: center;
+}
+
+.hero p {
+  font-family: "Inter", sans-serif;
+  font-size: 34px;
+  font-weight: 200;
+  color: #0b0b0c;
+  line-height: 120%;
+  display: flex;
+  justify-content: center;
+}
+.learn-more-link {
+  display: flex;
+  justify-content: center;
+}
+
+.learn-more-link a {
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  margin-top: 26px;
+  color: #008bf2;
+  border: #008bf2 2px solid;
+  border-radius: 5px;
+  width: 200px;
+  height: 50px;
+  text-decoration: none;
+  text-align: center;
+  align-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.learn-more-link a:hover {
+  background-color: #008bf2;
+  color: #fff;
+}

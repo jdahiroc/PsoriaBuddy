@@ -1,0 +1,143 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.patient-videomeet-container {
+  height: 100vh;
+  display: flex;
+  background-color: #ffffff;
+}
+
+.patient-videomeet-contents {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Patient Header */
+.patient-videomeet-header {
+  padding-left: 2em;
+  padding-right: 2.5em;
+  padding-top: 2.5em;
+  padding-bottom: 1em;
+}
+
+.patient-videomeet-header h2 {
+  font-family: "Inter", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #393939;
+}
+
+.patient-videomeet {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.patient-videomeet-left-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1em;
+  
+}
+
+.patient-videomeet-left-header,
+.patient-videomeet-left-subheader,
+.patient-videomeet-input-join-button-container {
+  padding-left: 2em;
+  padding-right: 2.5em;
+}
+
+.patient-videomeet-left-subheader {
+  padding-bottom: 1.7em;
+}
+
+.patient-videomeet-input-join-button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5em;
+}
+
+.patient-videomeet-left-header {
+  max-width: 640px;
+  width: 100%;
+}
+
+.patient-videomeet-left-subheader {
+  max-width: 640px;
+  width: 100%;
+}
+
+.patient-videomeet-left-header h2 {
+  font-family: "Inter", sans-serif;
+  font-size: 2em;
+  font-weight: 800;
+  color: #51829b;
+}
+
+.patient-videomeet-left-subheader h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #121212;
+  opacity: 82%;
+}
+
+.patient-videomeet-input input {
+  width: 335px;
+  height: 50px;
+  padding: 1em;
+  border-radius: 11px;
+  border: #51829b 2px solid;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.patient-videomeet-input input:focus {
+  outline: #51829b auto 5px;
+}
+
+.patient-videomeet-button button {
+  width: 110px;
+  height: 50px;
+  padding: 0.5em;
+  border-radius: 11px;
+  border: #51829b 2px solid;
+  background-color: #51829b;
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.patient-videomeet-button button:hover {
+  background-color: #3e6f8f;
+}
+
+.patient-videomeet-right-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.patient-videomeet-img img {
+  width: 450px;
+  height: 370px;
+  margin-right: 2em;
+}
+
+.patient-videomeet-input-join-button-container {
+  margin-bottom: 8.5em;
+}
+
+.patient-videomeet-left-section {
+  margin-left: 1.5em;
+}

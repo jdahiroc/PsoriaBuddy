@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.systematic-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    padding-bottom: 2em;
+    background-color: #f5faff;
+  }
+  
+  .systematic-contents {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .systematic-heading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 3em;
+    padding-bottom: 2.5em;
+  }
+  
+  .systematic-heading span {
+    color: #008bf2;
+    opacity: 82%;
+  }
+  
+  .systematic-heading h2 {
+    font-family: "Inter", sans-serif;
+    font-size: 37px;
+    font-weight: 700;
+    color: #202020;
+    text-transform: uppercase;
+  }
+  
+  .systematic-tiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    width: 100%;
+  }
+  
+  .systematic-tiles p {
+    font-family: "Inter", sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    opacity: 82%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  

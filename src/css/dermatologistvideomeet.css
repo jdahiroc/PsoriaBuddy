@@ -1,0 +1,143 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.dermatologist-videomeet-container {
+  height: 100vh;
+  display: flex;
+  background-color: #ffffff;
+}
+
+.dermatologist-videomeet-contents {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* dermatologist Header */
+.dermatologist-videomeet-header {
+  padding-left: 2em;
+  padding-right: 2.5em;
+  padding-top: 2.5em;
+  padding-bottom: 1em;
+}
+
+.dermatologist-videomeet-header h2 {
+  font-family: "Inter", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #393939;
+}
+
+.dermatologist-videomeet {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.dermatologist-videomeet-left-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1em;
+  
+}
+
+.dermatologist-videomeet-left-header,
+.dermatologist-videomeet-left-subheader,
+.dermatologist-videomeet-input-join-button-container {
+  padding-left: 2em;
+  padding-right: 2.5em;
+}
+
+.dermatologist-videomeet-left-subheader {
+  padding-bottom: 1.7em;
+}
+
+.dermatologist-videomeet-input-join-button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5em;
+}
+
+.dermatologist-videomeet-left-header {
+  max-width: 640px;
+  width: 100%;
+}
+
+.dermatologist-videomeet-left-subheader {
+  max-width: 640px;
+  width: 100%;
+}
+
+.dermatologist-videomeet-left-header h2 {
+  font-family: "Inter", sans-serif;
+  font-size: 2em;
+  font-weight: 800;
+  color: #51829b;
+}
+
+.dermatologist-videomeet-left-subheader h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #121212;
+  opacity: 82%;
+}
+
+.dermatologist-videomeet-input input {
+  width: 335px;
+  height: 50px;
+  padding: 1em;
+  border-radius: 11px;
+  border: #51829b 2px solid;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.dermatologist-videomeet-input input:focus {
+  outline: #51829b auto 5px;
+}
+
+.dermatologist-videomeet-button button {
+  width: 110px;
+  height: 50px;
+  padding: 0.5em;
+  border-radius: 11px;
+  border: #51829b 2px solid;
+  background-color: #51829b;
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dermatologist-videomeet-button button:hover {
+  background-color: #3e6f8f;
+}
+
+.dermatologist-videomeet-right-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.dermatologist-videomeet-img img {
+  width: 450px;
+  height: 370px;
+  margin-right: 2em;
+}
+
+.dermatologist-videomeet-input-join-button-container {
+  margin-bottom: 8.5em;
+}
+
+.dermatologist-videomeet-left-section {
+  margin-left: 1.5em;
+}

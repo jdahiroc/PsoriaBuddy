@@ -1,0 +1,348 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.patient-alert {
+  position: absolute;
+  left: 760px;
+  top: 20px;
+}
+
+.patient-profile-container {
+  height: 100vh;
+  display: flex;
+  background-color: #fbfdff;
+}
+
+/* Left Section */
+.patient-profile-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 100vh;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* First Section */
+.patient-profile-heading {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2.5em;
+  width: 100%;
+}
+.patient-header {
+  width: auto;
+  margin-left: 3.5em;
+}
+
+.patient-header h2 {
+  font-family: "Inter", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #393939;
+}
+
+.patient-save {
+  position: fixed;
+  top: 660px;
+  margin-left: 470px;
+}
+
+.patient-save button {
+  border: none;
+  background-color: #51829b;
+  color: #fbfdff;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 30px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.04);
+  gap: 7px;
+}
+
+.patient-save button:hover {
+  background-color: #3e6a7f;
+  transition: ease-in-out 0.2s;
+  cursor: pointer;
+}
+
+.patient-save button img {
+  display: flex;
+  align-items: center;
+  width: 22px;
+  height: auto;
+}
+
+/* Second Section */
+.patient-profile-avatar {
+  display: flex;
+  justify-content: center;
+  margin-top: 2em;
+}
+
+.patient-avatar {
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+}
+.patient-avatar img {
+  width: 170px;
+  height: auto;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+/* Third Section */
+.patient-profile-forms {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-top: 2em;
+  width: 100%;
+}
+
+/* Left Section */
+.patient-content {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+  padding-left: 5.5em;
+  padding-bottom: 1em;
+  font-family: "Inter", sans-serif;
+}
+
+.patient-content label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #393939;
+}
+
+.patient-content input {
+  width: 453px;
+  height: 37px;
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
+  background-color: #ffffff;
+  border: 1px solid #d1d1d1;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5spx rgba(0, 0, 0, 0.04);
+  padding-left: 1em;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.04);
+}
+
+.patient-gender-birth-container {
+  display: flex;
+  flex-direction: row;
+  gap: 2.5em;
+}
+
+/* ---------------------------------
+ Right section 
+------------------------------------ */
+/* Personal Information */
+.patient-personalInfo-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 3em;
+  width: 100%;
+}
+
+.patient-personalInfo-header {
+  width: auto;
+  margin-left: 5.5em;
+}
+
+.patient-personalInfo-header p {
+  font-family: "Inter", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #393939;
+}
+
+.patient-profile-column {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+}
+
+.patient-content-right {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+  padding-left: 2.5em;
+  padding-bottom: 1em;
+  font-family: "Inter", sans-serif;
+}
+
+.patient-content-right label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #393939;
+}
+
+.patient-content-right input {
+  width: 453px;
+  height: 37px;
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
+  background-color: #ffffff;
+  border: 1px solid #d1d1d1;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5spx rgba(0, 0, 0, 0.04);
+  padding-left: 1em;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.04);
+}
+
+.patient-accounts-container {
+  height: 100%;
+  margin-top: 2.5em;
+}
+
+.patient-accounts-row {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.patient-accounts-header {
+  align-items: center;
+}
+
+.patient-accounts-header p {
+  font-family: "Inter", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #393939;
+}
+
+.patient-accounts-contents {
+  height: 100%;
+  width: 100%;
+  padding-bottom: 1.5em;
+}
+
+.patient-accounts-password-container {
+  height: 100%;
+  width: 100%;
+  margin-top: 1.5em;
+}
+
+.patient-accounts-password-row {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.patient-accounts-password-icon {
+  height: auto;
+  width: auto;
+  align-items: center;
+  display: flex;
+}
+
+.patient-accounts-password-icon img {
+  height: 23px;
+  height: 23px;
+}
+
+.patient-account-password-label {
+  height: auto;
+  width: auto;
+}
+
+.patient-account-password-label p {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: #393939;
+}
+
+.patient-account-password-button {
+  height: auto;
+  width: auto;
+}
+
+.patient-account-password-button button {
+  cursor: pointer;
+  padding: 12px 35px;
+  border: none;
+  border-radius: 17px;
+  background-color: #51829b;
+  font-family: "Inter", sans-serif;
+  color: #ffffff;
+  font-size: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24);
+}
+
+.patient-account-password-button button:hover {
+  background: #4b7a91;
+}
+
+/* Change Password Modal */
+.patient-changePassword-container {
+  width: 100%;
+  height: auto;
+  margin-top: 1.7em;
+}
+
+.patient-changePassword-contents {
+  display: flex;
+  flex-direction: column;
+}
+
+.patient-changePassword-header {
+  width: 100%;
+  height: auto;
+}
+
+.patient-changePassword-header p {
+  font-family: "Inter", sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #393939;
+}
+
+.patient-changePassword-subheader {
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #393939;
+  opacity: 82%;
+}
+
+.patient-changePassword-input {
+  margin-top: 1em;
+  height: auto;
+  width: 100%;
+}
+
+.patient-changePassword-input input {
+  width: 100%;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 7px;
+  background-color: #e9e9e9;
+  box-shadow: rgba(0 0 0 rgba(0, 0, 0, 0.24));
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+}

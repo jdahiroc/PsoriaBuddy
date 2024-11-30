@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.faqs-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.faqs-content {
+  width: 100%;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.faqs-heading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2.5em;
+  padding-bottom: 2.5em;
+}
+
+.faqs-heading h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 46px;
+  font-weight: 700;
+  color: #0b0b0c;
+  opacity: 82%;
+}
+
+.faqs-questions-content {
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+.faqs-questions-content .ant-collapse-header {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.faqs-questions-content .ant-collapse-content p {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}

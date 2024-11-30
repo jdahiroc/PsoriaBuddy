@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.psoriabuddy-container {
+  display: flex;
+  justify-content: center;
+}
+
+.psoriabuddy-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+}
+
+.psoriabuddy-text-content {
+  width: 45%;
+  padding-top: 2em;
+  padding-left: 5.5em;
+  padding-bottom: 2em;
+}
+
+.psoriabuddy-text-content h1,
+p {
+  font-family: "Inter", sans-serif;
+}
+.psoriabuddy-text-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #008bf2;
+  opacity: 82%;
+}
+.psoriabuddy-text-content p {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #121212;
+  opacity: 60%;
+}
+
+.psoriabuddy-explorenow-button {
+  font-family: "Inter", sans-serif;
+  padding-top: 2em;
+}
+
+.psoriabuddy-explorenow-button button {
+  font-size: 14px;
+  font-weight: 700;
+  padding: 0.5rem 3rem;
+  border: 2px #56acf6 solid;
+  border-radius: 7px;
+  background-color: #ffffff;
+  color: #56acf6;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.psoriabuddy-explorenow-button button:hover {
+  background-color: #56acf6;
+  color: #ffffff;
+}
+
+.psoriabuddy-images {
+  height: 100vh;
+  width: 50%;
+  display: flex;
+  align-items: center;
+}
+
+.psoriabuddy-images img {
+  width: 350px;
+  height: auto;
+}
+
+.psoriabuddy-image1 {
+  position: relative;
+  left: 100px;
+  z-index: 2;
+}
+
+.psoriabuddy-image2 {
+  position: relative;
+  bottom: 90px;
+  right: 110px;
+  z-index: 1;
+}

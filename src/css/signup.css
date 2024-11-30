@@ -1,0 +1,265 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.loginbg {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  object-fit: fill;
+  opacity: 90%;
+  z-index: -1;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-text {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #000;
+  text-align: center;
+}
+
+.signup-logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 120px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  margin-left: 0;
+}
+
+.logo {
+  margin-left: 0 !important;
+}
+
+/* Disclaimer Notice */
+.user-disclaimer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  margin-left: 35px;
+}
+
+.user-disclaimer-item1 {
+  font-family: "Inter", sans-serif;
+  color: #ffffff;
+}
+
+.checkBox-span1 {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.checkBox-span2 {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}
+
+.user-disclaimer-item2 {
+  width: 320px;
+}
+
+/* Disclaimer Notice Modal */
+.disclaimer-notice-container {
+  width: 100%;
+  height: 100%;
+}
+
+.disclaimer-notice-contents {
+  padding: 30px 30px;
+}
+
+.disclaimer-notice-header {
+  margin-bottom: 0.5em;
+}
+
+.disclaimer-notice-header p {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  color: #393939;
+}
+
+.disclaimer-notice-subheader {
+  margin-bottom: 0.5em;
+}
+
+.disclaimer-notice-subheader p {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #393939;
+}
+
+.disclaimer-notice-text1 {
+  margin-bottom: 0.5em;
+}
+
+.disclaimer-notice-text1 p {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 13.5px;
+  color: #393939;
+}
+
+.disclaimer-notice-lists {
+  margin-left: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.disclaimer-notice-text2 {
+  margin-top: 0.5em;
+}
+
+.disclaimer-notice-text2 li {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  color: #393939;
+  font-size: 14px;
+}
+
+.disclaimer-notice-text2 span {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #393939;
+  font-size: 13.5px;
+}
+
+.disclaimer-notice-text3 {
+  margin-top: 0.5em;
+}
+
+.disclaimer-notice-text3 li {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  color: #393939;
+  font-size: 14px;
+}
+
+.disclaimer-notice-text3 span {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #393939;
+  font-size: 13.5px;
+}
+
+.d-li {
+  margin-left: 3.5em;
+  margin-top: 0.5em;
+}
+
+.d-li li {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #393939;
+  font-size: 13.5px;
+}
+
+.disclaimer-notice-text4 {
+  margin-top: 0.5em;
+}
+
+.disclaimer-notice-text4 li {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  color: #393939;
+  font-size: 14px;
+}
+
+.disclaimer-notice-text4 span {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #393939;
+  font-size: 13.5px;
+}
+
+.disclaimer-notice-text5 {
+  margin-top: 0.5em;
+}
+
+.disclaimer-notice-text5 li {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  color: #393939;
+  font-size: 14px;
+}
+
+.disclaimer-notice-text5 span {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #393939;
+  font-size: 13.5px;
+}
+
+.disclaimer-notice-text6 {
+  margin-top: 0.5em;
+}
+
+.disclaimer-notice-text6 li {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  color: #393939;
+  font-size: 14px;
+}
+
+.disclaimer-notice-text6 span {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #393939;
+  font-size: 13.5px;
+}
+
+.disclaimer-notice-text7 {
+  margin-top: 1.5em;
+}
+
+.disclaimer-notice-text7 p {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #393939;
+  font-size: 13.5px;
+}
+
+.disclaimer-notice-text7 span {
+  font-weight: 700;
+}

@@ -1,0 +1,39 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Rules for user-specific data
+    match /users/{userId} {
+      // Allow read if the user is a verified dermatologist
+      allow read: if resource.data.isVerified == true && resource.data.userType == "Dermatologist";
+
+      // Allow read and write for the authenticated user
+      allow read, write: if request.auth.uid == userId;
+    }
+
+    // Rules for accessing myexperience under a user
+    match /users/{userId}/myexperience/{myexperienceId} {
+      // Allow the user who owns the experience to read/write
+      allow read, write: if request.auth.uid == userId;
+
+      // Allow dermatologist to read if they are explicitly assigned
+      allow read: if request.auth != null && request.auth.uid == resource.data.dermatologistUID;
+    }
+
+    // Rules for appointments collection
+    match /appointments/{appointmentId} {
+      // Allow create if the user is authenticated
+      allow create: if request.auth != null;
+
+      // Allow read for both the patient and dermatologist involved in the appointment
+      allow read: if request.auth != null && (
+        resource.data.patientUID == request.auth.uid || 
+        resource.data.dermatologistUID == request.auth.uid
+      );
+
+      // Allow write only for the patient who created the appointment
+      allow write: if request.auth.uid == resource.data.patientUID;
+    }
+  }
+}

@@ -1,0 +1,314 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.dermatologistprofile-container {
+  height: 100vh;
+  display: flex;
+  background-color: #fbfdff;
+}
+
+.dermatologistprofile-rightSection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 100vh;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.dermatologist-profile-heading {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5em;
+  width: 100%;
+}
+
+.page-profile-text {
+  font-family: "Inter", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #393939;
+}
+
+.dermatologist-profile-avatar {
+  display: flex;
+  justify-content: center;
+  margin-top: 2em;
+  flex-direction: row;
+}
+
+.dermatologist-profile-image {
+  margin-top: 1em;
+}
+
+.dermatologist-profile-image img {
+  width: 170px;
+  height: auto;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.dermatologist-profile-savebutton {
+  position: relative;
+  left: 370px;
+}
+
+.dermatologist-profile-savebutton button {
+  border: none;
+  border-radius: 10px;
+  background-color: #51829b;
+  color: #fbfdff;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+}
+
+.dermatologist-profile-savebutton button:hover {
+  background-color: #467081;
+}
+
+.dermatologist-profile-savebutton button img {
+  display: flex;
+  align-items: center;
+  width: 22px;
+  height: auto;
+}
+
+.text-field-container1 {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding-bottom: 1em;
+}
+
+.derma-personalInfo-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.derma-personalInfo-header {
+  display: flex;
+  padding-left: 3.5em;
+}
+
+.derma-personalinfo-text {
+  text-align: center;
+  font-family: "Inter", sans-serif;
+}
+
+.derma-personalinfo-text p {
+  font-size: 32px;
+  font-weight: 800;
+  color: #393939;
+}
+
+.text-field-row1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 1em;
+  gap: 10px;
+}
+
+.derma-personalInfo-header {
+  display: flex;
+}
+
+.derma-fullName-textField {
+  padding-right: 1.5em;
+}
+
+.name-text-field {
+  width: 423px;
+}
+
+.text-field-row2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 2em;
+  gap: 10px;
+}
+
+.derma-email {
+  margin-top: 1em;
+}
+
+.derma-username-email-left {
+  padding-right: 1.5em;
+}
+
+.username-text-field {
+  width: 423px;
+}
+
+.email-text-field {
+  width: 423px;
+}
+
+.text-field-row3 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 2em;
+  gap: 10px;
+}
+
+.derma-aboutme {
+  padding-right: 1em;
+}
+
+.derma-educational-attain {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.collegeName-field {
+  width: 423px;
+}
+
+.derma-aboutme-textField {
+  width: 423px;
+  margin-right: 2em;
+}
+
+.text-field-row4 {
+  display: flex;
+  flex-direction: row;
+  margin-top: 3em;
+}
+
+.derma-accounts-container {
+  height: auto;
+  width: auto;
+  margin-left: 3.5em;
+}
+
+.derma-accounts-header {
+  align-items: center;
+}
+
+.derma-accounts-header p {
+  font-family: "Inter", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #393939;
+}
+
+.derma-accounts-password-container {
+  height: 100%;
+  width: 100%;
+  margin-top: 1.5em;
+}
+
+.derma-accounts-password-row {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.derma-accounts-password-icon {
+  height: auto;
+  width: auto;
+  align-items: center;
+  display: flex;
+}
+
+.derma-accounts-password-icon img {
+  height: 23px;
+  height: 23px;
+}
+
+.derma-accounts-password-label {
+  height: auto;
+  width: auto;
+}
+
+.derma-accounts-password-label p {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: #393939;
+}
+
+.derma-accounts-password-button {
+  height: auto;
+  width: auto;
+}
+
+.derma-accounts-password-button button {
+  cursor: pointer;
+  padding: 12px 35px;
+  border: none;
+  border-radius: 17px;
+  background-color: #51829b;
+  font-family: "Inter", sans-serif;
+  color: #ffffff;
+  font-size: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24);
+}
+
+.derma-accounts-password-button button:hover {
+  background: #4b7a91;
+}
+
+/* Change Password Modal */
+.dermatologist-changePassword-container {
+  width: 100%;
+  height: auto;
+  margin-top: 1.7em;
+}
+
+.dermatologist-changePassword-contents {
+  display: flex;
+  flex-direction: column;
+}
+
+.dermatologist-changePassword-header {
+  width: 100%;
+  height: auto;
+}
+
+.dermatologist-changePassword-header p {
+  font-family: "Inter", sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #393939;
+}
+
+.dermatologist-changePassword-subheader {
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #393939;
+  opacity: 82%;
+}
+
+.dermatologist-changePassword-input {
+  margin-top: 1em;
+  height: auto;
+  width: 100%;
+}
+
+.dermatologist-changePassword-input input {
+  width: 100%;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 7px;
+  background-color: #e9e9e9;
+  box-shadow: rgba(0 0 0 rgba(0, 0, 0, 0.24));
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+}
+

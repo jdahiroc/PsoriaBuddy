@@ -1,0 +1,510 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.myexperience-container {
+  height: 100vh;
+  display: flex;
+  background-color: #fbfdff;
+}
+
+.myexperience-contents {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.myexperience-header-container {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 2em;
+  padding-right: 2.5em;
+  padding-top: 2.5em;
+  padding-bottom: 1em;
+}
+
+.myexperience-header-container h2 {
+  font-family: "Inter", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #393939;
+}
+
+.myexperience-header-container button {
+  border: none;
+  background-color: #51829b;
+  padding: 8px 8px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+
+.myexperience-header-container button:hover {
+  transform: scale(1.1);
+  transition: ease-in-out 0.2s;
+}
+
+.myexperience-header-container img {
+  width: 29px;
+  height: 29px;
+}
+
+/* My Experience List */
+.myexperience-list-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1em;
+  padding-left: 2em;
+  padding-right: 2.5em;
+  padding-top: 2.5em;
+  padding-bottom: 2.5em;
+  font-family: "Inter", sans-serif;
+  overflow-y: scroll;
+  width: 100%;
+}
+
+.myexperience-card {
+  background-color: #f6995c;
+  border-radius: 20px;
+  width: 290px;
+  height: 155px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.08);
+}
+
+.myexperience-card:hover {
+  background-color: #f69a5c;
+  cursor: pointer;
+  transform: scale(1.01);
+  transition: ease-in-out 0.2s;
+}
+
+.myexperience-card-content {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  height: 100%;
+}
+
+.myexperience-delete {
+  display: flex;
+  justify-content: flex-end;
+}
+.myexperience-delete button {
+  border: none;
+  background-color: #f6995c;
+}
+.myexperience-delete button:hover {
+  background-color: #f69a5c;
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: ease-in-out 0.3s;
+}
+.myexperience-delete img {
+  width: 17px;
+  height: 17px;
+}
+.myexperience-delete img:hover {
+  mix-blend-mode: color-burn;
+}
+
+.myexperience-date-added {
+  padding-bottom: 1em;
+}
+
+.myexperience-date-added p {
+  font-size: 17px;
+  font-weight: 400;
+  color: #393939;
+}
+
+.myexperience-title {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+
+.myexperience-title h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #393939;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Modals Components */
+.modal-container {
+  display: flex;
+  width: 100%;
+}
+
+.modal-contents {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* First Section */
+.modal-first-section-container {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 80px;
+  padding-top: 2em;
+}
+
+.modal-leftsection {
+  width: 100%;
+  max-width: 800px;
+}
+
+/* Right Section */
+.modal-rightsection {
+  width: 100%;
+  max-width: 800px;
+}
+
+.modal-timedate-container {
+  display: flex;
+  gap: 2em;
+}
+
+/* Second Section */
+.modal-second-header {
+  display: flex;
+  justify-content: flex-start;
+  text-decoration: underline;
+  color: #393939;
+  font-size: 17px;
+  padding-top: 1em;
+  padding-left: 0.6em;
+}
+
+.modal-pasi-container {
+  display: flex;
+  gap: 70px;
+}
+
+.modal-second-section-content1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0.8em;
+  gap: 30px;
+  height: 370px;
+}
+
+.modal-second-section-content2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0.8em;
+  gap: 30px;
+  height: 370px;
+}
+
+/* Head Area */
+.pasi-head-area-radiobutton,
+.pasi-head-erythema,
+.pasi-head-induration,
+.pasi-head-desquamation {
+  padding: 0.5em;
+}
+
+.pasi-head-area-header p {
+  font-size: 17px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+}
+
+.pasi-head-area-image {
+  position: relative;
+  left: 250px;
+  bottom: 150px;
+}
+
+/* Torso Area */
+.pasi-torso-area-radiobutton,
+.pasi-torso-erythema,
+.pasi-torso-induration,
+.pasi-torso-desquamation {
+  padding: 0.5em;
+}
+
+.pasi-torso-area-header p {
+  font-size: 17px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+}
+
+.pasi-torso-area-image {
+  position: relative;
+  left: 250px;
+  bottom: 150px;
+}
+
+/* Arms Area */
+.pasi-arms-area-radiobutton,
+.pasi-arms-erythema,
+.pasi-arms-induration,
+.pasi-arms-desquamation {
+  padding: 0.5em;
+}
+
+.pasi-arms-area-header p {
+  font-size: 17px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+}
+
+.pasi-arms-area-image {
+  position: relative;
+  left: 250px;
+  bottom: 150px;
+}
+
+/* Legs Area */
+.pasi-legs-area-radiobutton,
+.pasi-legs-erythema,
+.pasi-legs-induration,
+.pasi-legs-desquamation {
+  padding: 0.5em;
+}
+
+.pasi-legs-area-header p {
+  font-size: 17px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+}
+
+.pasi-legs-area-image {
+  position: relative;
+  left: 250px;
+  bottom: 150px;
+}
+
+/* Open Modal My Experiences */
+/* from the already retrieve datas */
+.experience-modal-open .ant-modal-content {
+  background-color: #f6995c;
+}
+
+.experience-modal-open .ant-modal-header {
+  background-color: #f6995c;
+}
+
+.experience-modal-open .ant-modal-footer {
+  background-color: #f6995c;
+}
+
+/* Modal */
+/* Open preview My Experiences */
+.preview-myexperience-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.preview-myexperience-contents {
+  display: flex;
+  justify-content: space-between;
+  gap: 7em;
+}
+
+/* Left Section */
+.preview-myexperience-leftsection {
+  width: 400px;
+  font-family: "Inter", sans-serif;
+}
+
+.preview-myexperience-leftsection h3 {
+  font-size: 17px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.preview-myexperience-leftsection input {
+  border-radius: 7px;
+  background-color: #ffffff;
+  border: none;
+}
+
+.preview-myexperience-leftsection p {
+  font-size: 12px;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+/* Types of Psoriasis */
+.preview-typesofpsoriasis-input input {
+  width: 100%;
+  height: 40px;
+  padding-left: 1em;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #393939;
+}
+
+.preview-typesofpsoriasis-label {
+  padding-bottom: 0.3em;
+}
+
+.preview-typesofpsoriasis-container {
+  padding-top: 0.2em;
+}
+.preview-timedate-container,
+.preview-location-container,
+.preview-reliefmeasures-container,
+.preview-triggers-container {
+  padding-top: 1em;
+}
+
+/* Date & Time Occured */
+.preview-timeoccured-label,
+.preview-dateoccured-label {
+  padding-bottom: 0.3em;
+}
+
+.preview-timeoccured-input input,
+.preview-dateoccured-input input {
+  width: 100%;
+  height: 40px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  text-align: center;
+}
+
+.preview-timedate-container {
+  display: flex;
+  gap: 1em;
+}
+
+/* Location */
+.preview-location-description {
+  padding-bottom: 0.3em;
+}
+
+.preview-location-input input {
+  width: 100%;
+  height: 40px;
+  padding-left: 1em;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+/* Relief Measures */
+.preview-reliefmeasures-description {
+  padding-bottom: 0.3em;
+}
+
+.preview-reliefmeasures-input input {
+  width: 100%;
+  height: 40px;
+  padding-left: 1em;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.preview-triggers-description {
+  padding-bottom: 0.3em;
+}
+
+.preview-triggers-input input {
+  width: 100%;
+  height: 40px;
+  padding-left: 1em;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+/* Right Section */
+.preview-myexperience-rightsection {
+  width: 400px;
+  font-family: "Inter", sans-serif;
+}
+
+.preview-myexperience-rightsection h3 {
+  font-size: 17px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.preview-myexperience-rightsection p {
+  font-size: 12px;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.preview-associated-container {
+  padding-top: 0.2em;
+}
+
+.preview-associated-input input {
+  width: 100%;
+  height: 40px;
+  padding-left: 1em;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.preview-pasiresult {
+  padding-bottom: 1em;
+}
+
+.preview-pasiresult span {
+  font-weight: 700;
+  font-size: 26px;
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.preview-pasiresult-description p {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+}
+
+.preview-pasiresult-description span {
+  font-weight: 600;
+}
+
+/* Associated Symptoms */
+.preview-associated-description {
+  padding-bottom: 0.3em;
+}
+
+.preview-associated-input input {
+  width: 100%;
+  height: 40px;
+}
+
+.preview-myexperience-rightsection input {
+  border-radius: 7px;
+  background-color: #ffffff;
+  border: none;
+}
+
+/* Divider */
+.preview-divider {
+  padding-top: 2em;
+}
+
+/* PASI Results */
+.preview-pasiresult-container {
+  padding-left: 0.5em;
+}
+
+@media (min-width: 1024px) {
+  .myexperience-list-container {
+    grid-template-columns: repeat(4, 1fr); /* Force 4 columns */
+  }
+}

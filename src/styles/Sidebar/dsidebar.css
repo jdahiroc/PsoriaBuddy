@@ -1,0 +1,274 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.dsidebar-container {
+  max-width: 250px;
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+  background-color: #f5faff;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
+  transition: ease-in-out 0.3s;
+}
+
+.dsidebar-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2em;
+}
+
+.dsidebar-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dsidebar-avatar img {
+  width: 45px;
+  height: 45px;
+}
+
+.dsidebar-username {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2em;
+}
+
+.dsidebar-username h3 {
+  font-family: "Inter", sans-serif;
+  font-size: 1em;
+  font-weight: 600;
+  margin-top: 0.5em;
+}
+
+/* navigations */
+.dsidebar-nav-naviations {
+  width: 100%;
+  padding: 0 1em;
+}
+
+/* Profile */
+.dsidebar-nav-profile {
+  padding-bottom: 0.5em;
+}
+
+.dsidebar-nav-profile a {
+  width: 210px;
+  height: 42px;
+  display: flex;
+  justify-content: flex;
+  align-items: center;
+  flex-direction: row;
+  padding-left: 0.5em;
+  border: none;
+  border-radius: 7px;
+  background-color: #f5faff;
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #393939;
+  text-decoration: none;
+}
+.dsidebar-nav-profile a:hover {
+  background-color: #51829b;
+  color: #ffffff;
+  transition: ease-in-out 0.2s;
+  cursor: pointer;
+}
+
+.dsidebar-nav-profile img {
+  padding-right: 0.5em;
+  width: 23px;
+  height: auto;
+}
+
+/* My Experience */
+.dsidebar-nav-myexperience {
+  padding-bottom: 0.5em;
+}
+
+.dsidebar-nav-myexperience a {
+  width: 210px;
+  height: 42px;
+  display: flex;
+  justify-content: flex;
+  align-items: center;
+  flex-direction: row;
+  padding-left: 0.5em;
+  border: none;
+  border-radius: 7px;
+  background-color: #f5faff;
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #393939;
+  text-decoration: none;
+}
+
+.dsidebar-nav-myexperience a:hover {
+  background-color: #51829b;
+  color: #ffffff;
+  transition: ease-in-out 0.2s;
+  cursor: pointer;
+}
+
+.dsidebar-nav-myexperience img {
+  padding-right: 0.5em;
+  width: 23px;
+  height: auto;
+}
+
+/* Appointment */
+.dsidebar-nav-appointment {
+  padding-bottom: 0.5em;
+}
+
+.dsidebar-nav-appointment a {
+  width: 210px;
+  height: 42px;
+  display: flex;
+  justify-content: flex;
+  align-items: center;
+  flex-direction: row;
+  padding-left: 0.5em;
+  border: none;
+  border-radius: 7px;
+  background-color: #f5faff;
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #393939;
+  text-decoration: none;
+}
+
+.dsidebar-nav-appointment a:hover {
+  background-color: #51829b;
+  color: #ffffff;
+  transition: ease-in-out 0.2s;
+  cursor: pointer;
+}
+
+.dsidebar-nav-appointment img {
+  padding-right: 0.5em;
+  width: 23px;
+  height: auto;
+}
+
+/* Video Call */
+.dsidebar-nav-videocall {
+  padding-bottom: 1em;
+}
+
+.dsidebar-nav-videocall a {
+  width: 210px;
+  height: 42px;
+  display: flex;
+  justify-content: flex;
+  align-items: center;
+  flex-direction: row;
+  padding-left: 0.5em;
+  border: none;
+  border-radius: 7px;
+  background-color: #f5faff;
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #393939;
+  text-decoration: none;
+}
+
+.dsidebar-nav-videocall a:hover {
+  background-color: #51829b;
+  color: #ffffff;
+  transition: ease-in-out 0.2s;
+  cursor: pointer;
+}
+
+.dsidebar-nav-videocall img {
+  padding-right: 0.5em;
+  width: 23px;
+  height: auto;
+}
+
+/* Go to Homepage */
+.dlogout-nav-container {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 310px;
+}
+
+.dlogout-nav-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dsidebar-nav-homepage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: 30px;
+}
+
+.dsidebar-nav-homepage a {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #393939;
+  text-decoration: underline;
+}
+
+.dsidebar-nav-logout {
+  display: flex;
+  justify-content: center;
+  width: 100;
+  height: 30px;
+  padding-top: 0.3em;
+}
+
+.dsidebar-nav-logout button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 230px;
+  height: 45px;
+  border: none;
+  border-radius: 30px;
+  background-color: #ee4e4e;
+}
+
+.dsidebar-nav-logout button:hover {
+  transform: scale(1.05);
+  transition: ease-in 0.2s;
+}
+
+.dsidebar-nav-logout img {
+  width: 22px;
+  height: auto;
+}
+
+.dsidebar-nav-logout p {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  padding-left: 4px;
+}
+
+/* Hide icons on smaller screens */
+@media (max-width: 768px) {
+  .dsidebar-nav-profile img,
+  .dsidebar-nav-myexperience img,
+  .dsidebar-nav-appointment img,
+  .dsidebar-nav-videocall img,
+  .dsidebar-nav-logout img {
+    display: none;
+  }
+}

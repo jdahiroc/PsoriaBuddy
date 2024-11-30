@@ -1,0 +1,187 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.asidebar-container {
+  max-width: 250px;
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+  background-color: #f5faff;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
+  transition: ease-in-out 0.3s;
+}
+
+.asidebar-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2em;
+}
+
+.asidebar-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.asidebar-avatar img {
+  width: 45px;
+  height: 45px;
+}
+
+.asidebar-username {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2em;
+}
+
+.asidebar-username h3 {
+  font-family: "Inter", sans-serif;
+  font-size: 1em;
+  font-weight: 600;
+  margin-top: 0.5em;
+}
+
+/* navigations */
+.asidebar-nav-naviations {
+  width: 100%;
+  padding: 0 1em;
+}
+
+/* Profile */
+.asidebar-nav-profile {
+  padding-bottom: 0.5em;
+}
+
+.asidebar-nav-profile a {
+  width: 210px;
+  height: 42px;
+  display: flex;
+  justify-content: flex;
+  align-items: center;
+  flex-direction: row;
+  padding-left: 0.5em;
+  border: none;
+  border-radius: 7px;
+  background-color: #f5faff;
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #393939;
+  text-decoration: none;
+}
+
+.asidebar-nav-profile a:hover {
+  background-color: #51829b;
+  color: #ffffff;
+  transition: ease-in-out 0.2s;
+  cursor: pointer;
+}
+
+.asidebar-nav-profile img {
+  padding-right: 0.5em;
+  width: 23px;
+  height: auto;
+}
+
+/* Appointment */
+.asidebar-nav-appointment {
+  padding-bottom: 0.5em;
+}
+
+.asidebar-nav-appointment a {
+  width: 210px;
+  height: 42px;
+  display: flex;
+  justify-content: flex;
+  align-items: center;
+  flex-direction: row;
+  padding-left: 0.5em;
+  border: none;
+  border-radius: 7px;
+  background-color: #f5faff;
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #393939;
+  text-decoration: none;
+}
+
+.asidebar-nav-appointment a:hover {
+  background-color: #51829b;
+  color: #ffffff;
+  transition: ease-in-out 0.2s;
+  cursor: pointer;
+}
+
+.asidebar-nav-appointment img {
+  padding-right: 0.5em;
+  width: 23px;
+  height: auto;
+}
+
+/* Go to Homepage */
+.alogout-nav-container {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 370px;
+}
+
+.alogout-nav-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.asidebar-nav-logout {
+  display: flex;
+  justify-content: center;
+  width: 100;
+  height: 30px;
+  padding-top: 0.3em;
+}
+
+.asidebar-nav-logout button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 230px;
+  height: 45px;
+  border: none;
+  border-radius: 30px;
+  background-color: #ee4e4e;
+}
+
+.asidebar-nav-logout button:hover {
+  transform: scale(1.05);
+  transition: ease-in 0.2s;
+}
+
+.asidebar-nav-logout img {
+  width: 22px;
+  height: auto;
+}
+
+.asidebar-nav-logout p {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  padding-left: 4px;
+}
+
+/* Hide icons on smaller screens */
+@media (max-width: 768px) {
+  .asidebar-nav-profile img,
+  .asidebar-nav-myexperience img,
+  .asidebar-nav-appointment img,
+  .asidebar-nav-videocall img,
+  .asidebar-nav-logout img {
+    display: none;
+  }
+}

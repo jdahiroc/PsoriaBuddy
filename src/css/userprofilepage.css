@@ -1,0 +1,518 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap');
+
+.avatar-image {
+    width: 60px;
+    /* Adjust the width as needed */
+    height: auto;
+    /* Maintain aspect ratio */
+    margin: -160px auto 80px auto;
+    /* Move the image upwards and center align */
+    border-radius: 50%;
+    /* Make the image circular */
+    display: block;
+    /* Ensure the image is treated as a block element */
+}
+
+.profile-name {
+    text-align: center;
+    /* Center align the text */
+    font-size: 18px;
+    /* Adjust the font size as needed */
+    color: #393939;
+    /* Adjust the text color as needed */
+    margin: -60px 0 20px 0;
+    /* Move the name upwards and add space below */
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+}
+
+.navbar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #F5FAFF;
+    padding-top: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    width: 85%;
+    /* Make the element take up 85% of its container's width */
+    margin: 0 auto;
+    /* Center the element horizontally */
+    border-radius: 10px;
+    /* Set corner radius to 10px */
+}
+
+.navbar a:hover {
+    background-color: #51829B;
+}
+
+.navbar a[href="#profile"] {
+    color: #393939;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    /* Set font to Inter Regular 400 */
+}
+
+.navbar a[href="#profile"]:hover {
+    color: white;
+}
+
+.profile-icon {
+    width: 15px;
+    /* Adjust the width as needed */
+    height: 15px;
+    /* Adjust the height as needed */
+    margin-right: 10px;
+    /* Space between icon and text */
+    filter: brightness(0) saturate(100%) invert(22%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(93%) contrast(89%);
+    /* Change color to #393939 */
+    transition: filter 0.3s;
+    /* Smooth transition for hover effect */
+}
+
+.navbar a[href="#profile"]:hover .profile-icon {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(100%) contrast(100%);
+    /* Change color to white */
+}
+
+.logout-button {
+    margin: 470px auto 0 auto;
+    /* Center the button horizontally and add top margin */
+    padding: 10px 15px;
+    border-radius: 30px;
+    font-size: 20px;
+    color: white;
+    background-color: #EE4E4E;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    /* Center the text */
+    display: block;
+    /* Ensure the button is a block element */
+    width: 85%;
+    /* Make the button take up the full width of its container */
+}
+
+.logout-icon {
+    margin-left: auto;
+    width: 23px;
+    /* Example width */
+    height: 23px;
+    /* Example height */
+}
+
+.logout-text {
+    font-size: 18px;
+    /* Example font size */
+    color: #FFFFFF;
+    /* Example text color */
+    margin-right: auto;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    /* Set font to Inter SemiBold 600 */
+}
+
+.logout-button:hover {
+    background-color: #EE4E4E;
+}
+
+.parent-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.profile-right-container {
+    width: 1285px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header-text {
+    color: #393939;
+    /* Change to a visible color */
+    font-size: 18px;
+    /* Adjust the font size */
+    display: flex;
+    /* Align the text horizontally */
+    justify-content: center;
+    /* Center align the text */
+    padding-left: 50px;
+    padding-top: 60px;
+    align-items: center;
+    /* Align the text vertically */
+}
+
+.header-text h1 {
+    align-items: center;
+    /* Align the text vertically */
+    display: flex;
+    /* Align the text horizontally */
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+}
+
+.patient-picture {
+    justify-content: center;
+    /* Center align the text */
+    display: flex;
+    /* Center align the text */
+
+}
+
+.patient-picture img {
+    width: 200px;
+    /* Adjust the width as needed */
+    height: auto;
+    /* Maintain aspect ratio */
+    border-radius: 50%;
+    /* Make the image circular */
+    display: flex;
+    justify-content: center;
+    /* Center align the text */
+}
+
+.save-profile-button {
+    width: 170px;
+    height: auto;
+    text-align: center;
+    background-color: #51829B;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 110px;
+    right: 70px;
+    font-size: 16px;
+    flex-direction: row;
+    display: flex;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    white-space: nowrap;
+    /* Prevent text from wrapping */
+}
+
+.save-profile-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #51829B;
+    /* Updated to match hover color */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+    position: absolute;
+    top: 110px;
+    right: 70px;
+    flex-direction: row;
+}
+
+.save-profile-button:hover {
+    background-color: #51829B;
+}
+
+.save-profile-button .done-check-icon {
+    margin-left: 10px;
+    width: 25px;
+    /* Adjust size as needed */
+    height: 25px;
+    /* Adjust size as needed */
+}
+
+.camera-icon {
+    width: 40px;
+    /* Smaller size */
+    height: 40px;
+    /* Smaller size */
+    margin-left: 740px;
+    /* Adjust the spacing as needed */
+    cursor: pointer;
+    /* Change cursor to pointer to indicate it's clickable */
+    vertical-align: middle;
+    /* Align the icon vertically with the patient picture */
+    background-color: #51829B;
+    /* Set background color */
+    padding: 5px;
+    /* Add padding to create some space around the icon */
+    border-radius: 50%;
+    /* Make the background circular */
+    position: relative;
+    /* Set position to relative */
+    top: -35px;
+    /* Move the icon upward */
+}
+
+.name-container {
+    display: flex;
+    flex-direction: row;
+    /* Align items horizontally */
+    gap: 60px;
+    /* Adjust the gap between the text fields */
+}
+
+.username-container {
+    display: flex;
+    flex-direction: row;
+    /* Align items horizontally */
+    gap: 60px;
+    /* Adjust the gap between the text fields */
+}
+
+.email-container {
+    display: flex;
+    flex-direction: row;
+    /* Align items horizontally */
+    gap: 60px;
+    /* Adjust the gap between the text fields */
+}
+
+.profile-text-field {
+    width: 42%;
+    /* Adjust width as needed */
+    padding: 10px;
+    /* Padding for better appearance */
+    margin-top: 20px;
+    /* Space above the text field */
+    border: 1px solid #ccc;
+    /* Border color */
+    border-radius: 4px;
+    /* Rounded corners */
+    box-sizing: border-box;
+    /* Include padding and border in the element's total width and height */
+    position: relative;
+    /* Set position to relative */
+    top: 10px;
+    /* Move the text field downward */
+    left: 70px;
+    /* Adjust left position if needed */
+}
+
+.profile-label {
+    display: block;
+    /* Make the label a block element */
+    margin-bottom: -5px;
+    /* Space between the label and the text field */
+    font-weight: bold;
+    /* Make the label text bold */
+    position: relative;
+    /* Set position to relative */
+    padding-left: 70px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #393939;
+}
+
+.profile-text-field1 {
+    width: 42%;
+    /* Adjust width as needed */
+    padding: 10px;
+    /* Padding for better appearance */
+    margin-top: 20px;
+    /* Space above the text field */
+    border: 1px solid #ccc;
+    /* Border color */
+    border-radius: 4px;
+    /* Rounded corners */
+    box-sizing: border-box;
+    /* Include padding and border in the element's total width and height */
+    position: relative;
+    /* Set position to relative */
+    top: 10px;
+    /* Move the text field downward */
+    left: 70px;
+    /* Adjust left position if needed */
+}
+
+.profile-label1 {
+    display: block;
+    /* Make the label a block element */
+    margin-top: 30px;
+    /* Space between the label and the text field */
+    font-weight: bold;
+    /* Make the label text bold */
+    position: relative;
+    /* Set position to relative */
+    padding-left: 70px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #393939;
+}
+
+.profile-text-field2 {
+    width: 42%;
+    /* Adjust width as needed */
+    padding: 10px;
+    /* Padding for better appearance */
+    border: 1px solid #ccc;
+    /* Border color */
+    border-radius: 4px;
+    /* Rounded corners */
+    box-sizing: border-box;
+    /* Include padding and border in the element's total width and height */
+    position: relative;
+    /* Set position to relative */
+    top: 10px;
+    /* Move the text field downward */
+    left: 70px;
+    /* Adjust left position if needed */
+}
+
+.profile-label2 {
+    display: block;
+    /* Make the label a block element */
+    margin-top: 35px;
+    /* Space between the label and the text field */
+    font-weight: bold;
+    /* Make the label text bold */
+    position: relative;
+    /* Set position to relative */
+    padding-left: 70px;
+    /* Align with the text field */
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #393939;
+}
+
+.profile-label3 {
+    display: block;
+    /* Make the label a block element */
+    margin-top: 25px;
+    /* Space between the label and the text field */
+    font-weight: bold;
+    /* Make the label text bold */
+    position: relative;
+    /* Set position to relative */
+    padding-left: 70px;
+    /* Align with the text field */
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #393939;
+}
+
+.profile-label4 {
+    display: block;
+    /* Make the label a block element */
+    margin-top: -20px;
+    /* Space between the label and the text field */
+    font-weight: bold;
+    /* Make the label text bold */
+    position: relative;
+    /* Set position to relative */
+    padding-left: 305px;
+    /* Align with the text field */
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #393939;
+}
+
+.combo-date-container {
+    display: flex;
+    flex-direction: row;
+    /* Align items horizontally */
+}
+
+.profile-combo-box {
+    padding-top: 8px;
+    position: relative;
+    /* Set position to relative */
+    left: 70px;
+    /* Adjust left position if needed */
+}
+
+.profile-date-picker {
+    position: relative;
+    /* Set position to relative */
+    left: 120px;
+    /* Adjust left position if needed */
+}
+
+.profile-label5 {
+    display: block;
+    /* Make the label a block element */
+    margin-top: -20px;
+    /* Space between the label and the text field */
+    font-weight: bold;
+    /* Make the label text bold */
+    position: relative;
+    /* Set position to relative */
+    padding-left: 670px;
+    /* Align with the text field */
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #393939;
+}
+
+.profile-label6 {
+    display: block;
+    /* Make the label a block element */
+    margin-top: -20px;
+    /* Space between the label and the text field */
+    font-weight: bold;
+    /* Make the label text bold */
+    position: relative;
+    /* Set position to relative */
+    padding-left: 670px;
+    /* Align with the text field */
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #393939;
+}
+
+.profile-label7 {
+    display: block;
+    /* Make the label a block element */
+    margin-top: -20px;
+    /* Space between the label and the text field */
+    font-weight: bold;
+    /* Make the label text bold */
+    position: relative;
+    /* Set position to relative */
+    padding-left: 670px;
+    /* Align with the text field */
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #393939;
+}
+
+.profile-label8 {
+    display: block;
+    /* Make the label a block element */
+    margin-top: -15px;
+    /* Space between the label and the text field */
+    font-weight: bold;
+    /* Make the label text bold */
+    position: relative;
+    /* Set position to relative */
+    padding-left: 880px;
+    /* Align with the text field */
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+    color: #393939;
+}

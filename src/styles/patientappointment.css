@@ -1,0 +1,682 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.appointment-container {
+  height: 100vh;
+  display: flex;
+  background-color: #f5faff;
+}
+
+.appointment-contents {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.appointment-header-container {
+  padding-left: 2em;
+  padding-right: 2.5em;
+  padding-top: 2.5em;
+  padding-bottom: 1em;
+}
+
+/* Header */
+.appointment-h2 h2 {
+  font-family: "Inter", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #393939;
+}
+
+/* List of Dermatologist */
+.appointment-dermalist-container {
+  border: #878484 2px solid;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 50px 50px;
+  width: 100%;
+  height: 610px;
+  margin-top: 1.5em;
+}
+
+/* Filter */
+.appointment-filter-section {
+  width: 250px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+
+.appointment-filter-icon img {
+  width: 20px;
+  height: 20px;
+}
+
+.appointment-filter-label p {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #393939;
+  padding-bottom: 0.3em;
+  padding-right: 0.3em;
+}
+
+/* Dermatologist Profile Cards */
+.appointment-listofdermatologist-container {
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1em;
+  padding-left: 2em;
+  padding-right: 2.5em;
+  padding-top: 1.5em;
+  padding-bottom: 2.5em;
+  font-family: "Inter", sans-serif;
+  overflow-y: scroll;
+  width: 100%;
+}
+
+.listofdermatologist-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #fff;
+  width: 270px;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.dermatologist-profile img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+}
+
+.dermatologist-name {
+  font-family: "Inter", sans-serif;
+}
+
+.dermatologist-name p {
+  margin-top: 7px;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  color: #393939;
+  cursor: default;
+}
+
+.dermatologist-field p {
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  color: #393939;
+  font-weight: 400;
+  cursor: default;
+}
+
+.derma-action-buttons {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2.5em;
+}
+
+.derma-bookappointment-button,
+.derma-viewprofile-button {
+  margin-top: 15px;
+}
+
+.derma-bookappointment-button button,
+.derma-viewprofile-button button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.derma-bookappointment-button button {
+  background-color: #f4833a;
+  padding-left: 60px;
+  padding-right: 60px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+}
+.derma-bookappointment-button button:hover {
+  background-color: #f4843ad9;
+}
+
+.derma-viewprofile-button button {
+  border: none;
+  background-color: #ffffff;
+  color: #0b0b0c;
+  opacity: 82%;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.derma-viewprofile-button button:hover {
+  opacity: 100%;
+}
+
+/* Dermatologist View Profile */
+.viewprofile-derma-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.viewprofile-derma-profile img {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+}
+
+.viewprofile-derma-about-header {
+  margin-bottom: 0.5em;
+}
+
+.viewprofile-derma-about-header h2 {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #121212;
+  opacity: 82%;
+}
+
+.viewprofile-derma-about-description {
+  margin-bottom: 0.2em;
+}
+
+.viewprofile-derma-about-description p {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #121212;
+  opacity: 82%;
+}
+
+.viewprofile-speciality-yearsofexperience-container {
+  display: flex;
+  gap: 3em;
+  margin-bottom: 1em;
+}
+.viewprofile-derma-speciality-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0b0b0c;
+}
+.viewprofile-derma-speciality-description p {
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #121212;
+  opacity: 82%;
+}
+
+.viewprofile-derma-yearsofexperience-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0b0b0c;
+}
+
+.viewprofile-derma-yearsofexperience-description p {
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #121212;
+  opacity: 82%;
+}
+
+.viewprofile-derma-education-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0b0b0c;
+}
+
+.viewprofile-derma-education-header p {
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #121212;
+  opacity: 82%;
+}
+
+.viewprofile-services-offer-header {
+  margin-bottom: 0.5em;
+}
+
+.viewprofile-services-offer-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0b0b0c;
+}
+
+/* Video Meet */
+.viewprofile-videomeet-icon img {
+  padding-right: 2px;
+}
+
+.viewprofile-service-videomeet {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.viewprofile-videomeet-button button {
+  display: flex;
+  flex-direction: row;
+  padding: 5px 8px;
+  border: #363738 2px solid;
+  border-radius: 7px;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+.viewprofile-videomeet-label span {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #0b0b0c;
+  opacity: 82%;
+}
+
+.viewprofile-videomeet-price {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  right: 14px;
+}
+
+.viewprofile-videomeet-price span {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0b0b0c;
+  opacity: 82%;
+}
+
+/* On-Site */
+.viewprofile-onsite-price span {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0b0b0c;
+  opacity: 82%;
+}
+
+.viewprofile-onsite-button button {
+  display: flex;
+  flex-direction: row;
+  padding: 5px 8px;
+  border: #363738 2px solid;
+  border-radius: 7px;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+.viewprofile-onsite-label span {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #0b0b0c;
+  opacity: 82%;
+}
+
+.viewprofile-onsite-price {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  right: 12px;
+}
+
+.viewprofile-onsite-price span {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0b0b0c;
+  opacity: 82%;
+}
+
+.viewprofile-button-onsite {
+  display: flex;
+  flex-direction: column;
+}
+
+.viewprofile-online-consultation {
+  display: flex;
+  flex-direction: column;
+}
+
+.viewprofile-online-consultation-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+
+.viewprofile-online-consultation-header h3 img {
+  width: 20px;
+  height: 20px;
+}
+
+/* Button Appointment Button */
+.viewprofile-book-appointment-button {
+  display: flex;
+  justify-content: center;
+  margin: 0.6em;
+}
+.viewprofile-book-appointment-button button {
+  padding: 12px 90px;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  background-color: #f4833a;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.viewprofile-book-appointment-button button:hover {
+  background-color: #f4843ad9;
+}
+
+/* Book Appointment Modal */
+.newappointment-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.newappointment-contents {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 25px;
+}
+
+.newappointment-header-container {
+  margin-bottom: 0.5em;
+}
+
+.newappointment-header-container h2 {
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #393939;
+}
+
+.newappointment-onlineschedule-header {
+  margin-bottom: 0.3em;
+}
+.newappointment-onlineschedule-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #393939;
+}
+
+.newappointment-onlineschedule-description p {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #121212;
+  opacity: 82%;
+}
+/* Services and My Experiences */
+.newappoint-services-myexperience-container {
+  margin-top: 1.5em;
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+.newappoint-service-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #393939;
+}
+
+.newappoint-experience-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #393939;
+}
+
+/* Prefered Day and Time */
+.newappoint-day-and-time-container {
+  margin-top: 0.8em;
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  margin-bottom: 0.8em;
+}
+
+.newappoint-day-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #393939;
+}
+
+.newappoint-time-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #393939;
+}
+
+/* Patient Information */
+.newappoint-patient-info-container {
+  margin-top: 0.8em;
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.newappoint-patient-info-contents {
+  margin-top: 0.5em;
+}
+
+.newappoint-patient-info-header h2 {
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #393939;
+}
+
+/* Patient Status */
+.newappoint-patient-status-header {
+  margin-top: .3em;
+  margin-bottom: 0.3em;
+}
+
+.newappoint-patient-status-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #393939;
+}
+
+/* Patient Status Radio Button*/
+.newappoint-patient-status-radio {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+.newappoint-patient-status-radio {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  margin-bottom: 0.8em;
+}
+
+.newappoint-patient-status-radio span {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #393939;
+}
+
+/* Patient Inputs */
+/* Patient First Name & Last Name */
+.newappoint-patient-first-last-contents {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  margin-bottom: 0.8em;
+}
+
+.newappoint-patient-firstname-header {
+  margin-bottom: 0.3em;
+}
+
+/* First Name & Last Name Header */
+.newappoint-patient-firstname-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #393939;
+}
+
+.newappoint-patient-lastname-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #393939;
+}
+
+/* First Name & Last Name Input */
+.newappoint-patient-firstname-input input {
+  width: 200px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding-left: 10px;
+}
+
+.newappoint-patient-lastname-input input {
+  width: 200px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding-left: 10px;
+}
+
+.newappoint-patient-lastname-header {
+  margin-bottom: 0.3em;
+}
+
+/* Email */
+.newappoint-patient-email {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.newappoint-patient-email-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #393939;
+}
+
+.newappoint-patient-email-input input {
+  width: 415px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding-left: 10px;
+}
+
+/* Contact & Gender */
+.newappoint-patient-contact-gender-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+/* Patient Contact */
+.newappoint-patient-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.newappoint-patient-contact-header {
+  margin-top: 0.8em;
+}
+
+.newappoint-patient-contact-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #393939;
+}
+
+.newappoint-patient-contact-input input {
+  width: 200px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding-left: 10px;
+}
+
+/* Patient Gender */
+.newappoint-patient-gender {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+.newappoint-patient-gender-header {
+  margin-top: 0.8em;
+}
+
+.newappoint-patient-gender-header h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #393939;
+}
+
+/* Set an appointment Button */
+.newappoint-bookappoint-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1em;
+}
+
+.newappoint-bookappoint-button button {
+  padding: 12px 100px;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  background-color: #f4843ad9;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.newappoint-bookappoint-button button:hover {
+  background-color: #f4833a;
+}

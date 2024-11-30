@@ -1,0 +1,142 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100px;
+  /* border: 2px #101010 solid; */
+}
+
+.navbar-leftsection-logo {
+  padding-left: 90px;
+}
+
+.navbar-contents {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-leftsection-logo img {
+  width: 230px;
+  height: 110px;
+}
+
+.navbar-navigation-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-right: 90px;
+  gap: 17px;
+}
+
+.navbar-event-button img {
+  width: 27px;
+  height: auto;
+}
+
+.navbar-event-button:hover {
+  cursor: pointer;
+}
+
+.navbar-login-button a {
+  padding: 10px 20px;
+  font-size: 17px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  background-color: #ffffff;
+  color: #1e1e1e;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.navbar-signup-button a {
+  padding: 10px 20px;
+  font-size: 17px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: #0b0b0c;
+  opacity: 82%;
+  border: none;
+  border-radius: 7px;
+  text-decoration: none;
+}
+
+/* Event Modal */
+.modal {
+  top: 15px;
+}
+
+.modal-title {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 50px;
+  padding-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.modal-card {
+  width: 690px;
+  padding: 20px;
+  background-color: #fbfdff;
+  border-radius: 8px;
+  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.19);
+  margin: 1.3em;
+}
+
+.bold-inter {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  opacity: 85%;
+  padding-top: 20px;
+}
+
+.regular-inter {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  opacity: 60%;
+}
+
+.semibold-inter1 {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  opacity: 60%;
+  padding-top: 10px;
+}
+
+.semibold-inter2 {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  opacity: 60%;
+  padding-bottom: 10px;
+}
+
+.modal-card p {
+  margin: 10px 0;
+}
+
+.modal-card button {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: #51829b;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.modal-card button:hover {
+  opacity: 1;
+  /* Increase opacity on hover */
+}

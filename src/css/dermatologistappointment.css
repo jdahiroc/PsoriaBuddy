@@ -1,0 +1,174 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.dermatologist-appointment-container {
+  display: flex;
+  flex-direction: row;
+  gap: 3.5em; /* space on the left*/
+}
+
+.dermatologist-appointment-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.dermatologist-header-container {
+  margin-top: 2.5em;
+  width: 100%;
+}
+
+.dermatologist-appointment-h2 {
+  width: 100%;
+}
+
+.dermatologist-appointment-subtitle {
+  width: 150px;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 2em;
+}
+
+.dermatologist-appointment-h2 h2 {
+  font-family: "Inter", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #393939;
+}
+
+/* Tables */
+.dermatologist-appointment-table {
+  margin-top: 0.5em;
+  width: 100%;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  padding-right: 50px;
+}
+
+.dermatologist-appointment-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.myexperience-button button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  border-radius: 7px;
+  width: 110px;
+  font-weight: 400;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  border: none;
+  background-color: #f6995c;
+  color: #fbfdff;
+}
+
+.myexperience-button button:hover {
+  background-color: #ed945a;
+  border: none;
+  cursor: pointer;
+}
+
+.myexperience-button img {
+  width: 15px;
+  height: 15px;
+  align-items: center;
+}
+
+.action-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.accept-action button img {
+  width: 25px;
+  height: 25px;
+}
+
+.accept-action button {
+  background-color: #fbfdff;
+  border: none;
+  padding: 5px;
+}
+
+.accept-action button:hover {
+  background-color: #e7e7e7;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-action button img {
+  width: 25px;
+  height: 25px;
+}
+
+.delete-action button {
+  padding: 5px;
+  background-color: #fbfdff;
+  border: none;
+}
+
+.delete-action button:hover {
+  background-color: #e7e7e7;
+  border: none;
+  cursor: pointer;
+}
+
+/* Confirm Modal */
+.dermatologist-accept-confirm-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+
+.dermatologist-firstsection-content {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+.dermatologist-secondsection-content {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+.generate-meetinglink-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  margin-top: 0.5em;
+}
+
+.generate-meetinglink-container button {
+  width: 100%;
+  min-height: 35px;
+  height: 100%;
+  background-color: #51829b;
+  border: none;
+  border-radius: 14px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
+  color: #fbfdff;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.generate-meetinglink-container button:hover {
+  background-color: #3e6a7f;
+}
+
+.dermatologist-servicetype-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  width: 210px;
+}

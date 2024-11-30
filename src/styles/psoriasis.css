@@ -1,0 +1,94 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.psorisis-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  padding: 50px;
+  background-color: #f5faff;
+  font-family: "Inter", sans-serif;
+}
+
+.psorisis-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.psorisis-image {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.psoriasis-image1 {
+  width: 90%;
+}
+
+.psoriasis-image1 img {
+  width: 790px;
+  height: auto;
+}
+
+.psorisis-text-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 25px;
+}
+
+.psoriasis-text {
+  width: 90%;
+  padding-left: 3.5em;
+  padding-bottom: 1em;
+}
+
+.psoriasis-text h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.psoriasis-text h1 span {
+  color: #008bf2;
+  opacity: 82%;
+}
+
+.psoriasis-text p {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  color: #121212;
+  opacity: 60%;
+}
+
+.psoriasis-download-button {
+  padding-left: 3.5em;
+}
+
+.psoriasis-download-button button {
+    font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #008bf2;
+  border: 2px #008bf2 solid;
+  border-radius: 7px;
+  background-color: #ffffff;
+  padding: 0.5rem 3rem;
+  text-transform: uppercase;
+  transition: ease-in-out 0.3s;
+  cursor: pointer;
+}
+
+.psoriasis-download-button button:hover {
+  background-color: #008bf2;
+  color: #ffffff;
+}

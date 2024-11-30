@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.treatmentgoals-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+/* left section */
+.treatmentgoals-left-section {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 100px;
+}
+
+.treatmentgoals-heading {
+  display: flex;
+  justify-content: flex-start;
+  width: 450px;
+}
+.treatmentgoals-heading h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 47px;
+  font-weight: 700;
+  color: #0b0b0c;
+  opacity: 87%;
+}
+.treatmentgoals-heading h1 span {
+  color: #008bf2;
+  opacity: 87%;
+}
+
+.treatmentgoals-list {
+  display: flex;
+  flex-direction: column;
+  width: 480px;
+  padding-top: 1em;
+}
+
+.treatmentgoals-list li {
+  font-family: "Inter", sans-serif;
+  font-size: 19px;
+  font-weight: 400;
+  opacity: 82%;
+  line-height: 1.5;
+}
+
+/* right section */
+.treatmentgoals-right-content {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: center;
+}
+
+.treatmentgoals-img img {
+  border: #ffffff 2px solid;
+  padding-right: 0.5em;
+  padding-bottom: 0.8em;
+}
+
+.treatmentgoals-subtext {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.treatmentgoals-subtext p {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  text-decoration: italic;
+}
