@@ -3,6 +3,12 @@ import MeditatingIcon from "../../assets/homepage/meditating.png";
 import { Link } from "react-router-dom";
 
 const Home = () => {
+  const scrollToPsoriaBuddy = () => {
+    const psoriaBuddySection = document.getElementById("psoriabuddy");
+    if (psoriaBuddySection) {
+      psoriaBuddySection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <main className="home-content">
       <div className="hero">
@@ -12,7 +18,7 @@ const Home = () => {
         <h1>PsoriaBuddy</h1>
         <p>Your Digital Path to Psoriasis Relief!</p>
         <div className="learn-more-link">
-          <Link to="/learn-more" className="learn-more-btn">
+          <Link onClick={scrollToPsoriaBuddy} className="learn-more-btn">
             Learn More
           </Link>
         </div>
