@@ -98,12 +98,14 @@ const LoginWithOtpVerification = () => {
     if (isOtpVerified && currentUser) {
       const { userType, isVerified } = currentUser;
 
-      if (userType === "Patient") {
+      if (userType === "Patient") { // Default patient path
         navigate("/u/profile", { replace: true });
       } else if (userType === "Dermatologist") {
-        navigate(isVerified ? "/d/profile" : "/d/verify", {
+        navigate(isVerified ? "/d/profile" : "/d/verify", { // Default derma path
           replace: true,
         });
+      } else if (userType === "Admin") {
+        navigate("/a/dashboard", { replace: true }); // Default admin path
       }
     }
   }, [isOtpVerified, currentUser, navigate]);
@@ -112,7 +114,7 @@ const LoginWithOtpVerification = () => {
   useEffect(() => {
     if (notificationMessage) {
       message[messageType](notificationMessage);
-      setNotificationMessage(null); // Reset message after displaying
+      setNotificationMessage(null); 
     }
   }, [notificationMessage, messageType]);
 

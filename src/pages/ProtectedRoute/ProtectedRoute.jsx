@@ -8,7 +8,7 @@ const ProtectedRoute = () => {
 
   // Prevent rendering or navigation during loading state
   if (loading) {
-    return null; // Wait for auth state to load before rendering
+    return null;
   }
 
   // Redirect to login if the user is not authenticated or OTP is not verified
@@ -16,7 +16,7 @@ const ProtectedRoute = () => {
     if (location.pathname !== "/login") {
       return <Navigate to="/login" replace state={{ from: location }} />;
     }
-    return null; // Avoid unnecessary renders
+    return null; // Avoids unnecessary renders
   }
 
   // Redirect to profile based on userType
@@ -46,8 +46,12 @@ const ProtectedRoute = () => {
 
   if (location.pathname.startsWith("/a/") && userType !== "Admin") {
     if (location.pathname !== "/a/accounts") {
+      return <Navigate to="/status/403" replace />;
+    }
+    if (userType === "Admin" && !location.pathname.startsWith("/a/")) {
       return <Navigate to="/a/accounts" replace />;
     }
+
     return null;
   }
 
