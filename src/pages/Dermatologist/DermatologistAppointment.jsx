@@ -1,7 +1,7 @@
 // Styles
 import "../../css/dermatologistappointment.css";
 // Assets
-import profile from "../../assets/background/profile.png";
+import profile from "../../assets/background/Profile.png";
 import AcceptIcon from "../../assets/background/Accept.png";
 import CancelIcon from "../../assets/background/Close.png";
 // Sidebar
