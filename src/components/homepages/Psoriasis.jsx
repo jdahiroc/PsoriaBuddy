@@ -24,7 +24,12 @@ const Psoriasis = () => {
                 </p>
               </div>
               <div className="psoriasis-download-button">
-                <button>Download PDF</button>
+              <a
+                  href="/files/psoriasis-guide.pdf" 
+                  download="Psoriasis-Guide.pdf" 
+                >
+                  <button>Download PDF</button>
+                </a>
               </div>
             </div>
           </div>
