@@ -17,7 +17,7 @@ import PatientAppointment from "./pages/PatientAppointment";
 import PatientVideoMeet from "./pages/PatientVideoMeet";
 import PatientLogin from "./pages/Login";
 import PatientSignup from "./pages/Signup";
-import PostCreationAcc from "./pages/PostCreationAcc";
+import PostCreationAcc from "./pages/Postcreationacc";
 import ForgotPassword from "./pages/ForgotPassword";
 // Dermatologist Routes
 import VerificationPending from "./pages/VerificationPending";
