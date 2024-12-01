@@ -233,18 +233,24 @@ const AdminAccounts = () => {
   // Submit Edited Data
   const handleEditSubmit = async () => {
     try {
+      // Ensure fields are valid
+      const updatedData = {
+        fullName: editFormData.fullName || "",
+        email: editFormData.email || "",
+        username: editFormData.username || "",
+        userType: editFormData.userType || "",
+      };
+
       const userRef = doc(db, "users", editFormData.key);
-      await updateDoc(userRef, {
-        fullName: editFormData.fullName,
-        email: editFormData.email,
-        username: editFormData.username,
-        userType: editFormData.userType,
-      });
+      await updateDoc(userRef, updatedData);
+
+      // Update table data
       setTableData((prevData) =>
         prevData.map((user) =>
-          user.key === editFormData.key ? { ...user, ...editFormData } : user
+          user.key === editFormData.key ? { ...user, ...updatedData } : user
         )
       );
+
       showMessage("success", "User account updated successfully!");
       setIsEditModalOpen(false);
     } catch (error) {
@@ -406,6 +412,7 @@ const AdminAccounts = () => {
           </div>
 
           <Table
+            key={tableData.length}
             className="accountsdata-table"
             columns={columns}
             dataSource={tableData}
