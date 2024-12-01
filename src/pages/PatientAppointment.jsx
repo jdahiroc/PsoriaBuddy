@@ -142,7 +142,7 @@ const PatientAppointment = () => {
 
   // OK Button Function
   const handleOk = () => {
-    setSpinning(true); 
+    setSpinning(true);
     resetForms(); // Clear all forms before closing
     setViewProfileModal(false);
     setAppointmentModal(false);
@@ -506,7 +506,7 @@ const PatientAppointment = () => {
             </div>
           </span>
         }
-        open={viewProfileModal || appointmentModal}
+        open={appointmentModal}
         onOk={handleOk}
         onCancel={handleCancel}
         confirmLoading={confirmLoading}
