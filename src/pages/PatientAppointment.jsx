@@ -183,7 +183,6 @@ const PatientAppointment = () => {
       patientContact &&
       selectedGender &&
       selectedService &&
-      selectedExperience &&
       preferredDay &&
       preferredTime
     );
