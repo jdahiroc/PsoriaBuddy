@@ -38,7 +38,7 @@ const Psoriasis = () => {
               </div>
               <div className="psoriasis-download-button">
                 <a
-                  href="public\files\Psoriasis-Guide.pdf"
+                  href="https://psoria-buddy.vercel.app/files/Psoriasis-Guide.pdf"
                   download="Psoriasis-Guide.pdf"
                   onClick={handleDownload}
                 >
