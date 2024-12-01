@@ -38,7 +38,7 @@ const Psoriasis = () => {
               </div>
               <div className="psoriasis-download-button">
                 <a
-                  href="/files/PH-JAN-052b-Stelara-Flipchart_Final-Artwork_v11-2_241201_012330.pdf"
+                  href="public\files\Psoriasis-Guide.pdf"
                   download="Psoriasis-Guide.pdf"
                   onClick={handleDownload}
                 >
