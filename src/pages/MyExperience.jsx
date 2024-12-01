@@ -228,10 +228,18 @@ const MyExperience = () => {
       };
 
       // Save data to Firestore
-      await addDoc(
+      const docRef = await addDoc(
         collection(db, "users", currentUser.uid, "myexperience"),
         newExperience
       );
+
+      // Reflect the new experience to the state immediately
+      setExperienceData((prev) => [
+        ...prev,
+        { id: docRef.id, ...newExperience },
+      ]);
+
+      //  Set success message
       message.success("Experience successfully added.");
 
       // Clear the fields and close modal
