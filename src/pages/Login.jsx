@@ -1,6 +1,6 @@
 // React Component
 import { useState, useContext, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 // Emailjs
 import emailjs from "@emailjs/browser";
@@ -80,6 +80,7 @@ const LoginWithOtpVerification = () => {
 
   // React Router's navigation hook
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Reset OTP stage if redirected from logout
   useEffect(() => {
@@ -472,7 +473,7 @@ const LoginWithOtpVerification = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => location("/signup")}
+                  onClick={() => navigate("/signup")}
                   size="small"
                   sx={{
                     mb: 4,
