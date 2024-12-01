@@ -472,7 +472,7 @@ const LoginWithOtpVerification = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => navigate("/signup")}
+                  onClick={() => location("/signup")}
                   size="small"
                   sx={{
                     mb: 4,
