@@ -28,6 +28,7 @@ import {
   where,
   addDoc,
   deleteDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../../../firebaseConfig";
@@ -298,44 +299,33 @@ const DermatologistAppointment = () => {
 
   //  Get List of Appointments booked by patients from Firestore
   useEffect(() => {
-    const fetchAppointments = async () => {
-      setLoading(true);
-      try {
-        //  Get Authenticated User
-        const auth = getAuth();
-        const currentUser = auth.currentUser;
-        // UID of the logged-in dermatologist
-        const dermatologistUID = currentUser?.uid;
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
 
-        if (dermatologistUID) {
-          // Fetch appointments from Firestore
-          // that matches the dermatologist UID
-          const appointmentsRef = collection(db, "appointments");
-          const q = query(
-            appointmentsRef,
-            where("dermatologistUID", "==", dermatologistUID)
-          );
-          const querySnapshot = await getDocs(q);
+    if (!currentUser) {
+      message.error("No authenticated user found.");
+      return;
+    }
 
-          //  Display the data
-          const fetchedAppointments = querySnapshot.docs.map((doc) => ({
-            key: doc.id,
-            ...doc.data(),
-          }));
+    const dermatologistUID = currentUser.uid;
+    const appointmentsRef = collection(db, "appointments");
+    const q = query(
+      appointmentsRef,
+      where("dermatologistUID", "==", dermatologistUID)
+    );
 
-          setAppointments(fetchedAppointments);
-        } else {
-          message.error("No authenticated user found");
-          console.error("No authenticated user found");
-        }
-      } catch (error) {
-        console.error("Error fetching appointments:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    // Set up a real-time listener
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const fetchedAppointments = querySnapshot.docs.map((doc) => ({
+        key: doc.id,
+        ...doc.data(),
+      }));
 
-    fetchAppointments();
+      setAppointments(fetchedAppointments);
+    });
+
+    // Cleanup the listener on component unmount
+    return () => unsubscribe();
   }, []);
 
   return (
