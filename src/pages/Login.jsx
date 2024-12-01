@@ -96,17 +96,17 @@ const LoginWithOtpVerification = () => {
       const { userType, isVerified } = currentUser;
       if (userType === "Patient") {
         // Default patient path
-        location("/u/profile", { replace: true });
+        navigate("/u/profile", { replace: true });
       } else if (userType === "Dermatologist") {
-        location(isVerified ? "/d/profile" : "/d/verify", {
+        navigate(isVerified ? "/d/profile" : "/d/verify", {
           // Default derma path
           replace: true,
         });
       } else if (userType === "Admin") {
-        location("/a/dashboard", { replace: true }); // Default admin path
+        navigate("/a/dashboard", { replace: true }); // Default admin path
       }
     }
-  }, [isOtpVerified, currentUser, location]);
+  }, [isOtpVerified, currentUser, navigate]);
 
   // Starts countdown for OTP resend functionality
   useEffect(() => {
