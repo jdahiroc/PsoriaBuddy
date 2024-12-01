@@ -129,6 +129,7 @@ const SignUp = () => {
         email: user.email,
         contactNumber: patientContactNumber,
         uid: user.uid,
+        userType: "Patient",
         createdAt: new Date(),
       });
 
@@ -136,7 +137,8 @@ const SignUp = () => {
       await signOut(auth);
 
       setIsLoading(false);
-      navigate("/post-creation"); // You might consider creating a different page notifying users to verify their email.
+      //  After creation it will navigate to post creation
+      navigate("/post-creation"); 
     } catch (error) {
       // Sets specific error messages based on Firebase response
       if (error.code === "auth/email-already-in-use") {
