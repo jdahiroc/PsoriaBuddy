@@ -6,7 +6,7 @@ const AuthRedirectRoute = () => {
   const { currentUser, isOtpVerified, loading } = useContext(AuthContext);
 
   if (loading) {
-    return null; // Prevent rendering while loading user data
+    return null; 
   }
 
   if (currentUser && isOtpVerified) {

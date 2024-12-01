@@ -1,13 +1,13 @@
-// Firebase Configs
-import { signOut } from "firebase/auth";
 import { auth, db } from "../../firebaseConfig";
+import {
+  setPersistence,
+  browserLocalPersistence,
+  signOut,
+} from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-// React Hooks
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react"; // For accessing context in React
-// Authentication Context (User Objects and OTP Verification Status)
+import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-// Ant Design Components
 import { message } from "antd";
 
 const useLogout = () => {
@@ -16,30 +16,27 @@ const useLogout = () => {
 
   const logout = async () => {
     try {
-      const user = auth.currentUser; // Get the currently logged-in user
+      const user = auth.currentUser;
 
       if (user) {
         const userRef = doc(db, "users", user.uid);
 
-        // Update isOtpVerified to false in Firestore
         await setDoc(userRef, { isOtpVerified: false }, { merge: true });
       }
 
-      // Sign out the user from Firebase Authentication
+      // Clear persistence before signing out
+      await setPersistence(auth, browserLocalPersistence);
       await signOut(auth);
 
-      // Clear localStorage and reset context states
-      localStorage.removeItem("isOtpVerified");
+      // Reset states and navigate to login
       setCurrentUser(null);
       setIsOtpVerified(false);
-
-      // Redirect the user to the login page
       navigate("/login");
 
       message.success("You have logged out successfully.");
     } catch (error) {
-      message.error("Failed to log out. Please try again.");
       console.error("Logout error:", error);
+      message.error("Failed to log out. Please try again.");
     }
   };
 
