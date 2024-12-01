@@ -35,6 +35,7 @@ import {
   updateDoc,
   collection,
   deleteDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
@@ -375,24 +376,24 @@ const AdminAccounts = () => {
     },
   ];
 
-  const fetchUsers = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, "users"));
-      setTableData(
-        querySnapshot.docs.map((doc) => ({
-          key: doc.id,
-          ...doc.data(),
-        }))
-      );
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
-
   // Updates the users
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    const usersRef = collection(db, "users");
+
+    // Set up real-time listener
+    const unsubscribe = onSnapshot(usersRef, (querySnapshot) => {
+      const users = querySnapshot.docs.map((doc) => ({
+        key: doc.id,
+        ...doc.data(),
+      }));
+
+      // Update the state with real-time data
+      setTableData(users);
+    });
+
+    // Cleanup listener on component unmount
+    return () => unsubscribe();
+  }, [db]);
 
   // Set filter to the deleted user data
   useEffect(() => {
