@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// Initialize Firebase Admin
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
@@ -21,7 +22,7 @@ export default async function handler(req, res) {
       const authHeader = req.headers.authorization;
 
       if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({ error: "Unauthorized" });
+        return res.status(401).json({ error: "Unauthorized: Missing token" });
       }
 
       const idToken = authHeader.split("Bearer ")[1];
@@ -46,8 +47,8 @@ export default async function handler(req, res) {
         room: roomName,
       });
 
-      // Generate the JWT token
-      const jwtToken = token.toJwt(); // Must directly return the token, no async/await here
+      // Generate the JWT token (synchronously, no need for await)
+      const jwtToken = token.toJwt();
 
       // Construct the meeting link
       const meetingLink = `${process.env.VITE_LIVEKIT_URL}/?access_token=${jwtToken}`;
