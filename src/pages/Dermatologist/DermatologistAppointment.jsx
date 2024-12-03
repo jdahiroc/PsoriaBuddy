@@ -37,13 +37,14 @@ import { getFunctions, httpsCallable } from "firebase/functions";
 // EmailJS
 import emailjs from "emailjs-com";
 
-// HTTPCalls using Axios (Temporary for accessing the LiveKit API)
+//  Livekit
 import axios from "axios";
 
 const DermatologistAppointment = () => {
   // State variables
   const [selectedExperience, setSelectedExperience] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isGeneratingLink, setIsGeneratingLink] = useState(false);
   const [open, setOpen] = useState(false);
   // Initialize the table components
   const { Column, ColumnGroup } = Table;
@@ -173,45 +174,42 @@ const DermatologistAppointment = () => {
 
   // Handles Create Meeting Link
   const handleCreateMeetingLink = async () => {
+    setIsGeneratingLink(true);
     try {
       const auth = getAuth();
-      const currentUser = auth.currentUser;
+      const user = auth.currentUser;
 
-      if (!currentUser) {
-        throw new Error("User not authenticated");
+      if (!user) {
+        message.error("You must be logged in to generate a meeting link.");
+        return;
       }
 
-      // Get the Firebase ID token
-      const idToken = await currentUser.getIdToken();
+      const idToken = await user.getIdToken();
 
-      // Send a request to the backend to generate the meeting link
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/generate-meeting-link`,
+        "/api/generate-meeting-link",
         { roomName: `session-${Date.now()}` },
         {
-          headers: { Authorization: `Bearer ${idToken}` },
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
         }
       );
 
-      // Extract the meeting link from the response
-      const meetingLink = response.data.meetingLink;
-
-      if (!meetingLink) {
-        throw new Error("Meeting link is undefined");
+      if (response.data && response.data.meetingLink) {
+        setFormData((prev) => ({
+          ...prev,
+          meetingLink: response.data.meetingLink,
+        }));
+        message.success("Meeting link generated successfully!");
+      } else {
+        throw new Error("No meeting link returned from the server");
       }
-
-      console.log("Generated Meeting Link:", meetingLink);
-
-      // Update the UI or state with the meeting link
-      setFormData((prev) => ({
-        ...prev,
-        meetingLink,
-      }));
-
-      message.success("Meeting link generated successfully!");
     } catch (error) {
       console.error("Error generating meeting link:", error);
       message.error("Failed to generate meeting link.");
+    } finally {
+      setIsGeneratingLink(false);
     }
   };
 
@@ -219,6 +217,15 @@ const DermatologistAppointment = () => {
 
   //  Handles onOk Appointment Confirmation
   const handleAppointmentConfirmation = async () => {
+    if (
+      !formData.patientName ||
+      !formData.appointmentDate ||
+      !formData.appointmentTime
+    ) {
+      message.error("Please fill in all required fields before confirming.");
+      return;
+    }
+    //  Display loading
     setConfirmLoading(true);
     try {
       const auth = getAuth();
@@ -253,35 +260,38 @@ const DermatologistAppointment = () => {
         )
       );
 
-      // Notification Popup when Appointment is saved
+      //  Notification Popup when Appointment is saved
       message.success("Appointment saved successfully.");
 
-      // Initialize the EmailJS variables
+      //  Initialize the EmailJS variables
       const emailjs_serviceid = import.meta.env.VITE_EMAILJS_SERVICE_ID;
       const emailjs_templateid = import.meta.env
         .VITE_EMAILJS_APPOINTMENT_TEMPLATE_ID;
       const emailjs_publickey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
+      //  Forms Data
+      const emailContent = {
+        patientName: formData.patientName || "No Name Provided",
+        appointmentDate: formData.appointmentDate
+          ? formData.appointmentDate.format("YYYY-MM-DD")
+          : "No Date Provided",
+        appointmentTime: formData.appointmentTime
+          ? formData.appointmentTime.format("HH:mm A")
+          : "No Time Provided",
+        serviceType: formData.serviceType || "No Service Type Provided",
+        patientEmail: formData.patientEmail || "No Email Provided",
+        to_email: formData.patientEmail || "No Email Provided",
+        meetingLink:
+          formData.serviceType === "Video-Meet"
+            ? formData.meetingLink || "Meeting link not generated"
+            : "No meeting link",
+      };
+
       // Send email notification via EmailJS
       await emailjs.send(
         emailjs_serviceid,
         emailjs_templateid,
-        {
-          patientName: formData.patientName || "No Name Provided",
-          appointmentDate: formData.appointmentDate
-            ? formData.appointmentDate.format("YYYY-MM-DD")
-            : "No Date Provided",
-          appointmentTime: formData.appointmentTime
-            ? formData.appointmentTime.format("HH:mm A")
-            : "No Time Provided",
-          serviceType: formData.serviceType || "No Service Type Provided",
-          patientEmail: formData.patientEmail || "No Email Provided",
-          to_email: formData.patientEmail || "No Email Provided",
-          meetingLink:
-            formData.serviceType === "Video-Meet"
-              ? formData.meetingLink
-              : "No meeting link",
-        },
+        emailContent,
         emailjs_publickey
       );
 
@@ -364,13 +374,46 @@ const DermatologistAppointment = () => {
                       meetingLink: e.target.value,
                     }))
                   }
+                  inputProps={{
+                    style: {
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    },
+                    title: formData.meetingLink, 
+                  }}
                 />
+                {/* Generate only one link */}
+                <button
+                  onClick={handleCreateMeetingLink}
+                  disabled={isGeneratingLink || formData.meetingLink}
+                >
+                  {isGeneratingLink
+                    ? "Creating..."
+                    : formData.meetingLink
+                    ? "Link Generated"
+                    : "Create Meet Link"}
+                </button>
 
-                <div className="generate-meetinglink-container">
-                  <button onClick={handleCreateMeetingLink}>
-                    Create Meet Link
-                  </button>
-                </div>
+                {/* Add Copy Link Button when */}
+                {formData.meetingLink && (
+                  <div className="copy-meetinglink-container">
+                    <button
+                      onClick={() => {
+                        navigator.clipboard
+                          .writeText(formData.meetingLink)
+                          .then(() => {
+                            message.success(
+                              "Meeting link copied to clipboard!"
+                            );
+                          });
+                      }}
+                      disabled={!formData.meetingLink}
+                    >
+                      Copy Link
+                    </button>
+                  </div>
+                )}
               </div>
             )}
             <div className="dermatologist-appointmentTime-input">
