@@ -1,6 +1,7 @@
-import { AccessToken } from "livekit-server-sdk";
-import admin from "firebase-admin";
+import express from "express";
 import dotenv from "dotenv";
+import crypto from "crypto";
+import admin from "firebase-admin";
 
 dotenv.config();
 
@@ -15,53 +16,47 @@ if (!admin.apps.length) {
   });
 }
 
-export default async function handler(req, res) {
-  if (req.method === "POST") {
-    try {
-      const { roomName } = req.body;
-      const authHeader = req.headers.authorization;
+const app = express();
+app.use(express.json());
 
-      if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({ error: "Unauthorized: Missing token" });
-      }
+// API for generating a Zegocloud token and meeting link
+app.post("/api/generate-meeting-link", async (req, res) => {
+  try {
+    const { roomName } = req.body;
+    const authHeader = req.headers.authorization;
 
-      const idToken = authHeader.split("Bearer ")[1];
-
-      // Verify Firebase ID token
-      const decodedToken = await admin.auth().verifyIdToken(idToken);
-
-      if (!roomName) {
-        return res.status(400).json({ error: "Room name is required" });
-      }
-
-      // Generate a LiveKit token
-      const apiKey = process.env.VITE_LIVEKIT_API_KEY;
-      const apiSecret = process.env.VITE_LIVEKIT_SECRET;
-
-      const identity = decodedToken.uid; // Use Firebase UID as identity
-      const token = new AccessToken(apiKey, apiSecret, { identity });
-
-      // Add necessary grants (permissions)
-      token.addGrant({
-        roomJoin: true,
-        room: roomName,
-      });
-
-      // Generate the JWT token (synchronously, no need for await)
-      const jwtToken = token.toJwt();
-
-      // Construct the meeting link
-      const meetingLink = `${process.env.VITE_LIVEKIT_URL}/?access_token=${jwtToken}`;
-
-      console.log("Generated Meeting Link:", meetingLink);
-
-      // Send the meeting link to the frontend
-      res.status(200).json({ meetingLink });
-    } catch (error) {
-      console.error("Error generating meeting link:", error);
-      res.status(500).json({ error: "Failed to generate meeting link" });
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ error: "Unauthorized: Missing token" });
     }
-  } else {
-    res.status(405).json({ error: "Method not allowed" });
+
+    const idToken = authHeader.split("Bearer ")[1];
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+
+    if (!roomName) {
+      return res.status(400).json({ error: "Room name is required" });
+    }
+
+    // Zegocloud credentials
+    const appID = process.env.ZEGOCLOUD_APP_ID; 
+    const appSign = process.env.ZEGOCLOUD_APP_SIGN;
+
+    // Token generation logic
+    const expireTime = Math.floor(Date.now() / 1000) + 3600; // Valid for 1 hour
+    const payload = `${appID}${decodedToken.uid}${roomName}${expireTime}`;
+    const signature = crypto.createHmac("sha256", appSign).update(payload).digest("hex");
+    const token = `${appID}-${decodedToken.uid}-${expireTime}-${signature}`;
+
+    // Generate the meeting link
+    const meetingLink = `https://zegocloud.com/meeting/${roomName}?access_token=${token}`;
+
+    console.log("Generated Meeting Link:", meetingLink);
+
+    res.status(200).json({ meetingLink });
+  } catch (error) {
+    console.error("Error generating meeting link:", error);
+    res.status(500).json({ error: "Failed to generate meeting link" });
   }
-}
+});
+
+// Export the handler
+export default app;
