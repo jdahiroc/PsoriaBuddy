@@ -28,7 +28,6 @@ export default async function handler(req, res) {
 
       // Verify Firebase ID token
       const decodedToken = await admin.auth().verifyIdToken(idToken);
-      console.log("Authenticated user:", decodedToken);
 
       if (!roomName) {
         return res.status(400).json({ error: "Room name is required" });
@@ -48,7 +47,7 @@ export default async function handler(req, res) {
       });
 
       // Generate the JWT token
-      const jwtToken = token.toJwt(); // Ensure this is synchronous and directly returns the token
+      const jwtToken = token.toJwt(); // Must directly return the token, no async/await here
 
       // Construct the meeting link
       const meetingLink = `${process.env.VITE_LIVEKIT_URL}/?access_token=${jwtToken}`;
