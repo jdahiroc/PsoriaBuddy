@@ -325,14 +325,23 @@ const DermatologistAppointment = () => {
     );
 
     // Set up a real-time listener
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const fetchedAppointments = querySnapshot.docs.map((doc) => ({
-        key: doc.id,
-        ...doc.data(),
-      }));
+    const unsubscribe = onSnapshot(
+      q,
+      (querySnapshot) => {
+        const fetchedAppointments = querySnapshot.docs.map((doc) => ({
+          key: doc.id,
+          ...doc.data(),
+        }));
 
-      setAppointments(fetchedAppointments);
-    });
+        setAppointments(fetchedAppointments);
+        setLoading(false); // Stop the loader after data is fetched
+      },
+      (error) => {
+        console.error("Error fetching appointments:", error);
+        message.error("Failed to fetch appointments.");
+        setLoading(false); // Stop the loader on error
+      }
+    );
 
     // Cleanup the listener on component unmount
     return () => unsubscribe();
@@ -380,7 +389,7 @@ const DermatologistAppointment = () => {
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                     },
-                    title: formData.meetingLink, 
+                    title: formData.meetingLink,
                   }}
                 />
                 {/* Generate only one link */}
