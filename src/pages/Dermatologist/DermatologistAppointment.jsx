@@ -189,7 +189,7 @@ const DermatologistAppointment = () => {
 
       // Send request to the backend to generate the meeting link
       const response = await axios.post(
-        `${process.env.VITE_BACKEND_URL}/api/generate-meeting-link`, // Replace with your deployed backend URL
+        `https://psoria-buddy.vercel.app/api/generate-meeting-link`, // Replace with your deployed backend URL
         { roomName: `session-${Date.now()}` }, // Unique room name
         {
           headers: {
