@@ -174,21 +174,18 @@ const DermatologistAppointment = () => {
 
   // Handles Create Meeting Link
   const handleCreateMeetingLink = async () => {
-    setIsGeneratingLink(true);
     try {
-      const auth = getAuth();
-      const user = auth.currentUser;
+      const user = getAuth().currentUser;
 
       if (!user) {
-        message.error("You must be logged in to generate a meeting link.");
+        message.error("User not authenticated.");
         return;
       }
 
       const idToken = await user.getIdToken();
 
-      // Use the deployed backend URL on Vercel
       const response = await axios.post(
-        "/api/generate-meeting-link", 
+        "https://psoria-buddy.vercel.app/api/generate-meeting-link",
         { roomName: `session-${Date.now()}` },
         {
           headers: {
@@ -198,6 +195,7 @@ const DermatologistAppointment = () => {
       );
 
       if (response.data && response.data.meetingLink) {
+        console.log("Meeting Link:", response.data.meetingLink);
         setFormData((prev) => ({
           ...prev,
           meetingLink: response.data.meetingLink,
@@ -209,8 +207,6 @@ const DermatologistAppointment = () => {
     } catch (error) {
       console.error("Error generating meeting link:", error);
       message.error("Failed to generate meeting link.");
-    } finally {
-      setIsGeneratingLink(false);
     }
   };
 
