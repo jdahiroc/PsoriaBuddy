@@ -175,27 +175,40 @@ const DermatologistAppointment = () => {
   // Handles Create Meeting Link
   const handleCreateMeetingLink = async () => {
     try {
+      // Get the current authenticated user
+      const auth = getAuth(); // Ensure Firebase Auth is initialized
+      const user = auth.currentUser; // Get the currently logged-in user
+
+      if (!user) {
+        message.error("You must be logged in to generate a meeting link.");
+        return; // Stop execution if no user is logged in
+      }
+
+      // Retrieve Firebase ID token for the authenticated user
       const idToken = await user.getIdToken();
+
+      // Send request to the backend to generate the meeting link
       const response = await axios.post(
-        `${process.env.VITE_BACKEND_URL}/api/generate-meeting-link`,
-        { roomName: `session-${Date.now()}` },
+        `${process.env.VITE_BACKEND_URL}/api/generate-meeting-link`, // Replace with your deployed backend URL
+        { roomName: `session-${Date.now()}` }, // Unique room name
         {
           headers: {
-            Authorization: `Bearer ${idToken}`,
+            Authorization: `Bearer ${idToken}`, // Pass the ID token in the headers
           },
         }
       );
+
+      // Log and handle the backend response
+      console.log("Backend Response:", response.data);
 
       if (response.data && response.data.meetingLink) {
         setFormData((prev) => ({
           ...prev,
           meetingLink: response.data.meetingLink,
         }));
-
-        console.log("Meeting Link Generated:", response.data.meetingLink);
         message.success("Meeting link generated successfully!");
       } else {
-        throw new Error("No meeting link returned from server");
+        throw new Error("Invalid response from server");
       }
     } catch (error) {
       console.error("Error generating meeting link:", error);
