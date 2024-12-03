@@ -186,8 +186,9 @@ const DermatologistAppointment = () => {
 
       const idToken = await user.getIdToken();
 
+      // Use the deployed backend URL on Vercel
       const response = await axios.post(
-        "/api/generate-meeting-link",
+        "/api/generate-meeting-link", 
         { roomName: `session-${Date.now()}` },
         {
           headers: {
