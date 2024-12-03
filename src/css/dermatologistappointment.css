@@ -172,3 +172,17 @@
   gap: 1em;
   width: 210px;
 }
+
+/* Copy Link Button */
+.copy-meetinglink-container button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.copy-meetinglink-container button:hover {
+  background-color: #45a049;
+}
