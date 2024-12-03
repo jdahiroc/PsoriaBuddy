@@ -178,26 +178,27 @@ const DermatologistAppointment = () => {
       // Get the current authenticated user
       const auth = getAuth();
       const user = auth.currentUser;
-  
+
       if (!user) {
         message.error("You must be logged in to generate a meeting link.");
         return;
       }
-  
+
       // Retrieve Firebase ID token for the authenticated user
       const idToken = await user.getIdToken();
-  
+
       // Send request to the backend to generate the meeting link
       const response = await axios.post(
         `https://psoria-buddy.vercel.app/api/generate-meeting-link`,
-        { roomName: `session-${Date.now()}` },
+        { roomName: `session-${Date.now()}` }, // Unique room name
         {
           headers: {
-            Authorization: `Bearer ${idToken}`, // Pass the ID token in the headers
+            // Pass the ID token in the headers
+            Authorization: `Bearer ${idToken}`,
           },
         }
       );
-  
+
       if (response.data && response.data.meetingLink) {
         setFormData((prev) => ({
           ...prev,
@@ -213,7 +214,6 @@ const DermatologistAppointment = () => {
       message.error("Failed to generate meeting link.");
     }
   };
-  
 
   // ---------------------- END of Creating Meeting Link ---------------------- //
 
