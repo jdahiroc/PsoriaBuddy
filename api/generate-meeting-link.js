@@ -50,8 +50,11 @@ export default async function handler(req, res) {
         }
       );
 
+      console.log("ZegoCloud API Response:", response.data);
+
       if (response.data && response.data.token) {
         const meetingLink = `https://psoria-buddy.vercel.app/meeting/${roomName}?access_token=${response.data.token}`;
+
 
         // Return the generated meeting link
         res.status(200).json({ meetingLink });
