@@ -47,8 +47,8 @@ export default async function handler(req, res) {
         room: roomName,
       });
 
-      // Generate the JWT token
-      const jwtToken = token.toJwt();
+      // Ensure the JWT token is correctly generated
+      const jwtToken = token.toJwt(); // This returns a string, ensure it's called synchronously
 
       // Construct the meeting link
       const meetingLink = `${process.env.VITE_LIVEKIT_URL}/?access_token=${jwtToken}`;
