@@ -1,56 +1,22 @@
 import "../styles/patientvideomeet.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 
 const PatientVideoMeet = () => {
+  //  Meeting Link State
   const [meetingLink, setMeetingLink] = useState("");
-  const [isJoining, setIsJoining] = useState(false);
+  //  Initialize Navigation
+  const navigate = useNavigate();
 
-  const handleJoin = async () => {
-    setIsJoining(true);
-    try {
-      const url = new URL(meetingLink);
-      const roomID = url.pathname.split("/")[2];
-      const token = url.searchParams.get("access_token");
-
-      if (!roomID || !token) {
-        throw new Error("Invalid meeting link structure.");
-      }
-
-      const tokenParts = token.split("-");
-      const appID = parseInt(tokenParts[0], 10);
-      const userID = tokenParts[1];
-      const expireTime = tokenParts[2];
-      const signature = tokenParts[3];
-
-      console.log("Room ID:", roomID);
-      console.log("Token Parts:", tokenParts);
-      console.log("App ID:", appID);
-
-      const zpToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(
-        appID,
-        signature,
-        roomID,
-        userID,
-        `Patient-${Math.floor(Math.random() * 1000)}`
-      );
-
-      const zp = ZegoUIKitPrebuilt.create(zpToken);
-      zp.joinRoom({
-        container: document.getElementById("zego-container"),
-        roomID,
-        userID: `user-${Date.now()}`,
-        userName: `Patient-${Math.floor(Math.random() * 1000)}`,
-        scenario: {
-          mode: ZegoUIKitPrebuilt.VideoConference,
-        },
-      });
-    } catch (error) {
-      console.error("Error joining the meeting:", error);
-    } finally {
-      setIsJoining(false);
+  const handleJoin = () => {
+    if (!meetingLink) {
+      message.error("Please enter a meeting link.");
+      return;
     }
+
+    navigate(`/meeting?link=${encodeURIComponent(meetingLink)}`);
   };
 
   return (
