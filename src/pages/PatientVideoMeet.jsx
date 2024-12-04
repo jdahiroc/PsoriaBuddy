@@ -41,7 +41,7 @@ const PatientVideoMeet = () => {
       }
 
       // Create ZegoUIKit Prebuilt Room
-      const zp = ZegoUIKitPrebuilt.create(token);
+      const zp = ZegoUIKitPrebuilt.create({ appID, serverSecret });
 
       // Join the room
       zp.joinRoom({
