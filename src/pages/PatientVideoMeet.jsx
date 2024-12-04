@@ -17,18 +17,28 @@ const PatientVideoMeet = () => {
         return;
       }
 
-      const url = new URL(meetingLink);
+      // Validate and parse the meeting link
+      let url;
+      try {
+        url = new URL(meetingLink);
+      } catch (err) {
+        message.error("Invalid meeting link. Please provide a valid URL.");
+        setIsJoining(false);
+        return;
+      }
+
       const roomID = url.pathname.split("/")[2];
       const token = url.searchParams.get("access_token");
 
       if (!roomID || !token) {
         message.error(
-          "The meeting link is invalid. Please check and try again."
+          "The meeting link is invalid. Please ensure it contains both a room ID and access token."
         );
         setIsJoining(false);
         return;
       }
 
+      // Retrieve the app ID from environment variables
       const appID = parseInt(import.meta.env.VITE_ZEGOCLOUD_APP_ID, 10);
 
       if (!appID) {
@@ -43,7 +53,7 @@ const PatientVideoMeet = () => {
       // Create ZegoUIKit Prebuilt Room
       const zp = ZegoUIKitPrebuilt.create({
         appID,
-        token, 
+        token, // Use the token from the meeting link
       });
 
       // Join the room
@@ -59,60 +69,58 @@ const PatientVideoMeet = () => {
     } catch (error) {
       console.error("Error parsing the meeting link:", error);
       message.error(
-        "Invalid meeting link format. Ensure it starts with https://zegocloud.com/..."
+        "An error occurred while joining the meeting. Please try again."
       );
       setIsJoining(false);
     }
   };
 
   return (
-    <>
-      <div className="patient-videomeet-container">
-        <div className="patient-videomeet-contents">
-          <div className="patient-videomeet-header">
-            <h2>Video Call</h2>
-          </div>
-          <div className="patient-videomeet">
-            {/* Left Section */}
-            <div className="patient-videomeet-left-section">
-              <div className="patient-videomeet-left-header">
-                <h2>Private and secure video calls for your appointments.</h2>
+    <div className="patient-videomeet-container">
+      <div className="patient-videomeet-contents">
+        <div className="patient-videomeet-header">
+          <h2>Video Call</h2>
+        </div>
+        <div className="patient-videomeet">
+          {/* Left Section */}
+          <div className="patient-videomeet-left-section">
+            <div className="patient-videomeet-left-header">
+              <h2>Private and secure video calls for your appointments.</h2>
+            </div>
+            <div className="patient-videomeet-left-subheader">
+              <h4>Connect with our dermatologist using PsoriaBuddy</h4>
+            </div>
+            <div className="patient-videomeet-input-join-button-container">
+              <div className="patient-videomeet-input">
+                <input
+                  type="text"
+                  placeholder="Enter the meeting link"
+                  className="patient-videomeet-input"
+                  id="meetingLink"
+                  value={meetingLink}
+                  onChange={(e) => setMeetingLink(e.target.value)}
+                />
               </div>
-              <div className="patient-videomeet-left-subheader">
-                <h4>Connect with our dermatologist using PsoriaBuddy</h4>
-              </div>
-              <div className="patient-videomeet-input-join-button-container">
-                <div className="patient-videomeet-input">
-                  <input
-                    type="text"
-                    placeholder="Enter the meeting link"
-                    className="patient-videomeet-input"
-                    id="meetingLink"
-                    value={meetingLink}
-                    onChange={(e) => setMeetingLink(e.target.value)}
-                  />
-                </div>
-                <div className="patient-videomeet-button">
-                  <button
-                    className="patient-videomeet-join-button"
-                    onClick={handleJoin}
-                    disabled={isJoining}
-                  >
-                    {isJoining ? "Joining..." : "Join"}
-                  </button>
-                </div>
+              <div className="patient-videomeet-button">
+                <button
+                  className="patient-videomeet-join-button"
+                  onClick={handleJoin}
+                  disabled={isJoining}
+                >
+                  {isJoining ? "Joining..." : "Join"}
+                </button>
               </div>
             </div>
-            {/* Right Section */}
-            <div className="patient-videomeet-right-section">
-              <div id="zego-container">
-                {/* The meeting UI will load here */}
-              </div>
+          </div>
+          {/* Right Section */}
+          <div className="patient-videomeet-right-section">
+            <div id="zego-container">
+              {/* The meeting UI will load here */}
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
