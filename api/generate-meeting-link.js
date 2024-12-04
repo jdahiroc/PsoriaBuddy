@@ -7,19 +7,13 @@ dotenv.config();
 
 // Initialize Firebase Admin
 if (!admin.apps.length) {
-  try {
-    admin.initializeApp({
-      credential: admin.credential.cert({
-        projectId: process.env.VITE_FIREBASE_PROJECT_ID,
-        clientEmail: process.env.VITE_FIREBASE_CLIENT_EMAIL,
-        privateKey: process.env.VITE_FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-      }),
-    });
-    console.log("Firebase Admin initialized successfully.");
-  } catch (firebaseError) {
-    console.error("Error initializing Firebase Admin:", firebaseError);
-    throw new Error("Failed to initialize Firebase Admin.");
-  }
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.VITE_FIREBASE_PROJECT_ID,
+      clientEmail: process.env.VITE_FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.VITE_FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+    }),
+  });
 }
 
 const app = express();
@@ -60,21 +54,10 @@ app.post("/api/generate-meeting-link", async (req, res) => {
       return res.status(500).json({ error: "Invalid server configuration." });
     }
 
-    console.log("App ID and App Sign validated.");
-
-    // Generate Kit Token
-    const userID = decodedToken.uid;
+    // Use ZegoServerAssistant to generate a secure kit token
+    const userID = decodedToken.uid; 
     const userName = `User-${Math.floor(Math.random() * 1000)}`;
-    const expireTimeInSeconds = Math.floor(Date.now() / 1000) + 3600;
-
-    console.log("Token Generation Inputs:", {
-      appID,
-      appSign,
-      roomName,
-      userID,
-      userName,
-      expireTimeInSeconds,
-    });
+    const expireTimeInSeconds = Math.floor(Date.now() / 1000) + 3600; // Token valid for 1 hour
 
     const kitToken = ZegoServerAssistant.generateKitTokenForProduction(
       appID,
@@ -92,20 +75,16 @@ app.post("/api/generate-meeting-link", async (req, res) => {
         .json({ error: "Failed to generate a valid meeting token." });
     }
 
-    console.log("Kit Token generated successfully:", kitToken);
-
     // Generate Meeting Link
     const safeRoomName = encodeURIComponent(roomName.trim());
     const meetingLink = `https://zegocloud.com/meeting/${safeRoomName}?access_token=${kitToken}`;
     console.log("Generated Meeting Link:", meetingLink);
 
+    // Respond with Meeting Link
     res.status(200).json({ meetingLink });
   } catch (error) {
-    console.error("Error generating meeting link:", error);
-    res.status(500).json({
-      error: "Failed to generate meeting link.",
-      details: error.message, // Include error details in the response for debugging
-    });
+    console.error("Error generating meeting link:", error.message);
+    res.status(500).json({ error: "Failed to generate meeting link." });
   }
 });
 
