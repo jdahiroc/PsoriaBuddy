@@ -9,11 +9,11 @@ const PatientVideoMeet = () => {
   const [isJoining, setIsJoining] = useState(false);
 
   const handleJoin = () => {
-    //  Start loading
     setIsJoining(true);
     try {
       if (!meetingLink) {
         message.error("Please enter a meeting link.");
+        setIsJoining(false);
         return;
       }
 
@@ -25,6 +25,7 @@ const PatientVideoMeet = () => {
         message.error(
           "The meeting link is invalid. Please check and try again."
         );
+        setIsJoining(false);
         return;
       }
 
@@ -32,12 +33,19 @@ const PatientVideoMeet = () => {
       const appID = parseInt(import.meta.env.VITE_ZEGOCLOUD_APP_ID);
 
       if (!appID) {
-        console.error("App ID is missing. Ensure ZEGOCLOUD_APP_ID is set.");
+        console.error(
+          "App ID is missing. Ensure VITE_ZEGOCLOUD_APP_ID is set."
+        );
         message.error("An internal error occurred. Please try again later.");
+        setIsJoining(false);
         return;
       }
 
-      const zp = ZegoUIKitPrebuilt.create(appID, token);
+      const zp = ZegoUIKitPrebuilt.createEngine({
+        appID,
+        serverSecret: token, // Use serverSecret or token as required
+      });
+
       zp.joinRoom({
         roomID,
         userID: `user-${Date.now()}`,
@@ -45,19 +53,14 @@ const PatientVideoMeet = () => {
         container: document.getElementById("zego-container"), // Where the UI will load
       });
 
-      //  Stop loading
-      setIsJoining(false);
       console.log("Joining meeting:", { roomID, token });
-      console.log("App ID:", appID);
-      console.log("Room ID:", roomID);
-      console.log("Token:", token);
-    } catch (error) {
-      //  Stop loading
       setIsJoining(false);
+    } catch (error) {
       console.error("Error parsing the meeting link:", error);
       message.error(
         "Invalid meeting link format. Ensure it starts with https://zegocloud.com/..."
       );
+      setIsJoining(false);
     }
   };
 
