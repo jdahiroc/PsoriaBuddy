@@ -63,7 +63,7 @@ app.post("/api/generate-meeting-link", async (req, res) => {
       .update(payload)
       .digest("hex");
     console.log("Token Signature:", signature);
-
+    
     const token = `${appID}-${decodedToken.uid}-${expireTime}-${signature}`;
     console.log("Generated Token:", token);
 
