@@ -18,9 +18,6 @@ if (!admin.apps.length) {
 
 const app = express();
 
-const cors = require("cors");
-app.use(cors({ origin: "https://psoria-buddy.vercel.app" }));
-
 app.use(express.json());
 
 // API for generating a ZegoCloud token and meeting link
