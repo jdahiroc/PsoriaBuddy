@@ -10,52 +10,44 @@ const PatientVideoMeet = () => {
   const handleJoin = async () => {
     setIsJoining(true);
     try {
-      // Parse meeting link
       const url = new URL(meetingLink);
       const roomID = url.pathname.split("/")[2];
       const token = url.searchParams.get("access_token");
 
       if (!roomID || !token) {
-        throw new Error("Invalid meeting link structure");
+        throw new Error("Invalid meeting link structure.");
       }
+
+      const tokenParts = token.split("-");
+      const appID = parseInt(tokenParts[0], 10);
+      const userID = tokenParts[1];
+      const expireTime = tokenParts[2];
+      const signature = tokenParts[3];
 
       console.log("Room ID:", roomID);
-      console.log("Token:", token);
-
-      // Validate token structure
-      const tokenParts = token.split("-");
       console.log("Token Parts:", tokenParts);
-      if (tokenParts.length !== 4) {
-        throw new Error("Invalid token format");
-      }
-
-      // Retrieve app ID
-      const appID = parseInt(import.meta.env.VITE_ZEGOCLOUD_APP_ID, 10);
       console.log("App ID:", appID);
 
-      if (!appID) {
-        throw new Error("Missing App ID");
-      }
-
-      // Initialize ZegoUIKitPrebuilt
-      const zp = ZegoUIKitPrebuilt.create({
+      const zpToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(
         appID,
-        token,
-      });
+        signature,
+        roomID,
+        userID,
+        `Patient-${Math.floor(Math.random() * 1000)}`
+      );
 
+      const zp = ZegoUIKitPrebuilt.create(zpToken);
       zp.joinRoom({
         container: document.getElementById("zego-container"),
         roomID,
         userID: `user-${Date.now()}`,
         userName: `Patient-${Math.floor(Math.random() * 1000)}`,
+        scenario: {
+          mode: ZegoUIKitPrebuilt.VideoConference,
+        },
       });
-
-      console.log("Joining room:", { appID, roomID, token });
     } catch (error) {
-      console.error("Error initializing ZegoUIKitPrebuilt:", error);
-      message.error(
-        "Failed to join the meeting. Please verify the meeting link and try again."
-      );
+      console.error("Error joining the meeting:", error);
     } finally {
       setIsJoining(false);
     }
