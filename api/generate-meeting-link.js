@@ -18,6 +18,7 @@ if (!admin.apps.length) {
     console.log("Firebase Admin initialized successfully.");
   } catch (firebaseError) {
     console.error("Error initializing Firebase Admin:", firebaseError);
+    throw new Error("Failed to initialize Firebase Admin.");
   }
 }
 
@@ -46,16 +47,18 @@ app.post("/api/generate-meeting-link", async (req, res) => {
     }
 
     console.log("Room Name:", roomName);
-    console.log("Decoded Token:", decodedToken);
+    console.log("Decoded Firebase Token:", decodedToken);
 
     // Validate Environment Variables
     const appID = parseInt(process.env.VITE_ZEGOCLOUD_APP_ID, 10);
     const appSign = process.env.VITE_ZEGOCLOUD_APP_SIGN;
 
     if (!appID || !appSign || appSign.length !== 64) {
-      console.error(
-        "Invalid App ID or App Sign. Check your environment variables."
-      );
+      console.error("Invalid App ID or App Sign:", {
+        appID,
+        appSign,
+        appSignLength: appSign.length,
+      });
       return res.status(500).json({ error: "Invalid server configuration." });
     }
 
@@ -70,7 +73,7 @@ app.post("/api/generate-meeting-link", async (req, res) => {
       appID,
       appSign,
       roomName,
-      userID,
+      userID: decodedToken.uid,
       userName,
       expireTimeInSeconds,
     });
@@ -79,7 +82,7 @@ app.post("/api/generate-meeting-link", async (req, res) => {
       appID,
       appSign,
       roomName,
-      userID,
+      decodedToken.uid, // Use Firebase UID
       userName,
       expireTimeInSeconds
     );
@@ -100,7 +103,11 @@ app.post("/api/generate-meeting-link", async (req, res) => {
 
     res.status(200).json({ meetingLink });
   } catch (error) {
-    console.error("Error generating meeting link:", error);
+    console.error("Error generating meeting link:", {
+      message: error.message,
+      stack: error.stack,
+      cause: error.cause,
+    });
     res.status(500).json({ error: "Failed to generate meeting link." });
   }
 });
