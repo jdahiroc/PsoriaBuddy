@@ -45,7 +45,7 @@ function App() {
         <Route path="/d/verify" element={<VerificationPending />} />
 
         {/* Pre-Join Setup Video Meeting Route */}
-        <Route path="/meeting" element={<MeetingPage />} />
+        <Route path="/prejoin" element={<MeetingPage />} />
 
         {/* Prevent access to Login & Signup when authenticated */}
         <Route element={<AuthRedirectRoute />}>

@@ -1,8 +1,14 @@
+// Styles
 import "../styles/patientvideomeet.css";
+// React Hooks
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+// Ant Design Component
 import { message } from "antd";
-import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
+// Sidebar
+import Sidebar from "../pages/Sidebar/DSidebar";
+// Assets
+import croods_keeping from "../assets/videocall/Croods_Keeping_In_Touch.png";
 
 const PatientVideoMeet = () => {
   //  Meeting Link State
@@ -10,17 +16,19 @@ const PatientVideoMeet = () => {
   //  Initialize Navigation
   const navigate = useNavigate();
 
+  //  HandleJoin Function
   const handleJoin = () => {
     if (!meetingLink) {
       message.error("Please enter a meeting link.");
       return;
     }
 
-    navigate(`/meeting?link=${encodeURIComponent(meetingLink)}`);
+    navigate(`/prejoin?link=${encodeURIComponent(meetingLink)}`);
   };
 
   return (
     <div className="patient-videomeet-container">
+      <Sidebar />
       <div className="patient-videomeet-contents">
         <div className="patient-videomeet-header">
           <h2>Video Call</h2>
@@ -43,14 +51,15 @@ const PatientVideoMeet = () => {
                 />
               </div>
               <div className="patient-videomeet-button">
-                <button onClick={handleJoin} disabled={isJoining}>
-                  {isJoining ? "Joining..." : "Join"}
-                </button>
+                <button onClick={handleJoin}>Join</button>
               </div>
             </div>
           </div>
+          {/* Right Section */}
           <div className="patient-videomeet-right-section">
-            <div id="zego-container"></div>
+            <div className="patient-videomeet-img">
+              <img src={croods_keeping} alt="croods_keeping" />
+            </div>
           </div>
         </div>
       </div>
