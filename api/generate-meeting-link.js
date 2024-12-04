@@ -40,8 +40,8 @@ app.post("/api/generate-meeting-link", async (req, res) => {
       console.log("Room Name:", roomName);
       console.log("Decoded Token:", decodedToken);
   
-      const appID = process.env.ZEGOCLOUD_APP_ID;
-      const appSign = process.env.ZEGOCLOUD_APP_SIGN;
+      const appID = process.env.VITE_ZEGOCLOUD_APP_ID;
+      const appSign = process.env.VITE_ZEGOCLOUD_APP_SIGN;
   
       // Generate the token
       const expireTime = Math.floor(Date.now() / 1000) + 3600; // 1 hour
