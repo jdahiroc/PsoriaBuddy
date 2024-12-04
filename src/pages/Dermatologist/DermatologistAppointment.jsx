@@ -182,13 +182,20 @@ const DermatologistAppointment = () => {
         throw new Error("You must be logged in to generate a meeting link.");
       }
 
+      // Retrieve Firebase ID token
       const idToken = await user.getIdToken();
 
+      // Debug token
+      console.log("ID Token:", idToken);
+
+      // API Call
       const response = await axios.post(
-        `https://your-backend.vercel.app/api/generate-meeting-link`,
+        `https://psoria-buddy.vercel.app/api/generate-meeting-link`,
         { roomName: `session-${Date.now()}` },
         {
-          headers: { Authorization: `Bearer ${idToken}` },
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
         }
       );
 
@@ -197,6 +204,7 @@ const DermatologistAppointment = () => {
           ...prev,
           meetingLink: response.data.meetingLink,
         }));
+        console.log("Generated Meeting Link:", response.data.meetingLink);
         message.success("Meeting link generated successfully!");
       } else {
         throw new Error("Invalid response from server");
@@ -204,9 +212,9 @@ const DermatologistAppointment = () => {
     } catch (error) {
       console.error("Error generating meeting link:", error.message);
       if (error.response) {
-        console.error("Backend error response:", error.response.data);
+        console.error("Error response from server:", error.response.data);
       }
-      message.error("Failed to generate meeting link. Please try again.");
+      message.error("Failed to generate meeting link.");
     }
   };
 
