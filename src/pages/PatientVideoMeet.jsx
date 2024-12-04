@@ -41,11 +41,14 @@ const PatientVideoMeet = () => {
       }
 
       // Create ZegoUIKit Prebuilt Room
-      const zp = ZegoUIKitPrebuilt.create({ appID, serverSecret });
+      const zp = ZegoUIKitPrebuilt.create({
+        appID,
+        token, 
+      });
 
       // Join the room
       zp.joinRoom({
-        container: document.getElementById("zego-container"),
+        container: document.getElementById("zego-container"), // The DOM container for the video call UI
         roomID,
         userID: `user-${Date.now()}`,
         userName: `Patient-${Math.floor(Math.random() * 1000)}`,
