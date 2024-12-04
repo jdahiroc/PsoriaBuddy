@@ -123,7 +123,7 @@ const Dermatologistprofile = () => {
       // Save the form data to the Firestore database
       await setDoc(userRef, formData, { merge: true });
       // Show the success message
-      setShowMessage(true);
+      message.success("Profile saved successfully!");
       // Hide the message after 2 seconds
       setTimeout(() => setShowMessage(false), 5000);
     } catch (error) {
@@ -183,11 +183,6 @@ const Dermatologistprofile = () => {
       <div className="dermatologistprofile-container">
         <Sidebar />
         <div className="dermatologistprofile-rightSection">
-          {showMessage && (
-            <div className="save-message">
-              <Alert message="Profile Saved" type="success" showIcon />
-            </div>
-          )}
           <div className="dermatologist-profile-heading">
             <div className="dermatologist-profile-h2">
               <div className="page-profile-text">Profile</div>
