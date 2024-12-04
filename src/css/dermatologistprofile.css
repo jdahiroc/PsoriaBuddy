@@ -158,12 +158,12 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 2em;
+  margin-top: 1em;
   gap: 10px;
 }
 
 .derma-aboutme {
-  padding-right: 1em;
+  padding-left: 3.4em;
 }
 
 .derma-educational-attain {
@@ -173,6 +173,24 @@
 }
 
 .collegeName-field {
+  width: 423px;
+}
+
+.text-field-row10 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-top: 2em;
+  gap: 10px;
+}
+
+.derma-location-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.location-field {
   width: 423px;
 }
 
@@ -311,4 +329,3 @@
   font-weight: 400;
   font-size: 15px;
 }
-

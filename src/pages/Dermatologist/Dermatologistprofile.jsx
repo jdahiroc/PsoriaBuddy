@@ -17,7 +17,7 @@ import FormControl from "@mui/material/FormControl";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 // Ant Design Components
-import { Input, Alert, Skeleton, Modal, Button, message} from "antd";
+import { Input, Alert, Skeleton, Modal, Button, message } from "antd";
 // Sidebar Component
 import Sidebar from "../Sidebar/DSidebar";
 
@@ -102,6 +102,7 @@ const Dermatologistprofile = () => {
     consulationSchedules: "",
     email: "",
     aboutMe: "",
+    location: "",
     collegeSchoolName: "",
     graduateAt: "",
   });
@@ -441,7 +442,8 @@ const Dermatologistprofile = () => {
                   </div>
                 </div>
 
-                <div className="text-field-row3">
+                {/* Dermatologist Location */}
+                <div className="text-field-row10">
                   <div className="derma-aboutme">
                     <div className="derma-aboutme-label">
                       <label
@@ -478,13 +480,12 @@ const Dermatologistprofile = () => {
                       />
                     </div>
                   </div>
-
-                  <div className="derma-educational-attain">
-                    <div className="derma-educational-attainment">
-                      <div className="derma-educational-attainment-label">
+                  <div className="derma-location-container">
+                    <div className="derma-location-contents">
+                      <div className="derma-location-label">
                         <label
-                          htmlFor="education-basic"
-                          className="email-text-field-label"
+                          htmlFor="location-basic"
+                          className="location-text-field-label"
                           style={{
                             fontSize: "16px",
                             fontWeight: "600",
@@ -492,69 +493,105 @@ const Dermatologistprofile = () => {
                             fontFamily: "Inter, sans-serif",
                           }}
                         >
-                          Education Attainment
+                          Location
                         </label>
                       </div>
-                      <div className="derma-educational-attainment-textField">
+                      <div className="derma-location-textField">
                         <TextField
-                          id="collegeSchoolName"
-                          value={formData.collegeSchoolName}
+                          id="location"
+                          value={formData.location}
                           onChange={(e) =>
                             handleInputChange({
                               target: {
-                                id: "collegeSchoolName",
+                                id: "location",
                                 value: e.target.value,
                               },
                             })
                           }
-                          placeholder="University or College Name"
-                          className="collegeName-field"
+                          placeholder="Location"
+                          className="location-field"
                         />
                       </div>
                     </div>
-                    <div className="derma-educational-attainment-years">
-                      <div className="derma-educational-attain-years">
-                        <div className="derma-attain-years-label">
-                          <label
-                            htmlFor="graduate-basic"
-                            className="email-text-field-label"
-                            style={{
-                              fontSize: "16px",
-                              fontWeight: "600",
-                              color: "#393939",
-                              fontFamily: "Inter, sans-serif",
-                            }}
-                          >
-                            Year of Graduation
-                          </label>
+                    <div className="text-field-row3">
+                      {/* Education Attainment */}
+                      <div className="derma-educational-attain">
+                        <div className="derma-educational-attainment">
+                          <div className="derma-educational-attainment-label">
+                            <label
+                              htmlFor="education-basic"
+                              className="email-text-field-label"
+                              style={{
+                                fontSize: "16px",
+                                fontWeight: "600",
+                                color: "#393939",
+                                fontFamily: "Inter, sans-serif",
+                              }}
+                            >
+                              Education Attainment
+                            </label>
+                          </div>
+                          <div className="derma-educational-attainment-textField">
+                            <TextField
+                              id="collegeSchoolName"
+                              value={formData.collegeSchoolName}
+                              onChange={(e) =>
+                                handleInputChange({
+                                  target: {
+                                    id: "collegeSchoolName",
+                                    value: e.target.value,
+                                  },
+                                })
+                              }
+                              placeholder="University or College Name"
+                              className="collegeName-field"
+                            />
+                          </div>
                         </div>
-                        <div className="derma-attain-years-textField">
-                          <TextField
-                            id="graduateAt"
-                            value={formData.graduateAt}
-                            onChange={(e) =>
-                              handleInputChange({
-                                target: {
-                                  id: "graduateAt",
-                                  value: e.target.value,
-                                },
-                              })
-                            }
-                            placeholder="Year of Graduation"
-                            style={{
-                              width: "100%",
-                              minWidth: "253px",
-                              height: "100%",
-                              minHeight: "135px",
-                              paddingLeft: "10px",
-                            }}
-                          />
+                        <div className="derma-educational-attainment-years">
+                          <div className="derma-educational-attain-years">
+                            <div className="derma-attain-years-label">
+                              <label
+                                htmlFor="graduate-basic"
+                                className="email-text-field-label"
+                                style={{
+                                  fontSize: "16px",
+                                  fontWeight: "600",
+                                  color: "#393939",
+                                  fontFamily: "Inter, sans-serif",
+                                }}
+                              >
+                                Year of Graduation
+                              </label>
+                            </div>
+                            <div className="derma-attain-years-textField">
+                              <TextField
+                                id="graduateAt"
+                                value={formData.graduateAt}
+                                onChange={(e) =>
+                                  handleInputChange({
+                                    target: {
+                                      id: "graduateAt",
+                                      value: e.target.value,
+                                    },
+                                  })
+                                }
+                                placeholder="Year of Graduation"
+                                style={{
+                                  width: "100%",
+                                  minWidth: "253px",
+                                  height: "100%",
+                                  minHeight: "135px",
+                                  paddingLeft: "10px",
+                                }}
+                              />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
                 {/* Accounts  */}
                 <div className="text-field-row4">
                   <div className="derma-accounts-container">
