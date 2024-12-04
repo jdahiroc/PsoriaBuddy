@@ -1,5 +1,4 @@
 import "../styles/patientvideomeet.css";
-// React Hooks
 import { useState } from "react";
 import { message } from "antd";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
@@ -11,69 +10,53 @@ const PatientVideoMeet = () => {
   const handleJoin = async () => {
     setIsJoining(true);
     try {
-      if (!meetingLink) {
-        message.error("Please enter a meeting link.");
-        setIsJoining(false);
-        return;
-      }
-
-      // Validate and parse the meeting link
-      let url;
-      try {
-        url = new URL(meetingLink);
-      } catch (err) {
-        message.error("Invalid meeting link. Please provide a valid URL.");
-        setIsJoining(false);
-        return;
-      }
-
+      // Parse meeting link
+      const url = new URL(meetingLink);
       const roomID = url.pathname.split("/")[2];
       const token = url.searchParams.get("access_token");
 
       if (!roomID || !token) {
-        message.error(
-          "The meeting link is invalid. Please ensure it contains both a room ID and access token."
-        );
-        setIsJoining(false);
-        return;
+        throw new Error("Invalid meeting link structure");
       }
 
-      // Retrieve the app ID from environment variables
-      const appID = parseInt(import.meta.env.VITE_ZEGOCLOUD_APP_ID, 10);
+      console.log("Room ID:", roomID);
+      console.log("Token:", token);
 
-      console.log(roomID)
-      console.log(token)
+      // Validate token structure
+      const tokenParts = token.split("-");
+      console.log("Token Parts:", tokenParts);
+      if (tokenParts.length !== 4) {
+        throw new Error("Invalid token format");
+      }
+
+      // Retrieve app ID
+      const appID = parseInt(import.meta.env.VITE_ZEGOCLOUD_APP_ID, 10);
+      console.log("App ID:", appID);
 
       if (!appID) {
-        console.error(
-          "App ID is missing. Ensure VITE_ZEGOCLOUD_APP_ID is set."
-        );
-        message.error("An internal error occurred. Please try again later.");
-        setIsJoining(false);
-        return;
+        throw new Error("Missing App ID");
       }
 
-      // Create ZegoUIKit Prebuilt Room
+      // Initialize ZegoUIKitPrebuilt
       const zp = ZegoUIKitPrebuilt.create({
         appID,
         token,
       });
 
-      // Join the room
       zp.joinRoom({
-        container: document.getElementById("zego-container"), // The DOM container for the video call UI
+        container: document.getElementById("zego-container"),
         roomID,
         userID: `user-${Date.now()}`,
         userName: `Patient-${Math.floor(Math.random() * 1000)}`,
       });
 
-      console.log("Joining meeting:", { appID, roomID, token });
-      setIsJoining(false);
+      console.log("Joining room:", { appID, roomID, token });
     } catch (error) {
-      console.error("Error parsing the meeting link:", error);
+      console.error("Error initializing ZegoUIKitPrebuilt:", error);
       message.error(
-        "An error occurred while joining the meeting. Please try again."
+        "Failed to join the meeting. Please verify the meeting link and try again."
       );
+    } finally {
       setIsJoining(false);
     }
   };
@@ -85,7 +68,6 @@ const PatientVideoMeet = () => {
           <h2>Video Call</h2>
         </div>
         <div className="patient-videomeet">
-          {/* Left Section */}
           <div className="patient-videomeet-left-section">
             <div className="patient-videomeet-left-header">
               <h2>Private and secure video calls for your appointments.</h2>
@@ -98,28 +80,19 @@ const PatientVideoMeet = () => {
                 <input
                   type="text"
                   placeholder="Enter the meeting link"
-                  className="patient-videomeet-input"
-                  id="meetingLink"
                   value={meetingLink}
                   onChange={(e) => setMeetingLink(e.target.value)}
                 />
               </div>
               <div className="patient-videomeet-button">
-                <button
-                  className="patient-videomeet-join-button"
-                  onClick={handleJoin}
-                  disabled={isJoining}
-                >
+                <button onClick={handleJoin} disabled={isJoining}>
                   {isJoining ? "Joining..." : "Join"}
                 </button>
               </div>
             </div>
           </div>
-          {/* Right Section */}
           <div className="patient-videomeet-right-section">
-            <div id="zego-container">
-              {/* The meeting UI will load here */}
-            </div>
+            <div id="zego-container"></div>
           </div>
         </div>
       </div>
