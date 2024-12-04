@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 // Ant Design Component
 import { message } from "antd";
 // Sidebar
-import Sidebar from "../pages/Sidebar/DSidebar";
+import Sidebar from "../pages/Sidebar/Sidebar";
 // Assets
 import croods_keeping from "../assets/videocall/Croods_Keeping_In_Touch.png";
 
