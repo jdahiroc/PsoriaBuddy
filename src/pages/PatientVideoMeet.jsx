@@ -2,7 +2,7 @@ import "../styles/patientvideomeet.css";
 // React Hooks
 import { useState } from "react";
 import { message } from "antd";
-import ZegoUIKitPrebuilt from "@zegocloud/zego-uikit-prebuilt";
+import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 
 const PatientVideoMeet = () => {
   const [meetingLink, setMeetingLink] = useState("");
