@@ -54,23 +54,24 @@ app.post("/api/generate-meeting-link", async (req, res) => {
       return res.status(500).json({ error: "Invalid server configuration." });
     }
 
-    console.log("App ID:", appID);
-    console.log("App Sign is valid.");
-
-    // Token Generation
+    // Generate Token
     const expireTime = Math.floor(Date.now() / 1000) + 3600; // Token valid for 1 hour
     const payload = `${appID}${decodedToken.uid}${roomName}${expireTime}`;
-    console.log("Token Payload:", payload);
-
     const signature = crypto
       .createHmac("sha256", appSign)
       .update(payload)
       .digest("hex");
-    console.log("Token Signature:", signature);
+
+    // Log token components
+    console.log("Token Parts:", {
+      appID,
+      userID: decodedToken.uid,
+      expireTime,
+      signature,
+    });
 
     const userID = encodeURIComponent(decodedToken.uid);
     const token = `${appID}-${userID}-${expireTime}-${signature}`;
-    console.log("Generated Token:", token);
 
     if (!token) {
       console.error("Failed to generate a valid token.");
