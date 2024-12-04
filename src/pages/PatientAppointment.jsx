@@ -373,13 +373,29 @@ const PatientAppointment = () => {
                       </div>
                     </div>
                   </div>
+                  <div className="viewProfile-derma-location">
+                    <div className="viewProfile-derma-location-header">
+                      <h4>Location</h4>
+                      <div className="viewprofile-derma-location-description">
+                        <p>
+                          {selectedDermatologist
+                            ? selectedDermatologist.location
+                            : ""}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                   <div className="viewprofile-derma-education">
                     <div className="viewprofile-derma-education-header">
                       <h4>Education</h4>
                       <div className="viewprofile-derma-education-description">
                         <p>
                           {selectedDermatologist
-                            ? selectedDermatologist.education
+                            ? selectedDermatologist.collegeSchoolName
+                            : ""}{" "}
+                          ,{" "}
+                          {selectedDermatologist
+                            ? selectedDermatologist.graduateAt
                             : ""}
                         </p>
                       </div>

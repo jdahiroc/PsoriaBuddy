@@ -254,6 +254,20 @@
   opacity: 82%;
 }
 
+.viewprofile-derma-location-description {
+  display: flex;
+  gap: 3em;
+  margin-bottom: 1em;
+}
+
+.viewprofile-derma-location-description p {
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #121212;
+  opacity: 82%;
+}
+
 .viewprofile-services-offer-header {
   margin-bottom: 0.5em;
 }
@@ -504,7 +518,7 @@
 
 /* Patient Status */
 .newappoint-patient-status-header {
-  margin-top: .3em;
+  margin-top: 0.3em;
   margin-bottom: 0.3em;
 }
 
