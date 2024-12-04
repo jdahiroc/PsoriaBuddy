@@ -1,29 +1,71 @@
 import "../styles/patientvideomeet.css";
 // React Hooks
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import Sidebar from "../pages/Sidebar/Sidebar";
-
-// Assets
-import croods_keeping from "../assets/videocall/Croods_Keeping_In_Touch.png";
+import { message } from "antd";
+import ZegoUIKitPrebuilt from "@zegocloud/zego-uikit-prebuilt";
 
 const PatientVideoMeet = () => {
   const [meetingLink, setMeetingLink] = useState("");
+  const [isJoining, setIsJoining] = useState(false);
 
   const handleJoin = () => {
-    if (meetingLink.startsWith("wss://")) {
-      const encodedLink = encodeURIComponent(meetingLink);
-      navigate(`/videocall?link=${encodedLink}`);
-    } else {
-      alert("Invalid meeting link. Please provide a valid WebSocket link.");
+    //  Start loading
+    setIsJoining(true);
+    try {
+      if (!meetingLink) {
+        message.error("Please enter a meeting link.");
+        return;
+      }
+
+      const url = new URL(meetingLink);
+      const roomID = url.pathname.split("/")[2];
+      const token = url.searchParams.get("access_token");
+
+      if (!roomID || !token) {
+        message.error(
+          "The meeting link is invalid. Please check and try again."
+        );
+        return;
+      }
+
+      // Initialize Zego Prebuilt UI
+      const appID = parseInt(process.env.REACT_APP_ZEGOCLOUD_APP_ID);
+
+      if (!appID) {
+        console.error(
+          "App ID is missing. Ensure REACT_APP_ZEGOCLOUD_APP_ID is set."
+        );
+        message.error("An internal error occurred. Please try again later.");
+        return;
+      }
+
+      const zp = ZegoUIKitPrebuilt.create(appID, token);
+      zp.joinRoom({
+        roomID,
+        userID: `user-${Date.now()}`,
+        userName: `Patient-${Math.floor(Math.random() * 1000)}`,
+        container: document.getElementById("zego-container"), // Where the UI will load
+      });
+
+      //  Stop loading
+      setIsJoining(false);
+      console.log("Joining meeting:", { roomID, token });
+      console.log("App ID:", appID);
+      console.log("Room ID:", roomID);
+      console.log("Token:", token);
+    } catch (error) {
+      //  Stop loading
+      setIsJoining(false);
+      console.error("Error parsing the meeting link:", error);
+      message.error(
+        "Invalid meeting link format. Ensure it starts with https://zegocloud.com/..."
+      );
     }
   };
 
   return (
     <>
       <div className="patient-videomeet-container">
-        <Sidebar />
         <div className="patient-videomeet-contents">
           <div className="patient-videomeet-header">
             <h2>Video Call</h2>
@@ -31,19 +73,17 @@ const PatientVideoMeet = () => {
           <div className="patient-videomeet">
             {/* Left Section */}
             <div className="patient-videomeet-left-section">
-              {/* Header */}
               <div className="patient-videomeet-left-header">
                 <h2>Private and secure video calls for your appointments.</h2>
               </div>
               <div className="patient-videomeet-left-subheader">
                 <h4>Connect with our dermatologist using PsoriaBuddy</h4>
               </div>
-              {/* Input & Join Button  */}
               <div className="patient-videomeet-input-join-button-container">
                 <div className="patient-videomeet-input">
                   <input
                     type="text"
-                    placeholder="Enter the meeting code or link"
+                    placeholder="Enter the meeting link"
                     className="patient-videomeet-input"
                     id="meetingLink"
                     value={meetingLink}
@@ -54,16 +94,17 @@ const PatientVideoMeet = () => {
                   <button
                     className="patient-videomeet-join-button"
                     onClick={handleJoin}
+                    disabled={isJoining}
                   >
-                    Join
+                    {isJoining ? "Joining..." : "Join"}
                   </button>
                 </div>
               </div>
             </div>
             {/* Right Section */}
             <div className="patient-videomeet-right-section">
-              <div className="patient-videomeet-img">
-                <img src={croods_keeping} alt="croods_keeping" />
+              <div id="zego-container">
+                {/* The meeting UI will load here */}
               </div>
             </div>
           </div>
