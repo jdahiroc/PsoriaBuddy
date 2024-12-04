@@ -8,7 +8,7 @@ const PatientVideoMeet = () => {
   const [meetingLink, setMeetingLink] = useState("");
   const [isJoining, setIsJoining] = useState(false);
 
-  const handleJoin = () => {
+  const handleJoin = async () => {
     setIsJoining(true);
     try {
       if (!meetingLink) {
@@ -29,8 +29,7 @@ const PatientVideoMeet = () => {
         return;
       }
 
-      // Initialize Zego Prebuilt UI
-      const appID = parseInt(import.meta.env.VITE_ZEGOCLOUD_APP_ID);
+      const appID = parseInt(import.meta.env.VITE_ZEGOCLOUD_APP_ID, 10);
 
       if (!appID) {
         console.error(
@@ -41,19 +40,18 @@ const PatientVideoMeet = () => {
         return;
       }
 
-      const zp = ZegoUIKitPrebuilt.createEngine({
-        appID,
-        serverSecret: token, // Use serverSecret or token as required
-      });
+      // Create ZegoUIKit Prebuilt Room
+      const zp = ZegoUIKitPrebuilt.create(token);
 
+      // Join the room
       zp.joinRoom({
+        container: document.getElementById("zego-container"),
         roomID,
         userID: `user-${Date.now()}`,
         userName: `Patient-${Math.floor(Math.random() * 1000)}`,
-        container: document.getElementById("zego-container"), // Where the UI will load
       });
 
-      console.log("Joining meeting:", { roomID, token });
+      console.log("Joining meeting:", { appID, roomID, token });
       setIsJoining(false);
     } catch (error) {
       console.error("Error parsing the meeting link:", error);
