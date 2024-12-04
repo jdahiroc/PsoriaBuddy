@@ -41,6 +41,9 @@ const PatientVideoMeet = () => {
       // Retrieve the app ID from environment variables
       const appID = parseInt(import.meta.env.VITE_ZEGOCLOUD_APP_ID, 10);
 
+      console.log(roomID)
+      console.log(token)
+
       if (!appID) {
         console.error(
           "App ID is missing. Ensure VITE_ZEGOCLOUD_APP_ID is set."
@@ -53,7 +56,7 @@ const PatientVideoMeet = () => {
       // Create ZegoUIKit Prebuilt Room
       const zp = ZegoUIKitPrebuilt.create({
         appID,
-        token, // Use the token from the meeting link
+        token,
       });
 
       // Join the room
