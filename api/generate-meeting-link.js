@@ -1,4 +1,3 @@
-import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
 import admin from "firebase-admin";
@@ -16,30 +15,17 @@ if (!admin.apps.length) {
         privateKey: process.env.VITE_FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
       }),
     });
-    console.log("Env Variables Loaded:", {
-      projectId: process.env.VITE_FIREBASE_PROJECT_ID,
-      clientEmail: process.env.VITE_FIREBASE_CLIENT_EMAIL,
-      appID: process.env.VITE_ZEGOCLOUD_APP_ID,
-      appSign: process.env.VITE_ZEGOCLOUD_APP_SIGN,
-    });
-
     console.log("Firebase Admin initialized successfully.");
-  } catch (firebaseError) {
-    console.error("Error initializing Firebase Admin:", firebaseError);
+  } catch (error) {
+    console.error("Error initializing Firebase Admin:", error.message);
+    process.exit(1); // Stop the server if Firebase fails to initialize
   }
 }
 
 const app = express();
-
-// Allow requests from specific origin
-const corsOptions = {
-  origin: "https://psoria-buddy.vercel.app",
-};
-
-app.use(cors(corsOptions));
 app.use(express.json());
 
-// Your API endpoints
+// API for generating a ZegoCloud token and meeting link
 app.post("/api/generate-meeting-link", async (req, res) => {
   try {
     const { roomName } = req.body;
@@ -47,21 +33,16 @@ app.post("/api/generate-meeting-link", async (req, res) => {
 
     // Validate Authorization Header
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      console.error("Missing or invalid Authorization header.");
       return res.status(401).json({ error: "Unauthorized: Missing token" });
     }
 
     const idToken = authHeader.split("Bearer ")[1];
-
-    try {
-      const decodedToken = await admin.auth().verifyIdToken(idToken);
-      console.log("Decoded Token:", decodedToken);
-    } catch (error) {
-      console.error("Error verifying ID token:", error.message);
-      return res.status(401).json({ error: "Invalid or expired ID token" });
-    }
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
 
     // Validate Room Name
     if (!roomName || typeof roomName !== "string" || roomName.trim() === "") {
+      console.error("Invalid room name provided.");
       return res
         .status(400)
         .json({ error: "Room name is required and must be a valid string." });
@@ -75,25 +56,24 @@ app.post("/api/generate-meeting-link", async (req, res) => {
     const appSign = process.env.VITE_ZEGOCLOUD_APP_SIGN;
 
     if (!appID || !appSign || appSign.length !== 64) {
-      console.error(
-        "Invalid App ID or App Sign. Check your environment variables."
-      );
+      console.error("Invalid App ID or App Sign configuration.");
       return res.status(500).json({ error: "Invalid server configuration." });
     }
 
-    console.log("App ID and App Sign validated.");
+    console.log("App ID and App Sign validated successfully.");
 
-    // Generate Kit Token
+    // Generate ZegoCloud Kit Token
     const userID = decodedToken.uid;
     const userName = `User-${Math.floor(Math.random() * 1000)}`;
     const expireTimeInSeconds = Math.floor(Date.now() / 1000) + 3600;
 
-    console.log("Zego Token Inputs:", {
+    console.log("Token Generation Inputs:", {
       appID,
       appSign,
       roomName,
-      userID: decodedToken.uid,
-      userName: `User-${Math.floor(Math.random() * 1000)}`,
+      userID,
+      userName,
+      expireTimeInSeconds,
     });
 
     const kitToken = ZegoServerAssistant.generateKitTokenForProduction(
@@ -117,11 +97,11 @@ app.post("/api/generate-meeting-link", async (req, res) => {
     // Generate Meeting Link
     const safeRoomName = encodeURIComponent(roomName.trim());
     const meetingLink = `https://zegocloud.com/meeting/${safeRoomName}?access_token=${kitToken}`;
+    console.log("Generated Meeting Link:", meetingLink);
 
     res.status(200).json({ meetingLink });
-    console.log("Meeting link successfully sent to frontend:", meetingLink);
   } catch (error) {
-    console.error("Error generating meeting link:", error);
+    console.error("Error in generate-meeting-link route:", error.message);
     res.status(500).json({ error: "Failed to generate meeting link." });
   }
 });
