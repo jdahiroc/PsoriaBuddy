@@ -10,7 +10,7 @@ if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
       projectId: process.env.VITE_FIREBASE_PROJECT_ID,
-      clientEmail: process.env.VITE_FIREBASE_CLIENT_EMAIL,
+      clientEmail: process.env.VITE_FIREBASE_PROJECT_ID,
       privateKey: process.env.VITE_FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
     }),
   });
@@ -19,12 +19,13 @@ if (!admin.apps.length) {
 const app = express();
 app.use(express.json());
 
-// API for generating a Zegocloud token and meeting link
+// API for generating a ZegoCloud token and meeting link
 app.post("/api/generate-meeting-link", async (req, res) => {
   try {
     const { roomName } = req.body;
     const authHeader = req.headers.authorization;
 
+    // Validate Authorization Header
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ error: "Unauthorized: Missing token" });
     }
@@ -32,6 +33,7 @@ app.post("/api/generate-meeting-link", async (req, res) => {
     const idToken = authHeader.split("Bearer ")[1];
     const decodedToken = await admin.auth().verifyIdToken(idToken);
 
+    // Validate Room Name
     if (!roomName || typeof roomName !== "string" || roomName.trim() === "") {
       return res
         .status(400)
@@ -41,22 +43,22 @@ app.post("/api/generate-meeting-link", async (req, res) => {
     console.log("Room Name:", roomName);
     console.log("Decoded Token:", decodedToken);
 
-    const appID = process.env.VITE_ZEGOCLOUD_APP_ID;
+    // Validate Environment Variables
+    const appID = parseInt(process.env.VITE_ZEGOCLOUD_APP_ID, 10);
     const appSign = process.env.VITE_ZEGOCLOUD_APP_SIGN;
 
-    if (!appID || !appSign) {
-      console.error("Missing App ID or App Sign. Check environment variables.");
-      return res.status(500).json({ error: "Server configuration error." });
+    if (!appID || !appSign || appSign.length !== 64) {
+      console.error(
+        "Invalid App ID or App Sign. Check your environment variables."
+      );
+      return res.status(500).json({ error: "Invalid server configuration." });
     }
 
-    console.log("Token Components:", {
-      appID,
-      userID: decodedToken.uid,
-      expireTime,
-      signature,
-    });
+    console.log("App ID:", appID);
+    console.log("App Sign is valid.");
 
-    const expireTime = Math.floor(Date.now() / 1000) + 3600;
+    // Token Generation
+    const expireTime = Math.floor(Date.now() / 1000) + 3600; // Token valid for 1 hour
     const payload = `${appID}${decodedToken.uid}${roomName}${expireTime}`;
     console.log("Token Payload:", payload);
 
@@ -77,10 +79,12 @@ app.post("/api/generate-meeting-link", async (req, res) => {
         .json({ error: "Failed to generate a valid meeting token." });
     }
 
+    // Generate Meeting Link
     const safeRoomName = encodeURIComponent(roomName.trim());
     const meetingLink = `https://zegocloud.com/meeting/${safeRoomName}?access_token=${token}`;
     console.log("Generated Meeting Link:", meetingLink);
 
+    // Respond with Meeting Link
     res.status(200).json({ meetingLink });
   } catch (error) {
     console.error("Error generating meeting link:", error.message);
