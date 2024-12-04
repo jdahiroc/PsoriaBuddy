@@ -16,6 +16,13 @@ if (!admin.apps.length) {
         privateKey: process.env.VITE_FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
       }),
     });
+    console.log("Env Variables Loaded:", {
+      projectId: process.env.VITE_FIREBASE_PROJECT_ID,
+      clientEmail: process.env.VITE_FIREBASE_CLIENT_EMAIL,
+      appID: process.env.VITE_ZEGOCLOUD_APP_ID,
+      appSign: process.env.VITE_ZEGOCLOUD_APP_SIGN,
+    });
+
     console.log("Firebase Admin initialized successfully.");
   } catch (firebaseError) {
     console.error("Error initializing Firebase Admin:", firebaseError);
@@ -44,7 +51,14 @@ app.post("/api/generate-meeting-link", async (req, res) => {
     }
 
     const idToken = authHeader.split("Bearer ")[1];
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
+
+    try {
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
+      console.log("Decoded Token:", decodedToken);
+    } catch (error) {
+      console.error("Error verifying ID token:", error.message);
+      return res.status(401).json({ error: "Invalid or expired ID token" });
+    }
 
     // Validate Room Name
     if (!roomName || typeof roomName !== "string" || roomName.trim() === "") {
@@ -74,13 +88,12 @@ app.post("/api/generate-meeting-link", async (req, res) => {
     const userName = `User-${Math.floor(Math.random() * 1000)}`;
     const expireTimeInSeconds = Math.floor(Date.now() / 1000) + 3600;
 
-    console.log("Token Generation Inputs:", {
+    console.log("Zego Token Inputs:", {
       appID,
       appSign,
       roomName,
-      userID,
-      userName,
-      expireTimeInSeconds,
+      userID: decodedToken.uid,
+      userName: `User-${Math.floor(Math.random() * 1000)}`,
     });
 
     const kitToken = ZegoServerAssistant.generateKitTokenForProduction(
@@ -104,9 +117,9 @@ app.post("/api/generate-meeting-link", async (req, res) => {
     // Generate Meeting Link
     const safeRoomName = encodeURIComponent(roomName.trim());
     const meetingLink = `https://zegocloud.com/meeting/${safeRoomName}?access_token=${kitToken}`;
-    console.log("Generated Meeting Link:", meetingLink);
 
     res.status(200).json({ meetingLink });
+    console.log("Meeting link successfully sent to frontend:", meetingLink);
   } catch (error) {
     console.error("Error generating meeting link:", error);
     res.status(500).json({ error: "Failed to generate meeting link." });
