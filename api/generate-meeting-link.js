@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import admin from "firebase-admin";
-import ZegoServerAssistant from "zego-server-assistant"; // Import ZegoServerAssistant
+import ZegoServerAssistant from "zego-server-assistant";
 
 dotenv.config();
 
@@ -17,7 +17,6 @@ if (!admin.apps.length) {
 }
 
 const app = express();
-
 app.use(express.json());
 
 // API for generating a ZegoCloud token and meeting link
@@ -48,16 +47,16 @@ app.post("/api/generate-meeting-link", async (req, res) => {
     const appID = parseInt(process.env.VITE_ZEGOCLOUD_APP_ID, 10);
     const appSign = process.env.VITE_ZEGOCLOUD_APP_SIGN;
 
-    if (!appID || !appSign || appSign.length !== 64) {
-      console.error(
-        "Invalid App ID or App Sign. Check your environment variables."
-      );
+    if (!appID || !appSign) {
+      console.error("Invalid App ID or App Sign. Check your environment variables.");
       return res.status(500).json({ error: "Invalid server configuration." });
     }
 
+    console.log("App ID:", appID);
+
     // Use ZegoServerAssistant to generate a secure kit token
-    const userID = decodedToken.uid;
-    const userName = `User-${Math.floor(Math.random() * 1000)}`;
+    const userID = decodedToken.uid; // Use Firebase UID as userID
+    const userName = `User-${Math.floor(Math.random() * 1000)}`; // Example: Generate a random userName
     const expireTimeInSeconds = Math.floor(Date.now() / 1000) + 3600; // Token valid for 1 hour
 
     const kitToken = ZegoServerAssistant.generateKitTokenForProduction(
