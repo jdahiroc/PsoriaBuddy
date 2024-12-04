@@ -15,6 +15,7 @@ if (!admin.apps.length) {
         privateKey: process.env.VITE_FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
       }),
     });
+    console.log("Firebase Admin initialized successfully.");
   } catch (firebaseError) {
     console.error("Error initializing Firebase Admin:", firebaseError);
   }
@@ -58,10 +59,21 @@ app.post("/api/generate-meeting-link", async (req, res) => {
       return res.status(500).json({ error: "Invalid server configuration." });
     }
 
-    // Use ZegoServerAssistant to generate a secure kit token
-    const userID = decodedToken.uid; // Use Firebase UID as userID
-    const userName = `User-${Math.floor(Math.random() * 1000)}`; // Example: Generate a random userName
-    const expireTimeInSeconds = Math.floor(Date.now() / 1000) + 3600; // Token valid for 1 hour
+    console.log("App ID and App Sign validated.");
+
+    // Generate Kit Token
+    const userID = decodedToken.uid;
+    const userName = `User-${Math.floor(Math.random() * 1000)}`;
+    const expireTimeInSeconds = Math.floor(Date.now() / 1000) + 3600;
+
+    console.log("Token Generation Inputs:", {
+      appID,
+      appSign,
+      roomName,
+      userID,
+      userName,
+      expireTimeInSeconds,
+    });
 
     const kitToken = ZegoServerAssistant.generateKitTokenForProduction(
       appID,
@@ -79,15 +91,16 @@ app.post("/api/generate-meeting-link", async (req, res) => {
         .json({ error: "Failed to generate a valid meeting token." });
     }
 
+    console.log("Kit Token generated successfully:", kitToken);
+
     // Generate Meeting Link
     const safeRoomName = encodeURIComponent(roomName.trim());
     const meetingLink = `https://zegocloud.com/meeting/${safeRoomName}?access_token=${kitToken}`;
     console.log("Generated Meeting Link:", meetingLink);
 
-    // Respond with Meeting Link
     res.status(200).json({ meetingLink });
   } catch (error) {
-    console.error("Error generating meeting link:", error.message);
+    console.error("Error generating meeting link:", error);
     res.status(500).json({ error: "Failed to generate meeting link." });
   }
 });
