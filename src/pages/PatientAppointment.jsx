@@ -46,6 +46,7 @@ const PatientAppointment = () => {
   const [viewProfileModal, setViewProfileModal] = useState(false);
   const [appointmentModal, setAppointmentModal] = useState(false);
   const [selectedDermatologist, setSelectedDermatologist] = useState(null);
+  const [filterBy, setFilterBy] = useState("All");
 
   // Dermatology Profile Data
   const [patientStatus, setPatientStatus] = useState(1);
@@ -89,6 +90,53 @@ const PatientAppointment = () => {
 
     return () => unsubscribe();
   }, []);
+
+  const fetchDermatologists = async (filter) => {
+    setSpinning(true);
+
+    try {
+      let dermatologistQuery;
+
+      if (filter === "By Location") {
+        // Fetch dermatologists with a non-empty location
+        dermatologistQuery = query(
+          collection(db, "users"),
+          where("userType", "==", "Dermatologist"),
+          where("isVerified", "==", true),
+          where("location", "!=", "") // Avoids empty locations
+        );
+      } else if (filter === "All") {
+        // Fetch all verified dermatologists regardless of location
+        dermatologistQuery = query(
+          collection(db, "users"),
+          where("userType", "==", "Dermatologist"),
+          where("isVerified", "==", true)
+        );
+      }
+
+      const querySnapshot = await getDocs(dermatologistQuery);
+      const fetchedData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setDermatologistData(fetchedData); // Update state with fetched data
+    } catch (error) {
+      console.error("Error fetching dermatologists:", error);
+    } finally {
+      setSpinning(false);
+    }
+  };
+
+  //  Display all dermatologist that has location
+  useEffect(() => {
+    fetchDermatologists(filterBy); // Fetch data based on the selected filter
+  }, [filterBy]);
+
+  //  Handle Filter Change value
+  const handleFilterChange = (value) => {
+    setFilterBy(value); // Update filter value
+  };
 
   // Function to reset all forms
   const resetForms = () => {
@@ -875,16 +923,14 @@ const PatientAppointment = () => {
                   <div className="appointment-filter-label">
                     <p>Filters</p>
                   </div>
-                  {/* Select Filter to show dermatologist 
-                based on the selection */}
                   <div className="appointment-filter-button">
                     <Select
                       defaultValue="All"
-                      style={{ width: 120, borderColor: "#393939" }}
-                      // onChange={handleChange}
+                      style={{ width: 150 }}
+                      onChange={handleFilterChange}
                       options={[
                         { value: "All", label: "All" },
-                        { value: "location", label: "By Location" },
+                        { value: "By Location", label: "By Location" },
                       ]}
                     />
                   </div>
