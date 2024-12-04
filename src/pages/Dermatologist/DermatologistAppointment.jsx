@@ -174,6 +174,7 @@ const DermatologistAppointment = () => {
 
   // Handles Create Meeting Link
   const handleCreateMeetingLink = async () => {
+    setIsGeneratingLink(true); // Start loading state
     try {
       const auth = getAuth();
       const user = auth.currentUser;
@@ -182,11 +183,20 @@ const DermatologistAppointment = () => {
         throw new Error("You must be logged in to generate a meeting link.");
       }
 
+      // Fetch the user's ID token
       const idToken = await user.getIdToken();
 
+      // Log the token for debugging (remove in production)
+      console.log("ID Token:", idToken);
+
+      // Generate a unique room name
+      const roomName = `session-${Date.now()}`;
+      console.log("Room Name:", roomName);
+
+      // Send POST request to backend API
       const response = await axios.post(
         `https://psoria-buddy.vercel.app/api/generate-meeting-link`,
-        { roomName: `session-${Date.now()}` },
+        { roomName },
         {
           headers: {
             Authorization: `Bearer ${idToken}`,
@@ -194,6 +204,7 @@ const DermatologistAppointment = () => {
         }
       );
 
+      // Check the response
       if (response.data && response.data.meetingLink) {
         setFormData((prev) => ({
           ...prev,
@@ -202,11 +213,14 @@ const DermatologistAppointment = () => {
         console.log("Generated Meeting Link:", response.data.meetingLink);
         message.success("Meeting link generated successfully!");
       } else {
-        throw new Error("Invalid response from server");
+        console.error("Unexpected response:", response.data);
+        throw new Error("Invalid response from the server.");
       }
     } catch (error) {
       console.error("Error generating meeting link:", error);
       message.error("Failed to generate meeting link.");
+    } finally {
+      setIsGeneratingLink(false); // Stop loading state
     }
   };
 
