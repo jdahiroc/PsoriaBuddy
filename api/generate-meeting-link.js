@@ -47,18 +47,16 @@ app.post("/api/generate-meeting-link", async (req, res) => {
     }
 
     console.log("Room Name:", roomName);
-    console.log("Decoded Firebase Token:", decodedToken);
+    console.log("Decoded Token:", decodedToken);
 
     // Validate Environment Variables
     const appID = parseInt(process.env.VITE_ZEGOCLOUD_APP_ID, 10);
     const appSign = process.env.VITE_ZEGOCLOUD_APP_SIGN;
 
     if (!appID || !appSign || appSign.length !== 64) {
-      console.error("Invalid App ID or App Sign:", {
-        appID,
-        appSign,
-        appSignLength: appSign.length,
-      });
+      console.error(
+        "Invalid App ID or App Sign. Check your environment variables."
+      );
       return res.status(500).json({ error: "Invalid server configuration." });
     }
 
@@ -73,7 +71,7 @@ app.post("/api/generate-meeting-link", async (req, res) => {
       appID,
       appSign,
       roomName,
-      userID: decodedToken.uid,
+      userID,
       userName,
       expireTimeInSeconds,
     });
@@ -82,7 +80,7 @@ app.post("/api/generate-meeting-link", async (req, res) => {
       appID,
       appSign,
       roomName,
-      decodedToken.uid, // Use Firebase UID
+      userID,
       userName,
       expireTimeInSeconds
     );
@@ -103,12 +101,11 @@ app.post("/api/generate-meeting-link", async (req, res) => {
 
     res.status(200).json({ meetingLink });
   } catch (error) {
-    console.error("Error generating meeting link:", {
-      message: error.message,
-      stack: error.stack,
-      cause: error.cause,
+    console.error("Error generating meeting link:", error);
+    res.status(500).json({
+      error: "Failed to generate meeting link.",
+      details: error.message, // Include error details in the response for debugging
     });
-    res.status(500).json({ error: "Failed to generate meeting link." });
   }
 });
 
