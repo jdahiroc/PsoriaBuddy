@@ -17,6 +17,10 @@ if (!admin.apps.length) {
 }
 
 const app = express();
+
+const cors = require("cors");
+app.use(cors({ origin: "https://psoria-buddy.vercel.app" }));
+
 app.use(express.json());
 
 // API for generating a ZegoCloud token and meeting link
@@ -55,7 +59,7 @@ app.post("/api/generate-meeting-link", async (req, res) => {
     }
 
     // Use ZegoServerAssistant to generate a secure kit token
-    const userID = decodedToken.uid; 
+    const userID = decodedToken.uid;
     const userName = `User-${Math.floor(Math.random() * 1000)}`;
     const expireTimeInSeconds = Math.floor(Date.now() / 1000) + 3600; // Token valid for 1 hour
 
