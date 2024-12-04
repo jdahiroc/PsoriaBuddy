@@ -29,12 +29,10 @@ const PatientVideoMeet = () => {
       }
 
       // Initialize Zego Prebuilt UI
-      const appID = parseInt(process.env.REACT_APP_ZEGOCLOUD_APP_ID);
+      const appID = parseInt(import.meta.env.ZEGOCLOUD_APP_ID);
 
       if (!appID) {
-        console.error(
-          "App ID is missing. Ensure REACT_APP_ZEGOCLOUD_APP_ID is set."
-        );
+        console.error("App ID is missing. Ensure ZEGOCLOUD_APP_ID is set.");
         message.error("An internal error occurred. Please try again later.");
         return;
       }
