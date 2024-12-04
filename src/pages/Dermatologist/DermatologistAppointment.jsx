@@ -199,7 +199,7 @@ const DermatologistAppointment = () => {
       // API Call
       const response = await axios.post(
         `https://psoria-buddy.vercel.app/api/generate-meeting-link`,
-        { roomName },
+        { roomName: `session-${Date.now()}` },
         {
           headers: {
             Authorization: `Bearer ${idToken}`,
@@ -215,12 +215,12 @@ const DermatologistAppointment = () => {
         console.log("Generated Meeting Link:", response.data.meetingLink);
         message.success("Meeting link generated successfully!");
       } else {
-        throw new Error("Invalid response from server.");
+        throw new Error("Invalid response from server");
       }
     } catch (error) {
       console.error("Error generating meeting link:", error.message);
       if (error.response) {
-        console.error("Error response from server:", error.response.data);
+        console.error("Error response from backend:", error.response.data);
       }
       message.error("Failed to generate meeting link.");
     }
