@@ -1,31 +1,42 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 
 const PreJoinSetup = () => {
   const [searchParams] = useSearchParams();
   const meetingLink = searchParams.get("link");
+  const isJoined = useRef(false); // Ensure `joinRoom` is only called once
 
   useEffect(() => {
-    if (!meetingLink) return;
+    if (!meetingLink || isJoined.current) return;
 
-    const url = new URL(meetingLink);
-    const roomID = url.pathname.split("/")[2];
-    const token = url.searchParams.get("access_token");
+    try {
+      const url = new URL(meetingLink);
+      const roomID = url.pathname.split("/")[2];
+      const token = url.searchParams.get("access_token");
 
-    const zp = ZegoUIKitPrebuilt.create(token);
-    zp.joinRoom({
-      container: document.getElementById("zego-container"),
-      roomID,
-      userID: `user-${Date.now()}`,
-      userName: `Patient-${Math.floor(Math.random() * 1000)}`,
-    });
+      if (!roomID || !token) {
+        console.error("Invalid meeting link or missing token.");
+        return;
+      }
+
+      const kitToken = token; // Use the token directly if it's pre-generated
+      const zp = ZegoUIKitPrebuilt.create(kitToken);
+
+      isJoined.current = true; // Prevent multiple calls to joinRoom
+      zp.joinRoom({
+        container: document.getElementById("zego-container"),
+        scenario: {
+          mode: ZegoUIKitPrebuilt.VideoConference,
+        },
+      });
+    } catch (error) {
+      console.error("Error during joinRoom:", error);
+    }
   }, [meetingLink]);
 
   return (
-    <div id="zego-container" style={{ width: "100vw", height: "100vh" }}>
-      {/* The Zego pre-join UI will render here */}
-    </div>
+    <div id="zego-container" style={{ width: "100vw", height: "100vh" }} />
   );
 };
 
