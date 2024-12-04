@@ -20,10 +20,16 @@ const PreJoinSetup = () => {
         return;
       }
 
-      const kitToken = token; // Use the token directly if it's pre-generated
-      const zp = ZegoUIKitPrebuilt.create(kitToken);
+      console.log("Room ID:", roomID);
+      console.log("Token (kitToken):", token);
 
-      isJoined.current = true; // Prevent multiple calls to joinRoom
+      // Create ZegoUIKitPrebuilt instance
+      const zp = ZegoUIKitPrebuilt.create(token);
+
+      // Mark as joined to prevent re-joining
+      isJoined.current = true;
+
+      // Join the room
       zp.joinRoom({
         container: document.getElementById("zego-container"),
         scenario: {
