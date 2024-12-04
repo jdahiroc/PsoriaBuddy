@@ -8,7 +8,8 @@ import AuthRedirectRoute from "./pages/ProtectedRoute/AuthRedirectRoute";
 // Homepage
 import Homepage from "./pages/Homepage";
 // Meeting Page for Livekit
-import MeetingPage from "./pages/MeetingPage";
+import MeetingPage from "./pages/PreJoinSetup";
+
 // Patient Routes
 import GettingStarted from "./pages/GettingStarted";
 import PatientProfile from "./pages/PatientProfile";
@@ -43,7 +44,7 @@ function App() {
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/d/verify" element={<VerificationPending />} />
 
-        {/* Meeting Page Route */}
+        {/* Pre-Join Setup Video Meeting Route */}
         <Route path="/meeting" element={<MeetingPage />} />
 
         {/* Prevent access to Login & Signup when authenticated */}
