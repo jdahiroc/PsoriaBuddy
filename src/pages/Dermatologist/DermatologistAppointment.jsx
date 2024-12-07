@@ -404,6 +404,7 @@ const DermatologistAppointment = () => {
                 <button
                   onClick={handleCreateMeetingLink}
                   disabled={isGeneratingLink || formData.meetingLink}
+                  style={{}}
                 >
                   {isGeneratingLink
                     ? "Creating..."
