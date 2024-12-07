@@ -13,9 +13,12 @@ if (!admin.apps.length) {
   try {
     admin.initializeApp({
       credential: admin.credential.cert({
-        projectId: process.env.VITE_FIREBASE_PROJECT_ID,
-        clientEmail: process.env.VITE_FIREBASE_CLIENT_EMAIL,
-        privateKey: process.env.VITE_FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+        projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+        clientEmail: import.meta.env.VITE_FIREBASE_CLIENT_EMAIL,
+        privateKey: import.meta.env.VITE_FIREBASE_PRIVATE_KEY.replace(
+          /\\n/g,
+          "\n"
+        ),
       }),
     });
   } catch (error) {
@@ -41,8 +44,8 @@ app.post("/api/generate-meeting-link", async (req, res) => {
       return res.status(400).json({ error: "Room name is required." });
     }
 
-    const appID = parseInt(process.env.VITE_ZEGOCLOUD_APP_ID, 10);
-    const serverSecret = process.env.VITE_ZEGOCLOUD_APP_SIGN;
+    const appID = parseInt(import.meta.env.VITE_ZEGOCLOUD_APP_ID, 10);
+    const serverSecret = import.meta.env.VITE_ZEGOCLOUD_APP_SIGN;
 
     if (!appID || !serverSecret) {
       return res.status(500).json({ error: "Server misconfiguration." });
