@@ -32,8 +32,7 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../../../firebaseConfig";
-// Firebase Functions
-import { getFunctions, httpsCallable } from "firebase/functions";
+
 // EmailJS
 import emailjs from "emailjs-com";
 
