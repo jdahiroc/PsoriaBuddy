@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import admin from "firebase-admin";
-import { generateToken04 } from "../api/zegoServerAssistant"; 
+import { generateToken04 } from "../api/zegoServerAssistant";
 
 dotenv.config();
 
@@ -67,6 +67,11 @@ app.post("/api/generate-meeting-link", async (req, res) => {
         stream_id_list: [],
       })
     );
+
+    console.log("App ID:", appID);
+    console.log("Server Secret:", serverSecret);
+    console.log("Room Name:", roomName);
+    console.log("User ID:", userID);
 
     const meetingLink = `https://meeting.zego.im/${roomName}?access_token=${token}`;
     res.status(200).json({ meetingLink });
