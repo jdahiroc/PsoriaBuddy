@@ -1,9 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import admin from "firebase-admin";
-import ZegoServerAssistant from "zego-server-assistant";
+import { generateToken04 } from "../api/zegoServerAssistant"; 
 
-//  .env
 dotenv.config();
 
 const app = express();
@@ -25,7 +24,7 @@ if (!admin.apps.length) {
   }
 }
 
-// Generate ZegoCloud Token and Meeting Link
+// Generate ZEGOCLOUD Token and Meeting Link
 app.post("/api/generate-meeting-link", async (req, res) => {
   try {
     const { roomName } = req.body;
@@ -43,27 +42,33 @@ app.post("/api/generate-meeting-link", async (req, res) => {
     }
 
     const appID = parseInt(process.env.VITE_ZEGOCLOUD_APP_ID, 10);
-    const appSign = process.env.VITE_ZEGOCLOUD_APP_SIGN;
+    const serverSecret = process.env.VITE_ZEGOCLOUD_APP_SIGN;
 
-    if (!appID || !appSign) {
+    if (!appID || !serverSecret) {
       return res.status(500).json({ error: "Server misconfiguration." });
     }
 
     const userID =
       decodedToken.uid || `User-${Math.floor(Math.random() * 1000)}`;
-    const userName = `User-${userID.substring(0, 6)}`;
     const expireTime = Math.floor(Date.now() / 1000) + 3600;
 
-    const token = ZegoServerAssistant.generateKitTokenForProduction(
+    // Generate ZEGOCLOUD Token
+    const token = generateToken04(
       appID,
-      appSign,
-      roomName,
       userID,
-      userName,
-      expireTime
+      serverSecret,
+      expireTime,
+      JSON.stringify({
+        room_id: roomName,
+        privilege: {
+          1: 1, // Allow login
+          2: 1, // Allow publishing
+        },
+        stream_id_list: [],
+      })
     );
 
-    const meetingLink = `https://zegocloud.com/meeting/${roomName}?access_token=${token}`;
+    const meetingLink = `https://meeting.zego.im/${roomName}?access_token=${token}`;
     res.status(200).json({ meetingLink });
   } catch (error) {
     console.error("Token Generation Error:", error.message);
