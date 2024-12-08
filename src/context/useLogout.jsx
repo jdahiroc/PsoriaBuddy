@@ -17,29 +17,29 @@ const useLogout = () => {
   const logout = async () => {
     try {
       const user = auth.currentUser;
-
+  
       if (user) {
         const userRef = doc(db, "users", user.uid);
-
+  
         await setDoc(userRef, { isOtpVerified: false }, { merge: true });
       }
-
+  
       // Clear persistence before signing out
       await setPersistence(auth, browserLocalPersistence);
       await signOut(auth);
-
+  
       // Reset states and navigate to login
       setCurrentUser(null);
       setIsOtpVerified(false);
+      localStorage.removeItem("isOtpVerified");
       navigate("/login");
-
+  
       message.success("You have logged out successfully.");
     } catch (error) {
       console.error("Logout error:", error);
       message.error("Failed to log out. Please try again.");
     }
   };
-
   return { logout };
 };
 
