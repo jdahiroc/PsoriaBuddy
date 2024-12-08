@@ -17,9 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
 
   // State to store OTP verification status, using localStorage to persist it
-  const [isOtpVerified, setIsOtpVerified] = useState(
-    localStorage.getItem("isOtpVerified") === "true"
-  );
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
 
   // Loading state to manage authentication status check process
   const [loading, setLoading] = useState(true);
@@ -43,17 +41,19 @@ export const AuthProvider = ({ children }) => {
           const userRef = doc(db, "users", user.uid);
           const userSnap = await getDoc(userRef);
           const userData = userSnap.exists() ? userSnap.data() : {};
-  
+
           // Explicitly check and set OTP verification status
           const otpVerified = userData.isOtpVerified === true;
-          localStorage.setItem("isOtpVerified", otpVerified ? "true" : "false");
-  
-          setCurrentUser({ 
-            ...user, 
-            ...userData, 
-            isOtpVerified: otpVerified 
+
+          // REMOVE THIS LINE
+          // localStorage.setItem("isOtpVerified", otpVerified ? "true" : "false");
+
+          setCurrentUser({
+            ...user,
+            ...userData,
+            isOtpVerified: otpVerified,
           });
-  
+
           setIsOtpVerified(otpVerified);
         } catch (error) {
           console.error("Error fetching user data:", error);
@@ -61,11 +61,12 @@ export const AuthProvider = ({ children }) => {
       } else {
         setCurrentUser(null);
         setIsOtpVerified(false);
-        localStorage.removeItem("isOtpVerified");
+
+        // localStorage.removeItem("isOtpVerified");
       }
       setLoading(false);
     });
-  
+
     return () => unsubscribe();
   }, []);
 
