@@ -43,17 +43,17 @@ export const AuthProvider = ({ children }) => {
           const userRef = doc(db, "users", user.uid);
           const userSnap = await getDoc(userRef);
           const userData = userSnap.exists() ? userSnap.data() : {};
-
-          const otpVerified = userData.isOtpVerified || false;
+  
+          // Explicitly check and set OTP verification status
+          const otpVerified = userData.isOtpVerified === true;
           localStorage.setItem("isOtpVerified", otpVerified ? "true" : "false");
-
-          setCurrentUser((prevUser) => {
-            if (!prevUser || prevUser.uid !== user.uid) {
-              return { ...user, ...userData };
-            }
-            return prevUser;
+  
+          setCurrentUser({ 
+            ...user, 
+            ...userData, 
+            isOtpVerified: otpVerified 
           });
-
+  
           setIsOtpVerified(otpVerified);
         } catch (error) {
           console.error("Error fetching user data:", error);
@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
       }
       setLoading(false);
     });
-
+  
     return () => unsubscribe();
   }, []);
 
