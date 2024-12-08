@@ -200,15 +200,30 @@ const LoginWithOtpVerification = () => {
     try {
       const userRef = doc(db, "users", auth.currentUser.uid);
       const userSnap = await getDoc(userRef);
-
+  
       if (userSnap.exists()) {
         const userData = userSnap.data();
         const savedOtp = String(userData.otp);
         const expirationDate = userData.otpExpiresAt.toDate();
-
+  
         if (String(otp) === savedOtp && expirationDate > new Date()) {
-          await setDoc(userRef, { isOtpVerified: true }, { merge: true });
-          setIsOtpVerified(true); // Mark as verified only after correct OTP
+          // Update Firestore document
+          await setDoc(
+            userRef, 
+            { isOtpVerified: true }, 
+            { merge: true }
+          );
+  
+          // Update current user in context
+          setCurrentUser(prevUser => ({
+            ...prevUser,
+            isOtpVerified: true
+          }));
+  
+          // Directly set OTP verification in local storage
+          localStorage.setItem("isOtpVerified", "true");
+          
+          setIsOtpVerified(true);
           setMessageType("success");
           setNotificationMessage("OTP Verified Successfully!");
         } else {
@@ -222,6 +237,7 @@ const LoginWithOtpVerification = () => {
     } catch (error) {
       setMessageType("error");
       setNotificationMessage("An error occurred during OTP verification.");
+      console.error("OTP Verification Error:", error);
     } finally {
       setIsLoading(false);
     }
