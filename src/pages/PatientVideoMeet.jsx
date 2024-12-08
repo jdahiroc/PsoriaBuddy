@@ -22,9 +22,10 @@ const PatientVideoMeet = () => {
       message.error("Please enter a meeting link.");
       return;
     }
-
+    // Redirects to PreJoinSetup with the link passed as a query parameter
     navigate(`/prejoin?link=${encodeURIComponent(meetingLink)}`);
   };
+  
 
   return (
     <div className="patient-videomeet-container">
