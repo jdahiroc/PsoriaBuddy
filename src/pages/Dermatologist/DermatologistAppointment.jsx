@@ -174,65 +174,48 @@ const DermatologistAppointment = () => {
   // Handles Create Meeting Link
   const handleCreateMeetingLink = async () => {
     try {
-      setIsGeneratingLink(true); // To show loading state
+      setIsGeneratingLink(true); // Show loading indicator
       const auth = getAuth();
       const user = auth.currentUser;
 
       if (!user) {
-        throw new Error("You must be logged in to generate a meeting link.");
+        message.error("Please log in to generate a meeting link.");
+        return;
       }
 
-      // Retrieve Firebase ID token
-      const idToken = await user.getIdToken();
-      console.log("ID Token:", idToken);
-
-      // Generate a room name dynamically
+      // Generate room name
       const roomName = `session-${Date.now()}`;
-      console.log("Room Name:", roomName);
 
-      // Call the backend API
+      // Fetch Firebase ID token for authentication
+      const idToken = await user.getIdToken();
+
+      // Call your backend API to generate the link
       const response = await axios.post(
-        `https://psoria-buddy.vercel.app/api/generate-meeting-link`,
+        "https://psoria-buddy.vercel.app/api/generate-meeting-link",
         { roomName },
         {
           headers: {
             Authorization: `Bearer ${idToken}`,
             "Content-Type": "application/json",
           },
-          timeout: 10000, // Add a timeout to prevent hanging requests
         }
       );
 
-      // Process the response
+      // Check response and save link
       if (response.data && response.data.meetingLink) {
         setFormData((prev) => ({
           ...prev,
-          meetingLink: response.data.meetingLink,
+          meetingLink: response.data.meetingLink, // Save the generated link
         }));
-        console.log("Generated Meeting Link:", response.data.meetingLink);
         message.success("Meeting link generated successfully!");
       } else {
         throw new Error("Invalid response from server.");
       }
     } catch (error) {
       console.error("Error generating meeting link:", error.message);
-      if (error.response) {
-        console.error("Error response from backend:", error.response.data);
-        message.error(
-          `Failed to generate meeting link: ${
-            error.response.data.error || "Unknown error"
-          }`
-        );
-      } else if (error.request) {
-        console.error("No response received:", error.request);
-        message.error(
-          "No response from the server. Please check your network connection."
-        );
-      } else {
-        message.error(`Failed to generate meeting link: ${error.message}`);
-      }
+      message.error(`Failed to generate meeting link: ${error.message}`);
     } finally {
-      setIsGeneratingLink(false); // Always reset loading state
+      setIsGeneratingLink(false); // Reset loading indicator
     }
   };
 
@@ -419,29 +402,28 @@ const DermatologistAppointment = () => {
                 <button
                   onClick={handleCreateMeetingLink}
                   disabled={isGeneratingLink || formData.meetingLink}
-                  style={{}}
                 >
                   {isGeneratingLink
-                    ? "Creating..."
+                    ? "Generating Link..."
                     : formData.meetingLink
                     ? "Link Generated"
-                    : "Create Meet Link"}
+                    : "Generate Meeting Link"}
                 </button>
 
                 {/* Add Copy Link Button when */}
                 {formData.meetingLink && (
-                  <div className="copy-meetinglink-container">
+                  <div>
+                    <input
+                      type="text"
+                      value={formData.meetingLink}
+                      readOnly
+                      style={{ width: "70%", marginRight: "10px" }}
+                    />
                     <button
                       onClick={() => {
-                        navigator.clipboard
-                          .writeText(formData.meetingLink)
-                          .then(() => {
-                            message.success(
-                              "Meeting link copied to clipboard!"
-                            );
-                          });
+                        navigator.clipboard.writeText(formData.meetingLink);
+                        message.success("Link copied to clipboard!");
                       }}
-                      disabled={!formData.meetingLink}
                     >
                       Copy Link
                     </button>
