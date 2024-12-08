@@ -11,24 +11,27 @@ const PreJoinSetup = () => {
     if (!meetingLink || isJoined.current) return;
 
     try {
-      const url = new URL(meetingLink);
+      const url = new URL(meetingLink); // Parse the meeting link
       const roomID = url.pathname.split("/")[2];
       const token = url.searchParams.get("access_token");
 
       if (!roomID || !token) {
         console.error("Error: Invalid meeting link structure.");
+        message.error("Invalid meeting link. Please check the URL.");
         return;
       }
 
       const zp = ZegoUIKitPrebuilt.create(token);
       isJoined.current = true;
 
+      // Join ZEGOCLOUD Video Conference
       zp.joinRoom({
         container: document.getElementById("zego-container"),
         scenario: { mode: ZegoUIKitPrebuilt.VideoConference },
       });
     } catch (error) {
       console.error("Error in PreJoinSetup:", error.message);
+      message.error("Failed to join the meeting. Invalid meeting link.");
     }
   }, [meetingLink]);
 
