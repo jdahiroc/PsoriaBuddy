@@ -85,28 +85,30 @@ const LoginWithOtpVerification = () => {
   // Reset OTP stage if redirected from logout
   useEffect(() => {
     if (location.state?.resetOtpStage) {
-      setIsOtpStage(false); // Reset the OTP stage
+      setIsOtpStage(false);
+      setOtp("");
     }
   }, [location]);
 
   // Navigates users based on their userType and verification status after OTP verification
   useEffect(() => {
     if (isOtpVerified && currentUser) {
-      // Initialize currentUsers
       const { userType, isVerified } = currentUser;
-      if (userType === "Patient") {
-        // Default patient path
-        navigate("/u/profile", { replace: true });
-      } else if (userType === "Dermatologist") {
-        navigate(isVerified ? "/d/profile" : "/d/verify", {
-          // Default derma path
-          replace: true,
-        });
-      } else if (userType === "Admin") {
-        navigate("/a/dashboard", { replace: true }); // Default admin path
+
+      // Only navigate if not in OTP stage
+      if (!isOtpStage) {
+        if (userType === "Patient") {
+          navigate("/u/profile", { replace: true });
+        } else if (userType === "Dermatologist") {
+          navigate(isVerified ? "/d/profile" : "/d/verify", {
+            replace: true,
+          });
+        } else if (userType === "Admin") {
+          navigate("/a/dashboard", { replace: true });
+        }
       }
     }
-  }, [isOtpVerified, currentUser, navigate]);
+  }, [isOtpVerified, currentUser, navigate, isOtpStage]);
 
   // Starts countdown for OTP resend functionality
   useEffect(() => {
@@ -158,10 +160,11 @@ const LoginWithOtpVerification = () => {
       if (userSnap.exists()) {
         const userData = userSnap.data();
 
-        // Check if the user is already OTP verified
+        // Explicitly check OTP verification
         if (userData.isOtpVerified) {
           setIsOtpVerified(true);
           setCurrentUser({ ...user, ...userData });
+          setIsLoading(false);
           return;
         }
 
@@ -169,15 +172,18 @@ const LoginWithOtpVerification = () => {
         const otpCode = generateOtp();
         await setDoc(
           userRef,
-          { otp: otpCode, otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000) },
+          {
+            otp: otpCode,
+            otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000),
+          },
           { merge: true }
         );
         await sendEmailWithOtp(patientEmail, otpCode);
 
-        // Show success message and set OTP stage
+        // Explicitly set OTP stage
+        setIsOtpStage(true);
         setMessageType("success");
         setNotificationMessage("OTP has been sent to your email address.");
-        setIsOtpStage(true); // Ensure transition to OTP stage happens here
       } else {
         setMessageType("error");
         setNotificationMessage("User data not found in Firestore.");
@@ -200,29 +206,25 @@ const LoginWithOtpVerification = () => {
     try {
       const userRef = doc(db, "users", auth.currentUser.uid);
       const userSnap = await getDoc(userRef);
-  
+
       if (userSnap.exists()) {
         const userData = userSnap.data();
         const savedOtp = String(userData.otp);
         const expirationDate = userData.otpExpiresAt.toDate();
-  
+
         if (String(otp) === savedOtp && expirationDate > new Date()) {
           // Update Firestore document
-          await setDoc(
-            userRef, 
-            { isOtpVerified: true }, 
-            { merge: true }
-          );
-  
+          await setDoc(userRef, { isOtpVerified: true }, { merge: true });
+
           // Update current user in context
-          setCurrentUser(prevUser => ({
+          setCurrentUser((prevUser) => ({
             ...prevUser,
-            isOtpVerified: true
+            isOtpVerified: true,
           }));
-  
+
           // Directly set OTP verification in local storage
           localStorage.setItem("isOtpVerified", "true");
-          
+
           setIsOtpVerified(true);
           setMessageType("success");
           setNotificationMessage("OTP Verified Successfully!");
