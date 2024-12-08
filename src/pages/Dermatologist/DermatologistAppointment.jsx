@@ -413,12 +413,6 @@ const DermatologistAppointment = () => {
                 {/* Add Copy Link Button when */}
                 {formData.meetingLink && (
                   <div>
-                    <input
-                      type="text"
-                      value={formData.meetingLink}
-                      readOnly
-                      style={{ width: "70%", marginRight: "10px" }}
-                    />
                     <button
                       onClick={() => {
                         navigator.clipboard.writeText(formData.meetingLink);
