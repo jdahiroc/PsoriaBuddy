@@ -174,6 +174,7 @@ const DermatologistAppointment = () => {
   // Handles Create Meeting Link
   const handleCreateMeetingLink = async () => {
     try {
+      setIsGeneratingLink(true); // To show loading state
       const auth = getAuth();
       const user = auth.currentUser;
 
@@ -196,7 +197,9 @@ const DermatologistAppointment = () => {
         {
           headers: {
             Authorization: `Bearer ${idToken}`,
+            "Content-Type": "application/json",
           },
+          timeout: 10000, // Add a timeout to prevent hanging requests
         }
       );
 
@@ -215,8 +218,21 @@ const DermatologistAppointment = () => {
       console.error("Error generating meeting link:", error.message);
       if (error.response) {
         console.error("Error response from backend:", error.response.data);
+        message.error(
+          `Failed to generate meeting link: ${
+            error.response.data.error || "Unknown error"
+          }`
+        );
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+        message.error(
+          "No response from the server. Please check your network connection."
+        );
+      } else {
+        message.error(`Failed to generate meeting link: ${error.message}`);
       }
-      message.error("Failed to generate meeting link.");
+    } finally {
+      setIsGeneratingLink(false); // Always reset loading state
     }
   };
 
