@@ -17,7 +17,6 @@ const PatientVideoMeet = () => {
   const navigate = useNavigate();
 
   //  HandleJoin Function
-  // HandleJoin Function
   const handleJoin = () => {
     if (!meetingLink) {
       message.error("Please enter a meeting link.");

@@ -3,22 +3,35 @@ import "../../css/dermatologistvideomeet.css";
 import Sidebar from "../../pages/Sidebar/DSidebar";
 
 // React Hooks
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Assets
 import croods_keeping from "../../assets/videocall/Croods_Keeping_In_Touch.png";
 
 const DermatologistVideoMeet = () => {
+  //  Meeting Link State
+  const [meetingLink, setMeetingLink] = useState("");
   // Initialize navigate
   const navigate = useNavigate();
 
-  // Handles the join button
-  const handleJoin = (link) => {
-    if (link.startsWith("wss://")) {
-      const encodedLink = encodeURIComponent(link);
-      navigate(`/meeting?link=${encodedLink}`);
+  //  HandleJoin Function
+  const handleJoin = () => {
+    if (!meetingLink) {
+      message.error("Please enter a meeting link.");
+      return;
+    }
+
+    // Check if the link starts with "http://" or "https://"
+    const isExternalLink =
+      meetingLink.startsWith("http://") || meetingLink.startsWith("https://");
+
+    if (isExternalLink) {
+      // Open external meeting link in a new tab
+      window.open(meetingLink, "_blank");
     } else {
-      alert("Invalid meeting link. Make sure it starts with 'wss://'.");
+      // Navigate to the internal prejoin link format
+      navigate(`/prejoin?link=${encodeURIComponent(meetingLink)}`);
     }
   };
 
@@ -46,19 +59,12 @@ const DermatologistVideoMeet = () => {
                   <input
                     type="text"
                     placeholder="Enter the meeting link"
-                    className="dermatologist-videomeet-input"
-                    id="meetingLink"
+                    value={meetingLink}
+                    onChange={(e) => setMeetingLink(e.target.value)}
                   />
                 </div>
                 <div className="dermatologist-videomeet-button">
-                  <button
-                    className="dermatologist-videomeet-join-button"
-                    onClick={() =>
-                      handleJoin(document.getElementById("meetingLink").value)
-                    }
-                  >
-                    Join
-                  </button>
+                  <button onClick={handleJoin}>Join</button>
                 </div>
               </div>
             </div>
