@@ -201,11 +201,12 @@ const DermatologistAppointment = () => {
         }
       );
 
+
       // Check response and save link
       if (response.data && response.data.meetingLink) {
         setFormData((prev) => ({
           ...prev,
-          meetingLink: response.data.meetingLink, // Save the generated link
+          meetingLink: response.data.meetingLink,
         }));
         message.success("Meeting link generated successfully!");
       } else {
