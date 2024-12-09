@@ -17,7 +17,8 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors({ origin: "*" })); // Allow all origins (use only in development)
 app.options("*", cors(corsOptions));
 
 app.use(express.json());
