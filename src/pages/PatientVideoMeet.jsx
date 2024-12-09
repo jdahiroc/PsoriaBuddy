@@ -17,15 +17,25 @@ const PatientVideoMeet = () => {
   const navigate = useNavigate();
 
   //  HandleJoin Function
+  // HandleJoin Function
   const handleJoin = () => {
     if (!meetingLink) {
       message.error("Please enter a meeting link.");
       return;
     }
-    // Redirects to PreJoinSetup with the link passed as a query parameter
-    navigate(`/prejoin?link=${encodeURIComponent(meetingLink)}`);
+
+    // Check if the link starts with "http://" or "https://"
+    const isExternalLink =
+      meetingLink.startsWith("http://") || meetingLink.startsWith("https://");
+
+    if (isExternalLink) {
+      // Open external meeting link in a new tab
+      window.open(meetingLink, "_blank");
+    } else {
+      // Navigate to the internal prejoin link format
+      navigate(`/prejoin?link=${encodeURIComponent(meetingLink)}`);
+    }
   };
-  
 
   return (
     <div className="patient-videomeet-container">
