@@ -49,7 +49,6 @@ app.post("/api/generate-meeting-link", async (req, res) => {
 
     const idToken = authHeader.split("Bearer ")[1];
     try {
-      console.log("Received ID Token:", idToken);
       const decodedToken = await admin.auth().verifyIdToken(idToken);
       console.log("Decoded Token:", decodedToken);
     } catch (authError) {
@@ -68,9 +67,6 @@ app.post("/api/generate-meeting-link", async (req, res) => {
     const expireTime = Math.floor(Date.now() / 1000) + 3600;
 
     try {
-      console.log("ZEGOCLOUD AppID:", appID);
-      console.log("ZEGOCLOUD Server Secret:", serverSecret);
-
       const token = generateToken04(
         appID,
         userID,
@@ -82,8 +78,6 @@ app.post("/api/generate-meeting-link", async (req, res) => {
           stream_id_list: [],
         })
       );
-
-      console.log("Generated Token:", token);
     } catch (zegoError) {
       console.error("ZEGOCLOUD Token Generation Error:", zegoError);
       throw zegoError;
