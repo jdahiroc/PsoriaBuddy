@@ -30,6 +30,13 @@ if (!admin.apps.length) {
   }
 }
 
+const corsOptions = {
+  origin: "*", // Allow all origins (test only)
+  methods: ["POST", "GET", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+app.use(cors(corsOptions));
+
 // Generate ZEGOCLOUD Token and Meeting Link
 app.post("/api/generate-meeting-link", async (req, res) => {
   try {
