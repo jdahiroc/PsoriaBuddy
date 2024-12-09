@@ -41,7 +41,17 @@ app.post("/api/generate-meeting-link", async (req, res) => {
     }
 
     const idToken = authHeader.split("Bearer ")[1];
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    try {
+      console.log("Received ID Token:", idToken);
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
+      console.log("Decoded Token:", decodedToken);
+    } catch (authError) {
+      console.error("Firebase Auth Token Verification Failed:", authError);
+      return res.status(401).json({
+        error: "Unauthorized: Invalid token",
+        details: authError.message,
+      });
+    }
 
     const appID = parseInt(process.env.VITE_ZEGOCLOUD_APP_ID, 10);
     const serverSecret = process.env.VITE_ZEGOCLOUD_APP_SIGN;
@@ -50,17 +60,27 @@ app.post("/api/generate-meeting-link", async (req, res) => {
       decodedToken.uid || `User-${Math.floor(Math.random() * 1000)}`;
     const expireTime = Math.floor(Date.now() / 1000) + 3600;
 
-    const token = generateToken04(
-      appID,
-      userID,
-      serverSecret,
-      expireTime,
-      JSON.stringify({
-        room_id: roomName,
-        privilege: { 1: 1, 2: 1 },
-        stream_id_list: [],
-      })
-    );
+    try {
+      console.log("ZEGOCLOUD AppID:", appID);
+      console.log("ZEGOCLOUD Server Secret:", serverSecret);
+
+      const token = generateToken04(
+        appID,
+        userID,
+        serverSecret,
+        expireTime,
+        JSON.stringify({
+          room_id: roomName,
+          privilege: { 1: 1, 2: 1 },
+          stream_id_list: [],
+        })
+      );
+
+      console.log("Generated Token:", token);
+    } catch (zegoError) {
+      console.error("ZEGOCLOUD Token Generation Error:", zegoError);
+      throw zegoError;
+    }
 
     const meetingLink = `https://meeting.zego.im/${roomName}?access_token=${token}`;
     res.status(200).json({ meetingLink });
