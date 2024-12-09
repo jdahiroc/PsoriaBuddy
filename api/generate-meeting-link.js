@@ -10,8 +10,16 @@ dotenv.config();
 // Create Express app
 const app = express();
 
-// Middleware
-app.use(cors());
+// Middleware Configuration
+const corsOptions = {
+  origin: ["http://localhost:5173", "https://psoria-buddy.vercel.app"],
+  methods: ["POST", "GET", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
 app.use(express.json());
 
 // Firebase Initialization
@@ -24,40 +32,31 @@ if (!admin.apps.length) {
         privateKey: process.env.VITE_FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
       }),
     });
+    console.log("Firebase Admin Initialized Successfully.");
   } catch (error) {
     console.error("Firebase Admin Initialization Error:", error.message);
     process.exit(1);
   }
 }
 
-const corsOptions = {
-  origin: "*", // Allow all origins (test only)
-  methods: ["POST", "GET", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
-app.use(cors(corsOptions));
-
-// Generate ZEGOCLOUD Token and Meeting Link
+// Route to Generate ZEGOCLOUD Meeting Link
 app.post("/api/generate-meeting-link", async (req, res) => {
+  const { roomName } = req.body;
+  const authHeader = req.headers.authorization;
+
+  // Input Validation
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Unauthorized: Missing token" });
+  }
+  if (!roomName) {
+    return res.status(400).json({ error: "Missing required field: roomName" });
+  }
+
   try {
-    const { roomName } = req.body;
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ error: "Unauthorized: Missing token" });
-    }
-
+    // Extract and Verify Firebase Auth Token
     const idToken = authHeader.split("Bearer ")[1];
-    try {
-      const decodedToken = await admin.auth().verifyIdToken(idToken);
-      console.log("Decoded Token:", decodedToken);
-    } catch (authError) {
-      console.error("Firebase Auth Token Verification Failed:", authError);
-      return res.status(401).json({
-        error: "Unauthorized: Invalid token",
-        details: authError.message,
-      });
-    }
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    console.log("Decoded Firebase Token:", decodedToken);
 
     const appID = parseInt(process.env.VITE_ZEGOCLOUD_APP_ID, 10);
     const serverSecret = process.env.VITE_ZEGOCLOUD_APP_SIGN;
@@ -66,29 +65,30 @@ app.post("/api/generate-meeting-link", async (req, res) => {
       decodedToken.uid || `User-${Math.floor(Math.random() * 1000)}`;
     const expireTime = Math.floor(Date.now() / 1000) + 3600;
 
-    try {
-      const token = generateToken04(
-        appID,
-        userID,
-        serverSecret,
-        expireTime,
-        JSON.stringify({
-          room_id: roomName,
-          privilege: { 1: 1, 2: 1 },
-          stream_id_list: [],
-        })
-      );
-    } catch (zegoError) {
-      console.error("ZEGOCLOUD Token Generation Error:", zegoError);
-      throw zegoError;
-    }
+    // Generate ZEGOCLOUD Token
+    const token = generateToken04(
+      appID,
+      userID,
+      serverSecret,
+      expireTime,
+      JSON.stringify({
+        room_id: roomName,
+        privilege: { 1: 1, 2: 1 },
+        stream_id_list: [],
+      })
+    );
 
+    console.log("Generated ZEGOCLOUD Token:", token);
+
+    // Construct Meeting Link
     const meetingLink = `https://meeting.zego.im/${roomName}?access_token=${token}`;
     res.status(200).json({ meetingLink });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Internal server error", details: error.message });
+    console.error("Error Generating Meeting Link:", error.message);
+    res.status(500).json({
+      error: "Internal server error",
+      details: error.message,
+    });
   }
 });
 
