@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
+import { message } from "antd"; // Ant Design notification for user feedback
 
 const PreJoinSetup = () => {
   const [searchParams] = useSearchParams();
@@ -11,22 +12,29 @@ const PreJoinSetup = () => {
     if (!meetingLink || isJoined.current) return;
 
     try {
-      const url = new URL(meetingLink); // Parse the meeting link
-      const roomID = url.pathname.split("/")[2];
-      const token = url.searchParams.get("access_token");
+      // Parse the meeting link
+      const url = new URL(meetingLink);
+      const roomID = url.pathname.split("/")[1]; // Extract room name
+      const accessToken = url.searchParams.get("access_token"); // Extract token
 
-      if (!roomID || !token) {
+      if (!roomID || !accessToken) {
         console.error("Error: Invalid meeting link structure.");
         message.error("Invalid meeting link. Please check the URL.");
         return;
       }
 
-      const zp = ZegoUIKitPrebuilt.create(token);
+      // ZegoUIKitPrebuilt Initialization
+      const zp = ZegoUIKitPrebuilt.create(accessToken);
       isJoined.current = true;
 
-      // Join ZEGOCLOUD Video Conference
       zp.joinRoom({
         container: document.getElementById("zego-container"),
+        sharedLinks: [
+          {
+            name: "Copy Meeting Link",
+            url: meetingLink,
+          },
+        ],
         scenario: { mode: ZegoUIKitPrebuilt.VideoConference },
       });
     } catch (error) {
@@ -36,7 +44,10 @@ const PreJoinSetup = () => {
   }, [meetingLink]);
 
   return (
-    <div id="zego-container" style={{ width: "100vw", height: "100vh" }} />
+    <div
+      id="zego-container"
+      style={{ width: "100vw", height: "100vh", backgroundColor: "#F5F5F5" }}
+    />
   );
 };
 
