@@ -162,70 +162,69 @@ const LoginWithOtpVerification = () => {
     const provider = new GoogleAuthProvider();
 
     try {
-      // Show loading indicator
       setIsLoading(true);
-      setTimeout(() => {
-        message.open({
-          content: "Logging in with Google...",
-          duration: 0,
-          key: "googleLogin",
-          icon: <Spin />,
-        });
-      }, 0);
+      message.loading({
+        content: "Logging in with Google...",
+        key: "googleLogin",
+      });
 
-      // Trigger Google Login
+      // Trigger Google Login with Popup
       const result = await signInWithPopup(auth, provider);
-      //  Initialize the Logged in Current User
-      const user = result.user;
+      const user = result.user; // Authenticated user
 
-      // Check if user exists in Firestore
+      // Ensure user data is synced with Firestore
       const userRef = doc(db, "users", user.uid);
-      const userSnap = await retryOperation(() => getDoc(userRef));
+      const userSnap = await getDoc(userRef);
 
-      let userData = {};
+      let userData;
 
       if (userSnap.exists()) {
+        // If user exists, fetch their data
         userData = userSnap.data();
+        console.log("Existing user found in Firestore:", userData);
       } else {
+        // If user doesn't exist, create a new Firestore record
+        console.log("Creating new user in Firestore...");
         userData = {
           email: user.email,
           fullName: user.displayName || "Google User",
           uid: user.uid,
           isOtpVerified: true, // Automatically verified for Google users
           createdAt: new Date(),
-          userType: "Patient",
+          userType: "Patient", // Default to Patient
         };
-        await retryOperation(() => setDoc(userRef, userData));
+        await setDoc(userRef, userData);
       }
 
-      // Update AuthContext states
+      // Update AuthContext
       setCurrentUser({ ...user, ...userData });
-      setIsOtpVerified(userData.isOtpVerified);
+      setIsOtpVerified(true);
 
-      // Success message after successful login
-      setTimeout(() => {
-        message.success({
-          content: "Google Login Successful! Redirecting...",
-          key: "googleLogin",
-        });
-      }, 0);
+      message.success({
+        content: "Google Login Successful!",
+        key: "googleLogin",
+      });
 
-      // Navigation moved to useEffect to prevent re-render loops
-      navigate("/u/profile", { replace: true });
+      // Redirect the user based on their role
+      const { userType, isVerified } = userData;
+
+      if (userType === "Patient") {
+        navigate("/u/profile", { replace: true });
+      } else if (userType === "Dermatologist") {
+        navigate(isVerified ? "/d/profile" : "/d/verify", { replace: true });
+      } else if (userType === "Admin") {
+        navigate("/a/accounts", { replace: true });
+      } else {
+        navigate("/", { replace: true }); // Fallback route
+      }
     } catch (error) {
-      console.error("Google Login Failed:", error);
-
-      // Display error message
-      setTimeout(() => {
-        message.error({
-          content: `Google Login Failed: ${error.message}`,
-          key: "googleLogin",
-        });
-      }, 0);
+      console.error("Google Login Failed:", error.message);
+      message.error({
+        content: `Google Login Failed: ${error.message}`,
+        key: "googleLogin",
+      });
     } finally {
-      // Ensure the loading state is cleared
       setIsLoading(false);
-      message.destroy("googleLogin"); // Ensure the message is cleared
     }
   };
 
