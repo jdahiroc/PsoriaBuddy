@@ -35,10 +35,22 @@ const Sidebar = () => {
           {user && (
             <div className="dsidebar-profile">
               <div className="dsidebar-avatar">
-                <img src={avatar} alt="avatar" />
+                <img
+                  src={user?.photoURL || avatar}
+                  alt="avatar"
+                  style={{
+                    width: "55px",
+                    height: "55px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                  }}
+                />
               </div>
               <div className="dsidebar-username">
                 <h3>{user.fullName}</h3>
+              </div>
+              <div className="dsidebar-usertype">
+                <p>{user.userType || "Loading..."}</p>
               </div>
             </div>
           )}

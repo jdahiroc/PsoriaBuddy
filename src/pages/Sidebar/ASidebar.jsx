@@ -33,7 +33,16 @@ const ASidebar = () => {
           {user && (
             <div className="asidebar-profile">
               <div className="asidebar-avatar">
-                <img src={avatar} alt="avatar" />
+                <img
+                  src={user?.photoURL || avatar}
+                  alt="avatar"
+                  style={{
+                    width: "55px",
+                    height: "55px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                  }}
+                />
               </div>
               <div className="asidebar-username">
                 <h3>
@@ -48,7 +57,7 @@ const ASidebar = () => {
                       paddingTop: "5px",
                     }}
                   >
-                    Administrator
+                    {user.userType || "Loading..."}
                   </sub>
                 </h3>
               </div>
