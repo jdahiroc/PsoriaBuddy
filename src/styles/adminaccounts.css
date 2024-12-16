@@ -1,116 +1,118 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 .transparent-background {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
 
 .patient-alert {
-    position: absolute;
-    left: 760px;
-    top: 20px;
+  position: absolute;
+  left: 760px;
+  top: 20px;
 }
 
 .patient-profile-container {
-    height: 100vh;
-    display: flex;
-    background-color: #fbfdff;
+  height: 100vh;
+  display: flex;
+  background-color: #fbfdff;
 }
 
 /* Left Section */
 .patient-profile-content {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 /* First Section */
 .patient-profile-heading {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2.5em;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2.5em;
+  width: 100%;
 }
 
 .patient-header {
-    width: auto;
-    margin-left: 3.5em;
+  width: auto;
+  margin-left: 3.5em;
 }
 
 .patient-header h2 {
-    font-family: "Inter", sans-serif;
-    font-size: 32px;
-    font-weight: 800;
-    color: #393939;
-    margin-left: 0.5em;
+  font-family: "Inter", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #393939;
+  margin-left: 0.5em;
 }
 
 .alert-top-right {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
 }
 
 .accountsdata-table {
-    margin-top: 2em;
-    margin-left: 5em;
-    width: 100%;
+  margin-top: 2em;
+  margin-left: 5em;
+  width: 100%;
 }
 
 .derma-save {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 550px;
-    margin-right: 5.5em;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 550px;
+  margin-left: 75px;
+  margin-right: 5.5em;
 }
 
 .derma-save button {
-    border: none;
-    background-color: #51829b;
-    color: #fbfdff;
-    font-family: "Inter", sans-serif;
-    font-weight: 400;
-    font-size: 15px;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 30px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.04);
-    gap: 7px;
+  border: none;
+  background-color: #51829b;
+  color: #fbfdff;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 30px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.04);
+  gap: 7px;
+  z-index: 1000;
 }
 
 .derma-save button:hover {
-    background-color: #3e6a7f;
-    transition: ease-in-out 0.2s;
-    cursor: pointer;
+  background-color: #3e6a7f;
+  transition: ease-in-out 0.2s;
+  cursor: pointer;
 }
 
 .derma-save button img {
-    display: flex;
-    align-items: center;
-    width: 22px;
-    height: auto;
+  display: flex;
+  align-items: center;
+  width: 22px;
+  height: auto;
 }
 
 .input-gap {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .dropdown-menu {
-    width: 472px;
+  width: 472px;
 }
 
 .primary-button {
-    width: 100%;
-    color: white;
-    border: none;
-    padding: 10px 0;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 15px;
+  width: 100%;
+  color: white;
+  border: none;
+  padding: 10px 0;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
 }
