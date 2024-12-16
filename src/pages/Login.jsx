@@ -14,6 +14,8 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { Divider, Box } from "@mui/material";
+import { Google as GoogleIcon } from "@mui/icons-material";
 // Assets
 import loginbg from "../assets/background/loginbg.png";
 import logo from "../assets/background/PsoriaBuddy.png";
@@ -24,6 +26,8 @@ import {
   setPersistence,
   browserLocalPersistence,
   signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
@@ -129,6 +133,101 @@ const LoginWithOtpVerification = () => {
       setNotificationMessage(null);
     }
   }, [notificationMessage, messageType]);
+
+  // Function to retry Firestore operations
+  const retryOperation = async (operation, retries = 3, delay = 1000) => {
+    let attempt = 0;
+    while (attempt < retries) {
+      try {
+        return await operation();
+      } catch (error) {
+        if (error.code === "unavailable" || error.message.includes("network")) {
+          console.warn(
+            `Network error, retrying... (${attempt + 1}/${retries})`
+          );
+          attempt++;
+          await new Promise((res) => setTimeout(res, delay)); // Delay before retry
+        } else {
+          throw error; // Throw non-network errors immediately
+        }
+      }
+    }
+    throw new Error(
+      "Network error: Unable to complete the operation after retries."
+    );
+  };
+
+  //  Handles the Google Login
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      // Show loading indicator
+      setIsLoading(true);
+      setTimeout(() => {
+        message.open({
+          content: "Logging in with Google...",
+          duration: 0,
+          key: "googleLogin",
+          icon: <Spin />,
+        });
+      }, 0);
+
+      // Trigger Google Login
+      const result = await signInWithPopup(auth, provider);
+      //  Initialize the Logged in Current User
+      const user = result.user;
+
+      // Check if user exists in Firestore
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await retryOperation(() => getDoc(userRef));
+
+      let userData = {};
+
+      if (userSnap.exists()) {
+        userData = userSnap.data();
+      } else {
+        userData = {
+          email: user.email,
+          fullName: user.displayName || "Google User",
+          uid: user.uid,
+          isOtpVerified: true, // Automatically verified for Google users
+          createdAt: new Date(),
+          userType: "Patient",
+        };
+        await retryOperation(() => setDoc(userRef, userData));
+      }
+
+      // Update AuthContext states
+      setCurrentUser({ ...user, ...userData });
+      setIsOtpVerified(userData.isOtpVerified);
+
+      // Success message after successful login
+      setTimeout(() => {
+        message.success({
+          content: "Google Login Successful! Redirecting...",
+          key: "googleLogin",
+        });
+      }, 0);
+
+      // Navigation moved to useEffect to prevent re-render loops
+      navigate("/u/profile", { replace: true });
+    } catch (error) {
+      console.error("Google Login Failed:", error);
+
+      // Display error message
+      setTimeout(() => {
+        message.error({
+          content: `Google Login Failed: ${error.message}`,
+          key: "googleLogin",
+        });
+      }, 0);
+    } finally {
+      // Ensure the loading state is cleared
+      setIsLoading(false);
+      message.destroy("googleLogin"); // Ensure the message is cleared
+    }
+  };
 
   // Handles the login process and transitions to OTP stage
   const handleLogin = async (e) => {
@@ -291,7 +390,7 @@ const LoginWithOtpVerification = () => {
         >
           <Card
             sx={{
-              height: isOtpStage ? 550 : 610,
+              height: isOtpStage ? 550 : 710,
               maxWidth: 400,
               backgroundColor: "#51829B",
               borderRadius: 3,
@@ -476,7 +575,7 @@ const LoginWithOtpVerification = () => {
                   borderRadius: 3,
                   fontFamily: "'Inter', sans-serif",
                   fontWeight: 600,
-                  fontSize: "17px",
+                  fontSize: "14px",
                   width: "80%",
                   "&:hover": {
                     backgroundColor: "#F6995C",
@@ -488,31 +587,82 @@ const LoginWithOtpVerification = () => {
               </Button>
 
               {!isOtpStage && (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => navigate("/signup")}
-                  size="small"
-                  sx={{
-                    mb: 4,
-                    color: "#FFFFFF",
-                    backgroundColor: "#51829B",
-                    border: "1px solid #FFFFFF",
-                    height: "50px",
-                    borderRadius: 2,
-                    fontFamily: "'Inter', sans-serif",
-                    fontWeight: 600,
-                    fontSize: "17px",
-                    width: "80%",
-                    "&:hover": {
-                      backgroundColor: "#51829B",
+                <>
+                  {/* Create Account Button */}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => navigate("/signup")}
+                    size="small"
+                    sx={{
+                      mb: 1,
                       color: "#FFFFFF",
-                      border: "none",
-                    },
-                  }}
-                >
-                  Create Account
-                </Button>
+                      backgroundColor: "#51829B",
+                      border: "1.7px solid #FFFFFF",
+                      height: "50px",
+                      borderRadius: 3,
+                      fontFamily: "'Inter', sans-serif",
+                      fontWeight: 600,
+                      fontSize: "14px",
+                      width: "80%",
+                      "&:hover": {
+                        backgroundColor: "#51829B",
+                        color: "#FFFFFF",
+                        border: "none",
+                      },
+                    }}
+                  >
+                    Create Account
+                  </Button>
+
+                  {/* Divider with "or login with" */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      width: "80%",
+                      my: 2,
+                    }}
+                  >
+                    <Divider sx={{ flexGrow: 1, backgroundColor: "#FFFFFF" }} />
+                    <Box
+                      sx={{
+                        px: 1,
+                        fontSize: "12px",
+                        fontWeight: 400,
+                        color: "#FFFFFF",
+                        fontFamily: "'Inter', sans-serif",
+                      }}
+                    >
+                      OR CONTINUE WITH
+                    </Box>
+                    <Divider sx={{ flexGrow: 1, backgroundColor: "#FFFFFF" }} />
+                  </Box>
+
+                  {/* Google Login Button */}
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    startIcon={<GoogleIcon />}
+                    sx={{
+                      width: "80%",
+                      height: "50px",
+                      borderRadius: 3,
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      fontFamily: "'Inter', sans-serif",
+                      color: "#393939",
+                      backgroundColor: "#FFFFFF",
+                      "&:hover": {
+                        backgroundColor: "#F0F0F0",
+                      },
+                      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+                    }}
+                    onClick={handleGoogleLogin}
+                  >
+                    Continue with Google
+                  </Button>
+                </>
               )}
             </div>
           </Card>
