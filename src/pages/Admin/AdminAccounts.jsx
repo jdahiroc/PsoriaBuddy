@@ -388,7 +388,10 @@ const AdminAccounts = () => {
       }));
 
       // Update the state with real-time data
-      setTableData(users);
+      // setTableData(users);
+      setTableData(
+        users.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated))
+      );
     });
 
     // Cleanup listener on component unmount
