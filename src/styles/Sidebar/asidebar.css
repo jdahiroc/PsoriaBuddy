@@ -42,6 +42,18 @@
   margin-top: 0.5em;
 }
 
+.asidebar-usertype {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1em;
+}
+
+.asidebar-usertype p {
+  font-family: "Inter", sans-serif;
+  font-size: 1em;
+  font-weight: 400;
+}
+
 /* navigations */
 .asidebar-nav-naviations {
   width: 100%;

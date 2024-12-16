@@ -32,7 +32,7 @@
 .sidebar-username {
   display: flex;
   flex-direction: column;
-  padding-bottom: 2em;
+  padding-bottom: 0.5em;
 }
 
 .sidebar-username h3 {
@@ -40,6 +40,18 @@
   font-size: 1em;
   font-weight: 600;
   margin-top: 0.5em;
+}
+
+.sidebar-usertype {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1em;
+}
+
+.sidebar-usertype p {
+  font-family: "Inter", sans-serif;
+  font-size: 1em;
+  font-weight: 400;
 }
 
 /* navigations */
