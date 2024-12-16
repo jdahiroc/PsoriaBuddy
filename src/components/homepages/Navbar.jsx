@@ -226,11 +226,19 @@ const Navbar = () => {
               <Divider type="vertical" />
               <Avatar
                 onClick={handleAvatarClick}
-                sx={{ cursor: "pointer", bgcolor: "#51829B" }}
+                sx={{
+                  cursor: "pointer",
+                  bgcolor: currentUser.photoURL ? "transparent" : "#51829B",
+                  width: 40,
+                  height: 40,
+                }}
+                src={currentUser.photoURL || ""}
               >
-                {currentUser.displayName
-                  ? currentUser.displayName.charAt(0).toUpperCase()
-                  : currentUser.email.charAt(0).toUpperCase()}
+                {/* Fallback to initials if no photoURL is available */}
+                {!currentUser.photoURL &&
+                  (currentUser.displayName
+                    ? currentUser.displayName.charAt(0).toUpperCase()
+                    : currentUser.email.charAt(0).toUpperCase())}
               </Avatar>
               <Menu
                 anchorEl={anchorEl}
@@ -254,13 +262,18 @@ const Navbar = () => {
                   sx={{
                     width: 70,
                     height: 70,
-                    bgcolor: "#51829B",
+                    bgcolor: currentUser.photoURL ? "transparent" : "#51829B",
                     margin: "auto",
+                    display: "flex",
+                    justifyContent: "center",
                   }}
+                  src={currentUser.photoURL || ""}
                 >
-                  {currentUser.displayName
-                    ? currentUser.displayName.charAt(0).toUpperCase()
-                    : currentUser.email.charAt(0).toUpperCase()}
+                  {/* Fallback to initials if no photoURL exists */}
+                  {!currentUser.photoURL &&
+                    (currentUser.displayName
+                      ? currentUser.displayName.charAt(0).toUpperCase()
+                      : currentUser.email.charAt(0).toUpperCase())}
                 </Avatar>
                 <h5
                   style={{
@@ -269,6 +282,8 @@ const Navbar = () => {
                     fontSize: "14px",
                     margin: 10,
                     color: "#0B0B0C",
+                    display: "flex",
+                    justifyContent: "center",
                   }}
                 >
                   {currentUser.email}
@@ -281,6 +296,8 @@ const Navbar = () => {
                     textAlign: "center",
                     margin: 4,
                     color: "#393939",
+                    display: "flex",
+                    justifyContent: "center",
                   }}
                 >
                   {userDetails.userType || "Loading..."}
