@@ -1,9 +1,5 @@
 import { auth, db } from "../../firebaseConfig";
-import {
-  setPersistence,
-  browserLocalPersistence,
-  signOut,
-} from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
@@ -19,24 +15,27 @@ const useLogout = () => {
       const user = auth.currentUser;
 
       if (user) {
+        // Reset OTP verification status in Firestore
         const userRef = doc(db, "users", user.uid);
-
         await setDoc(userRef, { isOtpVerified: false }, { merge: true });
       }
 
-      await setPersistence(auth, browserLocalPersistence);
+      // Sign out from Firebase
       await signOut(auth);
 
+      // Reset application state
       setCurrentUser(null);
       setIsOtpVerified(false);
 
-      // Remove localStorage references
+      // Clear browser state storage
+      localStorage.removeItem("isOtpVerified");
+      sessionStorage.clear();
 
-      navigate("/login", {
-        state: { resetOtpStage: true },
-      });
+      // Navigate to Login and prevent back button
+      navigate("/login", { replace: true, state: { resetOtpStage: true } });
 
-      message.success("You have logged out successfully.");
+      // Show success message
+      message.success("Logged out successfully.");
     } catch (error) {
       console.error("Logout error:", error);
       message.error("Failed to log out. Please try again.");
