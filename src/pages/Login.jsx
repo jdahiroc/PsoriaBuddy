@@ -181,10 +181,8 @@ const LoginWithOtpVerification = () => {
       if (userSnap.exists()) {
         // If user exists, fetch their data
         userData = userSnap.data();
-        console.log("Existing user found in Firestore:", userData);
       } else {
         // If user doesn't exist, create a new Firestore record
-        console.log("Creating new user in Firestore...");
         userData = {
           email: user.email,
           fullName: user.displayName || "Google User",
