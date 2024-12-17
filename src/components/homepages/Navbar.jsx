@@ -115,11 +115,6 @@ const Navbar = () => {
         id: doc.id,
         ...doc.data(),
       }));
-
-      // Filter unopened events
-      const unopenedEvents = fetchedEvents.filter((event) => !event.isOpened);
-      setUnopenedEventsCount(unopenedEvents.length);
-
       setEvents(fetchedEvents);
     });
 
@@ -127,48 +122,45 @@ const Navbar = () => {
   }, []);
 
   // Fetch both global events and the user-specific viewedEvents:
+  // Track the viewedEvents subcollection for the current user.
   useEffect(() => {
-    const fetchEvents = async () => {
-      if (!currentUser) return;
+    if (!currentUser) return;
 
-      const eventsCollectionRef = collection(db, "events");
-      const viewedEventsRef = collection(
-        db,
-        "users",
-        currentUser.uid,
-        "viewedEvents"
-      );
+    const eventsCollectionRef = collection(db, "events");
+    const viewedEventsRef = collection(
+      db,
+      "users",
+      currentUser.uid,
+      "viewedEvents"
+    );
 
-      const unsubscribeEvents = onSnapshot(eventsCollectionRef, (snapshot) => {
-        const fetchedEvents = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
+    const unsubscribeEvents = onSnapshot(eventsCollectionRef, (snapshot) => {
+      const fetchedEvents = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      onSnapshot(viewedEventsRef, (viewedSnapshot) => {
+        const viewedEventIds = viewedSnapshot.docs.map((doc) => doc.id);
+
+        // Mark events as opened if they exist in the viewedEvents subcollection
+        const updatedEvents = fetchedEvents.map((event) => ({
+          ...event,
+          isOpened: viewedEventIds.includes(event.id), // User-specific check
         }));
 
-        // Fetch user-specific viewed events
-        onSnapshot(viewedEventsRef, (viewedSnapshot) => {
-          const viewedEvents = viewedSnapshot.docs.map((doc) => doc.id);
+        // Update state
+        setEvents(updatedEvents);
 
-          // Mark events as opened if user has viewed them
-          const updatedEvents = fetchedEvents.map((event) => ({
-            ...event,
-            isOpened: viewedEvents.includes(event.id),
-          }));
-
-          // Calculate unopened count
-          const unopenedCount = updatedEvents.filter(
-            (event) => !event.isOpened
-          ).length;
-
-          setEvents(updatedEvents);
-          setUnopenedEventsCount(unopenedCount);
-        });
+        // Count unopened events
+        const unopenedCount = updatedEvents.filter(
+          (event) => !event.isOpened
+        ).length;
+        setUnopenedEventsCount(unopenedCount);
       });
+    });
 
-      return () => unsubscribeEvents();
-    };
-
-    fetchEvents();
+    return () => unsubscribeEvents();
   }, [currentUser]);
 
   // Fetch userType and username from Firestore
@@ -314,17 +306,10 @@ const Navbar = () => {
                             event.id
                           );
 
-                          // Add the event to the user's viewedEvents
+                          // Add the event ID to the user's viewedEvents
                           await setDoc(viewedEventRef, {
                             viewedAt: new Date(),
                           });
-
-                          // Update local state
-                          setEvents((prevEvents) =>
-                            prevEvents.map((e) =>
-                              e.id === event.id ? { ...e, isOpened: true } : e
-                            )
-                          );
 
                           // Open event link
                           if (event.link) {
@@ -339,7 +324,10 @@ const Navbar = () => {
                             );
                           }
                         } catch (error) {
-                          console.error("Error updating the event:", error);
+                          console.error(
+                            "Error updating the viewed event:",
+                            error
+                          );
                           message.error(
                             "Something went wrong while updating the event."
                           );
