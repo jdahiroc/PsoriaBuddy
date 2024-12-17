@@ -126,6 +126,51 @@ const Navbar = () => {
     return () => unsubscribe();
   }, []);
 
+  // Fetch both global events and the user-specific viewedEvents:
+  useEffect(() => {
+    const fetchEvents = async () => {
+      if (!currentUser) return;
+
+      const eventsCollectionRef = collection(db, "events");
+      const viewedEventsRef = collection(
+        db,
+        "users",
+        currentUser.uid,
+        "viewedEvents"
+      );
+
+      const unsubscribeEvents = onSnapshot(eventsCollectionRef, (snapshot) => {
+        const fetchedEvents = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // Fetch user-specific viewed events
+        onSnapshot(viewedEventsRef, (viewedSnapshot) => {
+          const viewedEvents = viewedSnapshot.docs.map((doc) => doc.id);
+
+          // Mark events as opened if user has viewed them
+          const updatedEvents = fetchedEvents.map((event) => ({
+            ...event,
+            isOpened: viewedEvents.includes(event.id),
+          }));
+
+          // Calculate unopened count
+          const unopenedCount = updatedEvents.filter(
+            (event) => !event.isOpened
+          ).length;
+
+          setEvents(updatedEvents);
+          setUnopenedEventsCount(unopenedCount);
+        });
+      });
+
+      return () => unsubscribeEvents();
+    };
+
+    fetchEvents();
+  }, [currentUser]);
+
   // Fetch userType and username from Firestore
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -211,7 +256,35 @@ const Navbar = () => {
       >
         <p className="modal-title">Events</p>
 
-        {events.length === 0 ? (
+        {!currentUser ? (
+          // If user is not logged in, display this message
+          <div style={{ textAlign: "center", padding: "20px" }}>
+            <p
+              style={{ fontSize: "18px", fontWeight: "bold", color: "#393939" }}
+            >
+              Please log in to view the latest events and updates.
+            </p>
+            <button
+              onClick={() => {
+                handleEventCancel(); // Close the events modal
+                showLoginModal(); // Open the login modal
+              }}
+              style={{
+                backgroundColor: "#51829B",
+                color: "#fff",
+                padding: "10px 30px",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                fontSize: "16px",
+                fontWeight: "500",
+                marginTop: "20px",
+              }}
+            >
+              Login
+            </button>
+          </div>
+        ) : events.length === 0 ? (
           <p className="event-modal-noavailable">No events available yet.</p>
         ) : (
           events.map((event) => (
@@ -230,17 +303,23 @@ const Navbar = () => {
                     </p>
                     <button
                       onClick={async () => {
-                        try {
-                          const eventRef = doc(db, "events", event.id);
+                        if (!currentUser) return;
 
-                          // Update Firestore document
-                          await setDoc(
-                            eventRef,
-                            { isOpened: true },
-                            { merge: true }
+                        try {
+                          const viewedEventRef = doc(
+                            db,
+                            "users",
+                            currentUser.uid,
+                            "viewedEvents",
+                            event.id
                           );
 
-                          // Update local state to mark the specific event as opened
+                          // Add the event to the user's viewedEvents
+                          await setDoc(viewedEventRef, {
+                            viewedAt: new Date(),
+                          });
+
+                          // Update local state
                           setEvents((prevEvents) =>
                             prevEvents.map((e) =>
                               e.id === event.id ? { ...e, isOpened: true } : e
