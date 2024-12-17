@@ -126,14 +126,17 @@ const AdminEvents = () => {
       dateCreated: isEditMode
         ? formData.dateCreated
         : new Date().toLocaleDateString(),
+      isOpened: false, 
     };
 
     try {
       if (isEditMode) {
+        // Update existing event
         const eventDoc = doc(db, "events", editKey);
         await updateDoc(eventDoc, updatedFormData);
         setAlertMessage("Event Updated Successfully");
       } else {
+        // Add a new event with isOpened default to false
         await addDoc(eventsCollectionRef, updatedFormData);
         setAlertMessage("New Event Created Successfully");
       }
@@ -142,6 +145,7 @@ const AdminEvents = () => {
       setShowAlert(true);
       setTimeout(() => setShowAlert(false), 3000);
     } catch (error) {
+      console.error("Failed to save event:", error);
       message.error("Failed to save event.");
     }
   };
