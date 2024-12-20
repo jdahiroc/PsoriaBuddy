@@ -21,6 +21,8 @@ import PatientSignup from "./pages/Signup";
 import PostCreationAcc from "./pages/Postcreationacc";
 import ForgotPassword from "./pages/ForgotPassword";
 // Dermatologist Routes
+import DermatologistLogin from "./pages/Dermatologist/LoginDermatologist";
+import DermatologistSignup from "./pages/Dermatologist/SignupDermatologist";
 import VerificationPending from "./pages/VerificationPending";
 import DermatologistProfile from "./pages/Dermatologist/Dermatologistprofile";
 import DermatologistAppointment from "./pages/Dermatologist/DermatologistAppointment";
@@ -51,6 +53,8 @@ function App() {
         <Route element={<AuthRedirectRoute />}>
           <Route path="/login" element={<PatientLogin />} />
           <Route path="/signup" element={<PatientSignup />} />
+          <Route path="/d/login" element={<DermatologistLogin />} />
+          <Route path="/d/signup" element={<DermatologistSignup />} />
         </Route>
 
         {/* Protected Routes */}
