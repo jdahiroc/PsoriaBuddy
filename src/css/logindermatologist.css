@@ -1,0 +1,176 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.derma-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.derma-login-contents {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  gap: 30px;
+}
+
+/* LEFT SECTION */
+.derma-login-left-section img {
+  width: 100%;
+  max-width: 874px;
+  height: 100%;
+  max-height: 874px;
+  border-radius: 10px;
+}
+
+/* RIGHT SECTION */
+.derma-login-right-section {
+  margin-right: 70px;
+  height: 620px;
+}
+
+.derma-login-right-header {
+    margin-top: 1em;
+  padding: 0.5em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.derma-login-right-header p {
+  font-family: "Inter" sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+  color: #393939;
+}
+
+.derma-login-right-subheader {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.derma-login-right-subheader p {
+  font-family: "Inter" sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: #393939;
+  opacity: 60%;
+}
+
+.derma-login-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.derma-login-forgotpassword {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.derma-login-forgotpassword a {
+  text-decoration: underline;
+}
+
+.derma-login-forgotpassword p {
+  font-family: "Inter" sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #393939;
+  opacity: 82%;
+}
+
+.derma-login-buttons {
+  margin-top: 24px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.derma-login-button {
+  width: 590px;
+  height: 45px;
+}
+
+.derma-login-button button {
+  width: 100%;
+  height: 100%;
+  background-color: #f6995c;
+  color: #ffffff;
+  font-family: "Inter" sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  opacity: 90%;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.derma-login-button button:hover {
+  opacity: 100%;
+}
+
+.derma-createaccount-button {
+  width: 590px;
+  height: 45px;
+}
+
+.derma-createaccount-button button {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  color: #393939;
+  font-family: "Inter" sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  border: 1px #393939 solid;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.derma-createaccount-button button:hover {
+  background-color: #393939;
+  color: #ffffff;
+}
+
+.derma-login-divider {
+  padding: 18px 15px;
+}
+
+.derma-google-login {
+  width: 590px;
+  height: 45px;
+}
+
+.derma-google-login button {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  color: #393939;
+  font-family: "Inter" sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px #393939 solid;
+  border-radius: 10px;
+  gap: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.derma-google-login button:hover {
+  background-color: #393939;
+  color: #ffffff;
+}
