@@ -32,7 +32,7 @@ const useLogout = () => {
       sessionStorage.clear();
 
       // Navigate to Login and prevent back button
-      navigate("/login", { replace: true, state: { resetOtpStage: true } });
+      navigate("/", { replace: true, state: { resetOtpStage: true } });
 
       // Show success message
       message.success("Logged out successfully.");
