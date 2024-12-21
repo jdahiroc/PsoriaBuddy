@@ -68,13 +68,12 @@ const LoginWithOtpVerification = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isOtpStage, setIsOtpStage] = useState(false);
 
-  // OTP resend logic
+  // OTP resend states
   const [resendTimer, setResendTimer] = useState(60); // Timer for OTP resend
   const [canResend, setCanResend] = useState(false); // Resend button enabled/disabled state
 
   // Ant Design message component for notifications
-  const [messageApi, contextHolder] = message.useMessage();
-  // This will fix the ant message WARNING!
+  const [contextHolder] = message.useMessage();
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [messageType, setMessageType] = useState(null);
 
@@ -103,12 +102,10 @@ const LoginWithOtpVerification = () => {
       if (!isOtpStage) {
         if (userType === "Patient") {
           navigate("/u/profile", { replace: true });
-        } else if (userType === "Dermatologist") {
-          navigate(isVerified ? "/d/profile" : "/d/verify", {
-            replace: true,
-          });
         } else if (userType === "Admin") {
           navigate("/a/dashboard", { replace: true });
+        } else {
+          navigate("/", { replace: true });
         }
       }
     }
@@ -134,29 +131,6 @@ const LoginWithOtpVerification = () => {
     }
   }, [notificationMessage, messageType]);
 
-  // Function to retry Firestore operations
-  const retryOperation = async (operation, retries = 3, delay = 1000) => {
-    let attempt = 0;
-    while (attempt < retries) {
-      try {
-        return await operation();
-      } catch (error) {
-        if (error.code === "unavailable" || error.message.includes("network")) {
-          console.warn(
-            `Network error, retrying... (${attempt + 1}/${retries})`
-          );
-          attempt++;
-          await new Promise((res) => setTimeout(res, delay)); // Delay before retry
-        } else {
-          throw error; // Throw non-network errors immediately
-        }
-      }
-    }
-    throw new Error(
-      "Network error: Unable to complete the operation after retries."
-    );
-  };
-
   //  Handles the Google Login
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
@@ -164,7 +138,7 @@ const LoginWithOtpVerification = () => {
     try {
       setIsLoading(true);
       message.loading({
-        content: "Logging in with Google...",
+        content: "Connecting with Google...",
         key: "googleLogin",
       });
 
@@ -191,6 +165,7 @@ const LoginWithOtpVerification = () => {
           createdAt: new Date(),
           userType: "Patient", // Default to Patient
         };
+        // Create Patient Data
         await setDoc(userRef, userData);
       }
 
@@ -208,12 +183,13 @@ const LoginWithOtpVerification = () => {
 
       if (userType === "Patient") {
         navigate("/u/profile", { replace: true });
-      } else if (userType === "Dermatologist") {
-        navigate(isVerified ? "/d/profile" : "/d/verify", { replace: true });
       } else if (userType === "Admin") {
         navigate("/a/accounts", { replace: true });
       } else {
-        navigate("/", { replace: true }); // Fallback route
+        navigate("/", { replace: true });
+        message.warning(
+          "Your account type is not a Patient. Please try again! "
+        );
       }
     } catch (error) {
       console.error("Google Login Failed:", error.message);
@@ -233,14 +209,16 @@ const LoginWithOtpVerification = () => {
 
     try {
       await setPersistence(auth, browserLocalPersistence);
-
       const userCredential = await signInWithEmailAndPassword(
         auth,
         patientEmail,
         patientPassword
       );
+
+      // Initialize user
       const user = userCredential.user;
 
+      // Checks user''s email verification
       if (!user.emailVerified) {
         setMessageType("error");
         setNotificationMessage(
@@ -250,9 +228,11 @@ const LoginWithOtpVerification = () => {
         return;
       }
 
+      // Initialize userRef & userSnap
       const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
 
+      // Checks user if the currentUser exists
       if (userSnap.exists()) {
         const userData = userSnap.data();
 
@@ -264,7 +244,7 @@ const LoginWithOtpVerification = () => {
           return;
         }
 
-        // Generate and send OTP
+        // Generate and Sends OTP
         const otpCode = generateOtp();
         await setDoc(
           userRef,
@@ -299,10 +279,13 @@ const LoginWithOtpVerification = () => {
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
     try {
+      // Initialize userRef & userSnap
       const userRef = doc(db, "users", auth.currentUser.uid);
       const userSnap = await getDoc(userRef);
 
+      // Checks user if the currentUser exists
       if (userSnap.exists()) {
         const userData = userSnap.data();
         const savedOtp = String(userData.otp);
@@ -335,7 +318,6 @@ const LoginWithOtpVerification = () => {
     } catch (error) {
       setMessageType("error");
       setNotificationMessage("An error occurred during OTP verification.");
-      console.error("OTP Verification Error:", error);
     } finally {
       setIsLoading(false);
     }
@@ -376,7 +358,6 @@ const LoginWithOtpVerification = () => {
 
   return (
     <>
-      {contextHolder}
       <img className="loginbg" src={loginbg} alt="background" />
       <div className="login-container">
         <form
