@@ -1,0 +1,316 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.derma-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.derma-signup-contents {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 20px;
+  gap: 30px;
+}
+
+/* LEFT SECTION */
+.derma-signup-left-section img {
+  width: 100%;
+  max-width: 874px;
+  height: 100%;
+  max-height: 874px;
+  border-radius: 10px;
+}
+
+/* RIGHT SECTION */
+.derma-signup-right-section {
+  margin-right: 70px;
+  height: 620px;
+}
+
+.derma-signup-right-header {
+  margin-top: 1em;
+  padding: 0.5em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.derma-signup-right-header p {
+  font-family: "Inter" sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+  color: #393939;
+}
+
+.derma-signup-right-subheader {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.derma-signup-right-subheader p {
+  font-family: "Inter" sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: #393939;
+  opacity: 60%;
+}
+
+.derma-signup-alreadyhaveaccount {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.derma-signup-alreadyhaveaccount a {
+  text-decoration: underline;
+}
+
+.derma-signup-alreadyhaveaccount p {
+  font-family: "Inter" sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #393939;
+  opacity: 82%;
+}
+
+.derma-signup-buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.derma-signup-button {
+  width: 590px;
+  height: 45px;
+}
+
+.derma-signup-button button {
+  max-width: 590px;
+  width: 100%;
+  height: 100%;
+  background-color: #f6995c;
+  color: #ffffff;
+  font-family: "Inter" sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  opacity: 90%;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.derma-signup-button button:hover {
+  opacity: 100%;
+}
+
+/* Disclaimer Notice */
+.user-disclaimer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+.user-disclaimer-item1 {
+  max-width: 420px;
+  width: 100%;
+}
+
+.checkBox-span1 {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  color: #393939;
+}
+
+.checkBox-span2 {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  color: #393939;
+}
+
+.user-disclaimer-item2 {
+  align-items: center;
+  max-width: 420px;
+  width: 100%;
+}
+
+/* Disclaimer Notice Modal */
+.disclaimer-notice-container {
+  width: 100%;
+  height: 100%;
+}
+
+.disclaimer-notice-contents {
+  padding: 30px 30px;
+}
+
+.disclaimer-notice-header {
+  margin-bottom: 0.5em;
+}
+
+.disclaimer-notice-header p {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  color: #393939;
+}
+
+.disclaimer-notice-subheader {
+  margin-bottom: 0.5em;
+}
+
+.disclaimer-notice-subheader p {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #393939;
+}
+
+.disclaimer-notice-text1 {
+  margin-bottom: 0.5em;
+}
+
+.disclaimer-notice-text1 p {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 13.5px;
+  color: #393939;
+}
+
+.disclaimer-notice-lists {
+  margin-left: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.disclaimer-notice-text2 {
+  margin-top: 0.5em;
+}
+
+.disclaimer-notice-text2 li {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  color: #393939;
+  font-size: 14px;
+}
+
+.disclaimer-notice-text2 span {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #393939;
+  font-size: 13.5px;
+}
+
+.disclaimer-notice-text3 {
+  margin-top: 0.5em;
+}
+
+.disclaimer-notice-text3 li {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  color: #393939;
+  font-size: 14px;
+}
+
+.disclaimer-notice-text3 span {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #393939;
+  font-size: 13.5px;
+}
+
+.d-li {
+  margin-left: 3.5em;
+  margin-top: 0.5em;
+}
+
+.d-li li {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #393939;
+  font-size: 13.5px;
+}
+
+.disclaimer-notice-text4 {
+  margin-top: 0.5em;
+}
+
+.disclaimer-notice-text4 li {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  color: #393939;
+  font-size: 14px;
+}
+
+.disclaimer-notice-text4 span {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #393939;
+  font-size: 13.5px;
+}
+
+.disclaimer-notice-text5 {
+  margin-top: 0.5em;
+}
+
+.disclaimer-notice-text5 li {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  color: #393939;
+  font-size: 14px;
+}
+
+.disclaimer-notice-text5 span {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #393939;
+  font-size: 13.5px;
+}
+
+.disclaimer-notice-text6 {
+  margin-top: 0.5em;
+}
+
+.disclaimer-notice-text6 li {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  color: #393939;
+  font-size: 14px;
+}
+
+.disclaimer-notice-text6 span {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #393939;
+  font-size: 13.5px;
+}
+
+.disclaimer-notice-text7 {
+  margin-top: 1.5em;
+}
+
+.disclaimer-notice-text7 p {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #393939;
+  font-size: 13.5px;
+}
+
+.disclaimer-notice-text7 span {
+  font-weight: 700;
+}
