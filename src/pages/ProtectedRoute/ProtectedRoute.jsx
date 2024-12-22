@@ -8,7 +8,11 @@ const ProtectedRoute = () => {
 
   // Prevent rendering or navigation during loading state
   if (loading) {
-    return null;
+    return (
+      <div style={{ textAlign: "center", marginTop: "20%" }}>
+        <p>Loading...</p>
+      </div>
+    );
   }
 
   // Redirect to login if the user is not authenticated or OTP is not verified
