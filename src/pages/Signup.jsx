@@ -138,7 +138,7 @@ const SignUp = () => {
 
       setIsLoading(false);
       //  After creation it will navigate to post creation
-      navigate("/post-creation"); 
+      navigate("/post");
     } catch (error) {
       // Sets specific error messages based on Firebase response
       if (error.code === "auth/email-already-in-use") {
