@@ -1,76 +1,81 @@
-// React Hooks
 import React, { createContext, useState, useEffect } from "react";
-// Firebase Hooks
 import { auth } from "../../firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
-// Initialize Firestore instance
 export const db = getFirestore();
-
-// Create the authentication context to provide global auth state
 export const AuthContext = createContext();
 
-// Create the authentication provider to manage auth state
 export const AuthProvider = ({ children }) => {
-  // State to store the current user object
   const [currentUser, setCurrentUser] = useState(null);
-
-  // State to store OTP verification status, using localStorage to persist it
   const [isOtpVerified, setIsOtpVerified] = useState(false);
-
-  // Loading state to manage authentication status check process
   const [loading, setLoading] = useState(true);
 
   const logout = async () => {
     try {
-      await auth.signOut();
+      setLoading(true);
+
+      // Clear current user state before signOut
       setCurrentUser(null);
+      setIsOtpVerified(false);
+
+      await signOut(auth);
     } catch (error) {
       console.error("Logout failed:", error);
-      throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
-  // useEffect hook to handle user authentication state changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const handleAuthChange = async (user) => {
       setLoading(true);
+
       if (user) {
         try {
           const userRef = doc(db, "users", user.uid);
           const userSnap = await getDoc(userRef);
-          const userData = userSnap.exists() ? userSnap.data() : {};
 
-          // Explicitly check and set OTP verification status
-          const otpVerified = userData.isOtpVerified === true;
+          if (userSnap.exists()) {
+            const userData = userSnap.data();
+            const otpVerified = userData.isOtpVerified === true;
 
-          // REMOVE THIS LINE
-          // localStorage.setItem("isOtpVerified", otpVerified ? "true" : "false");
+            setCurrentUser({
+              ...user,
+              ...userData,
+              isOtpVerified: otpVerified,
+            });
 
-          setCurrentUser({
-            ...user,
-            ...userData,
-            isOtpVerified: otpVerified,
-          });
-
-          setIsOtpVerified(otpVerified);
+            setIsOtpVerified(otpVerified);
+          } else {
+            console.warn("No user document found in Firestore.");
+          }
         } catch (error) {
-          console.error("Error fetching user data:", error);
+          if (error.code === "permission-denied") {
+            console.error("Firestore permission denied. Check security rules.");
+          } else {
+            console.error("Error fetching user data:", error);
+          }
         }
       } else {
         setCurrentUser(null);
         setIsOtpVerified(false);
-
-        // localStorage.removeItem("isOtpVerified");
       }
-      setLoading(false);
-    });
 
-    return () => unsubscribe();
+      setLoading(false);
+    };
+
+    const unsubscribe = onAuthStateChanged(auth, handleAuthChange);
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+      setCurrentUser(null);
+      setIsOtpVerified(false);
+    };
   }, []);
 
-  // Provide the auth state values to children components via AuthContext.Provider
   return (
     <AuthContext.Provider
       value={{
