@@ -201,16 +201,23 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const user = auth.currentUser; // Get the currently logged-in user
+
       if (user) {
         const userRef = doc(db, "users", user.uid);
+
+        // Perform Firestore operation while the user is still authenticated
         await setDoc(userRef, { isOtpVerified: false }, { merge: true });
       }
 
+      // Logout the user
       await logout();
+
+      // Notify the user
       handleSnackBarOpen();
       navigate("/", { replace: true });
     } catch (error) {
       console.error("Logout error:", error);
+      message.error("Failed to log out. Please try again.");
     } finally {
       handleCloseMenu();
     }
