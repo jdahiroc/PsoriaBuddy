@@ -165,8 +165,18 @@ const LoginWithOtpVerification = () => {
           createdAt: new Date(),
           userType: "Patient", // Default to Patient
         };
-        // Create Patient Data
+        // Save user data to Firestore
         await setDoc(userRef, userData);
+      }
+
+      // Validate the userType
+      const { userType } = userData;
+      if (userType !== "Patient" && userType !== "Admin") {
+        message.warning(
+          "Login process stopped. Account type is not Patient or Admin."
+        );
+        setIsLoading(false);
+        return; // Stop login process
       }
 
       // Update AuthContext
@@ -179,17 +189,10 @@ const LoginWithOtpVerification = () => {
       });
 
       // Redirect the user based on their role
-      const { userType, isVerified } = userData;
-
       if (userType === "Patient") {
         navigate("/u/profile", { replace: true });
       } else if (userType === "Admin") {
         navigate("/a/accounts", { replace: true });
-      } else {
-        navigate("/", { replace: true });
-        message.warning(
-          "Your account type is not a Patient. Please try again! "
-        );
       }
     } catch (error) {
       console.error("Google Login Failed:", error.message);
@@ -218,7 +221,7 @@ const LoginWithOtpVerification = () => {
       // Initialize user
       const user = userCredential.user;
 
-      // Checks user''s email verification
+      // Check if the user's email is verified
       if (!user.emailVerified) {
         setMessageType("error");
         setNotificationMessage(
@@ -232,11 +235,21 @@ const LoginWithOtpVerification = () => {
       const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
 
-      // Checks user if the currentUser exists
       if (userSnap.exists()) {
         const userData = userSnap.data();
+        const { userType } = userData;
 
-        // Explicitly check OTP verification
+        // Check if the userType is valid
+        if (userType !== "Patient" && userType !== "Admin") {
+          setMessageType("warning");
+          setNotificationMessage(
+            "Login process stopped.Account type is not Patient or Admin."
+          );
+          setIsLoading(false);
+          return; // End login process
+        }
+
+        // If userType is valid, proceed with OTP verification
         if (userData.isOtpVerified) {
           setIsOtpVerified(true);
           setCurrentUser({ ...user, ...userData });
@@ -244,19 +257,18 @@ const LoginWithOtpVerification = () => {
           return;
         }
 
-        // Generate and Sends OTP
+        // Generate and send OTP
         const otpCode = generateOtp();
         await setDoc(
           userRef,
           {
             otp: otpCode,
-            otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000),
+            otpExpiresAt: new Date(Date.now() + 10 * 60 * 1000), // OTP expiration time
           },
           { merge: true }
         );
         await sendEmailWithOtp(patientEmail, otpCode);
 
-        // Explicitly set OTP stage
         setIsOtpStage(true);
         setMessageType("success");
         setNotificationMessage("OTP has been sent to your email address.");
