@@ -19,6 +19,7 @@ import PatientVideoMeet from "./pages/PatientVideoMeet";
 import PatientLogin from "./pages/Login";
 import PatientSignup from "./pages/Signup";
 import PostCreationAcc from "./pages/Postcreationacc";
+import PostCreationDerma from "./pages/PostcreationDerma";
 import ForgotPassword from "./pages/ForgotPassword";
 // Dermatologist Routes
 import DermatologistLogin from "./pages/Dermatologist/LoginDermatologist";
@@ -42,7 +43,8 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" index element={<Homepage />} />
-        <Route path="/post-creation" element={<PostCreationAcc />} />
+        <Route path="/post" element={<PostCreationAcc />} />
+        <Route path="/d/post" element={<PostCreationDerma />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/d/verify" element={<VerificationPending />} />
 
