@@ -224,60 +224,62 @@ const LoginDermatologist = () => {
   // Handle the Google Login Function
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
-
+  
     try {
       setIsLoading(true);
       message.loading({
-        content: "Connecting with Google",
+        content: "Connecting with Google...",
         key: "googleLogin",
       });
-
+  
       // Trigger Google Login with Popup
       const result = await signInWithPopup(auth, provider);
-      const user = result.user; // Authenticated user
-
-      // Ensure user data is synced with Firestore
+      const user = result.user;
+  
+      // Fetch or create user data in Firestore
       const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
-
+  
       let userData;
-
+  
       if (userSnap.exists()) {
-        // if user exists, fetch their data
         userData = userSnap.data();
       } else {
-        // if user doesn't exist, create a new Firestore record
         userData = {
           email: user.email,
           fullName: user.displayName || "Google User",
           uid: user.uid,
-          isOtpVerified: true, // Automatically verified for Google
+          isOtpVerified: true, // Automatically verified for Google users
           createdAt: new Date(),
           userType: "Dermatologist", // Default to Dermatologist
         };
-        // Create Dermatologist Data
         await setDoc(userRef, userData);
       }
-
-      // Update AuthContext
+  
+      // Validate userType
+      const { userType } = userData;
+      if (userType !== "Dermatologist" && userType !== "Admin") {
+        message.warning(
+          "Account type is not Dermatologist or Admin. Login process stopped."
+        );
+        setIsLoading(false);
+        return; // Stop login process
+      }
+  
+      // Proceed with login
       setCurrentUser({ ...user, ...userData });
       setIsOtpVerified(true);
-
+  
       message.success({
         content: "Google Login Successful!",
         key: "googleLogin",
       });
-
-      // Redirect the user based on their role
-      const { userType, isVerified } = userData;
-
+  
+      // Redirect based on userType
       if (userType === "Dermatologist") {
-        navigate(isVerified ? "/d/profile" : "/d/verify", { replace: true });
-      } else {
-        navigate("/", { replace: true });
-        message.warning(
-          "Your account type is not a Dermatologist. Please try again! "
-        );
+        navigate("/d/profile", { replace: true });
+      } else if (userType === "Admin") {
+        navigate("/a/dashboard", { replace: true });
       }
     } catch (error) {
       console.error("Google Login Failed:", error.message);
@@ -290,6 +292,7 @@ const LoginDermatologist = () => {
     }
   };
 
+  // Handles Email & Password Login 
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -301,30 +304,44 @@ const LoginDermatologist = () => {
         dermatologistEmail,
         dermatologistPassword
       );
-      // Initiliaze user
+
+      // Initialize user
       const user = userCredential.user;
 
-      // Checks user's email verificatiion
+      // Check email verification
       if (!user.emailVerified) {
         showNotification("error", "Verify your email before logging in.");
         setIsLoading(false);
         return;
       }
 
-      // Initialize userRef & userSnap
+      // Fetch user data from Firestore
       const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
 
-      // Checks user if the currentUser exists
       if (userSnap.exists()) {
         const userData = userSnap.data();
+        const { userType } = userData;
 
-        // Explicitly check OTP verification
+        // Validate userType
+        if (userType !== "Dermatologist" && userType !== "Admin") {
+          showNotification(
+            "warning",
+            "Account type is not Dermatologist or Admin. Login process stopped."
+          );
+          setIsLoading(false);
+          return; // Stop login process
+        }
+
+        // Proceed with OTP verification
         if (userData.isOtpVerified) {
           setIsOtpVerified(true);
           setCurrentUser({ ...user, ...userData });
-
-          // Generate and Sends OTP
+          navigate(
+            userType === "Dermatologist" ? "/d/profile" : "/a/dashboard",
+            { replace: true }
+          );
+        } else {
           const otpCode = generateOtp();
           await setDoc(
             userRef,
@@ -334,8 +351,7 @@ const LoginDermatologist = () => {
             },
             { merge: true }
           );
-          await sendEmailWithOtp(patientEmail, otpCode);
-        } else {
+          await sendEmailWithOtp(user.email, otpCode);
           setIsOtpStage(true);
           showNotification("success", "OTP sent to your email.");
         }
@@ -344,6 +360,7 @@ const LoginDermatologist = () => {
       }
     } catch (error) {
       showNotification("error", "Login failed. Check your credentials.");
+      console.error("Login error:", error);
     } finally {
       setIsLoading(false);
     }
