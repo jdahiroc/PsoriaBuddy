@@ -386,26 +386,8 @@ const LoginDermatologist = () => {
         showNotification("error", "User data not found.");
       }
     } catch (error) {
-      showNotification("error", "Login failed. Check your credentials.");
+      showNotification("error", "Login failed. Check your credentials or create an account!");
       console.error("Login error:", error);
-      // Sets specific error messages based on Firebase response
-      if (error.code === "auth/email-already-in-use") {
-        setError("This email is already in use. Please use a different email.");
-        useNotification(
-          "This email is already in use. Please use a different email."
-        );
-      } else if (error.code === "auth/invalid-email") {
-        setError("Invalid email format. Please enter a valid email address.");
-        useNotification(
-          "Invalid email format. Please enter a valid email address."
-        );
-      } else if (error.code === "auth/weak-password") {
-        setError("Password should be at least 6 characters.");
-        useNotification("Password should be at least 6 characters.");
-      } else {
-        setError("Failed to create account. Please try again.");
-        useNotification("Failed to create account. Please try again.");
-      }
     } finally {
       setIsLoading(false);
     }
