@@ -165,7 +165,9 @@ const LoginForm = ({
           </button>
         </div>
         <div className="derma-createaccount-button">
-          <button>Create Account</button>
+          <Link to="/d/signup">
+            <button>Create Account</button>
+          </Link>
         </div>
       </div>
     </>
@@ -224,24 +226,24 @@ const LoginDermatologist = () => {
   // Handle the Google Login Function
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
-  
+
     try {
       setIsLoading(true);
       message.loading({
         content: "Connecting with Google...",
         key: "googleLogin",
       });
-  
+
       // Trigger Google Login with Popup
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-  
+
       // Fetch or create user data in Firestore
       const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
-  
+
       let userData;
-  
+
       if (userSnap.exists()) {
         userData = userSnap.data();
       } else {
@@ -255,7 +257,7 @@ const LoginDermatologist = () => {
         };
         await setDoc(userRef, userData);
       }
-  
+
       // Validate userType
       const { userType } = userData;
       if (userType !== "Dermatologist" && userType !== "Admin") {
@@ -265,16 +267,16 @@ const LoginDermatologist = () => {
         setIsLoading(false);
         return; // Stop login process
       }
-  
+
       // Proceed with login
       setCurrentUser({ ...user, ...userData });
       setIsOtpVerified(true);
-  
+
       message.success({
         content: "Google Login Successful!",
         key: "googleLogin",
       });
-  
+
       // Redirect based on userType
       if (userType === "Dermatologist") {
         navigate("/d/profile", { replace: true });
@@ -292,7 +294,7 @@ const LoginDermatologist = () => {
     }
   };
 
-  // Handles Email & Password Login 
+  // Handles Email & Password Login
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
