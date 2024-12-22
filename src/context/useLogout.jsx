@@ -15,30 +15,27 @@ const useLogout = () => {
       const user = auth.currentUser;
 
       if (user) {
-        // Reset OTP verification status in Firestore
         const userRef = doc(db, "users", user.uid);
         await setDoc(userRef, { isOtpVerified: false }, { merge: true });
       }
 
-      // Sign out from Firebase
       await signOut(auth);
 
-      // Reset application state
       setCurrentUser(null);
       setIsOtpVerified(false);
-
-      // Clear browser state storage
       localStorage.removeItem("isOtpVerified");
       sessionStorage.clear();
 
-      // Navigate to Login and prevent back button
       navigate("/", { replace: true, state: { resetOtpStage: true } });
 
-      // Show success message
       message.success("Logged out successfully.");
     } catch (error) {
       console.error("Logout error:", error);
-      message.error("Failed to log out. Please try again.");
+      if (error.code === "permission-denied") {
+        message.error("Permission denied. Contact support.");
+      } else {
+        message.error("Failed to log out. Please try again.");
+      }
     }
   };
 
