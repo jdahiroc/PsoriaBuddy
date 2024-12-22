@@ -18,6 +18,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
 
 // Assets
@@ -251,6 +252,7 @@ const LoginDermatologist = () => {
           email: user.email,
           fullName: user.displayName || "Google User",
           uid: user.uid,
+          isVerified: false,
           isOtpVerified: true, // Automatically verified for Google users
           createdAt: new Date(),
           userType: "Dermatologist", // Default to Dermatologist
@@ -265,6 +267,8 @@ const LoginDermatologist = () => {
           "Login process stopped. Account type is not Dermatologist. "
         );
         setIsLoading(false);
+        // Immediately log out the user
+        await signOut(auth);
         return; // Stop login process
       }
 
@@ -324,6 +328,17 @@ const LoginDermatologist = () => {
       if (userSnap.exists()) {
         const userData = userSnap.data();
         const { userType } = userData;
+
+        // Validate userType
+        if (userType !== "Dermatologist" && userType !== "Admin") {
+          message.warning(
+            "Login process stopped. Account type is not Dermatologist. "
+          );
+          setIsLoading(false);
+          // Immediately log out the user
+          await signOut(auth);
+          return; // Stop login process
+        }
 
         // Validate userType
         if (userType !== "Dermatologist" && userType !== "Admin") {

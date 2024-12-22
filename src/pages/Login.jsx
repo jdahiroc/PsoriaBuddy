@@ -28,6 +28,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
@@ -172,10 +173,10 @@ const LoginWithOtpVerification = () => {
       // Validate the userType
       const { userType } = userData;
       if (userType !== "Patient" && userType !== "Admin") {
-        message.warning(
-          "Login process stopped. Account type is not Patient."
-        );
+        message.warning("Login process stopped. Account type is not Patient.");
         setIsLoading(false);
+        // Immediately log out the user
+        await signOut(auth);
         return; // Stop login process
       }
 
@@ -246,6 +247,8 @@ const LoginWithOtpVerification = () => {
             "Login process stopped. Account type is not Patient."
           );
           setIsLoading(false);
+          // Immediately log out the user
+          await signOut(auth);
           return; // End login process
         }
 
