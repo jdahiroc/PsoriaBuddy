@@ -202,6 +202,7 @@ const LoginDermatologist = () => {
 
   useEffect(() => {
     if (isOtpVerified && currentUser) {
+      navigate("/d/profile", { replace: true });
       const { userType, isVerified } = currentUser;
       if (!isOtpStage) {
         if (userType === "Dermatologist") {
@@ -257,7 +258,12 @@ const LoginDermatologist = () => {
           createdAt: new Date(),
           userType: "Dermatologist", // Default to Dermatologist
         };
-        await setDoc(userRef, userData);
+        await setDoc(
+          userRef,
+          userData,
+          { isOtpVerified: true },
+          { merge: true }
+        );
       }
 
       // Validate userType
@@ -273,7 +279,11 @@ const LoginDermatologist = () => {
       }
 
       // Proceed with login
-      setCurrentUser({ ...user, ...userData });
+      setCurrentUser({
+        ...user,
+        ...userData,
+        isOtpVerified: true,
+      });
       setIsOtpVerified(true);
 
       message.success({

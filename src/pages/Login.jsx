@@ -167,7 +167,12 @@ const LoginWithOtpVerification = () => {
           userType: "Patient", // Default to Patient
         };
         // Save user data to Firestore
-        await setDoc(userRef, userData);
+        await setDoc(
+          userRef,
+          userData,
+          { isOtpVerified: true },
+          { merge: true }
+        );
       }
 
       // Validate the userType
