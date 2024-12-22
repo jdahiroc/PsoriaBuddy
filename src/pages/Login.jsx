@@ -173,7 +173,7 @@ const LoginWithOtpVerification = () => {
       const { userType } = userData;
       if (userType !== "Patient" && userType !== "Admin") {
         message.warning(
-          "Login process stopped. Account type is not Patient or Admin."
+          "Login process stopped. Account type is not Patient."
         );
         setIsLoading(false);
         return; // Stop login process
@@ -243,7 +243,7 @@ const LoginWithOtpVerification = () => {
         if (userType !== "Patient" && userType !== "Admin") {
           setMessageType("warning");
           setNotificationMessage(
-            "Login process stopped.Account type is not Patient or Admin."
+            "Login process stopped. Account type is not Patient."
           );
           setIsLoading(false);
           return; // End login process
