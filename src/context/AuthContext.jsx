@@ -45,10 +45,11 @@ export const AuthProvider = ({ children }) => {
               ...userData,
               isOtpVerified: otpVerified,
             });
-
             setIsOtpVerified(otpVerified);
           } else {
             console.warn("No user document found in Firestore.");
+            setCurrentUser(null);
+            setIsOtpVerified(false); // Reset if no document is found
           }
         } catch (error) {
           if (error.code === "permission-denied") {
