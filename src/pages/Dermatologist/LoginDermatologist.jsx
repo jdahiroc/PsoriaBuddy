@@ -260,7 +260,7 @@ const LoginDermatologist = () => {
       const { userType } = userData;
       if (userType !== "Dermatologist" && userType !== "Admin") {
         message.warning(
-          "Account type is not Dermatologist or Admin. Login process stopped."
+          "Login process stopped. Account type is not Dermatologist. "
         );
         setIsLoading(false);
         return; // Stop login process
@@ -327,7 +327,7 @@ const LoginDermatologist = () => {
         if (userType !== "Dermatologist" && userType !== "Admin") {
           showNotification(
             "warning",
-            "Account type is not Dermatologist or Admin. Login process stopped."
+            "Login process stopped. Account type is not Dermatologist. "
           );
           setIsLoading(false);
           return; // Stop login process
