@@ -9,6 +9,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [verification, setVerification] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const logout = async () => {
@@ -46,6 +47,7 @@ export const AuthProvider = ({ children }) => {
               isOtpVerified: otpVerified,
             });
             setIsOtpVerified(otpVerified);
+            setVerification(userData.verification || "unverified"); // Default to "unverified" if not set
           } else {
             console.warn("No user document found in Firestore.");
             setCurrentUser(null);
@@ -84,6 +86,8 @@ export const AuthProvider = ({ children }) => {
         setCurrentUser,
         isOtpVerified,
         setIsOtpVerified,
+        verification,
+        setVerification,
         loading,
         logout,
       }}
