@@ -11,7 +11,13 @@ import emailjs from "@emailjs/browser";
 
 // Firebase
 import { auth } from "../../../firebaseConfig";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import {
   setPersistence,
   browserLocalPersistence,
@@ -206,7 +212,9 @@ const LoginDermatologist = () => {
       const { userType, isVerified } = currentUser;
       if (!isOtpStage) {
         if (userType === "Dermatologist") {
-          navigate(isVerified ? "/d/profile" : "/d/verify", { replace: true });
+          navigate(isVerified ? "/d/profile" : "/d/verification", {
+            replace: true,
+          });
         } else {
           navigate("/", { replace: true });
         }
@@ -248,6 +256,9 @@ const LoginDermatologist = () => {
 
       if (userSnap.exists()) {
         userData = userSnap.data();
+        // updates the isOtpVerified every user login, if account exists
+        await updateDoc(userRef, { isOtpVerified: true });
+
       } else {
         userData = {
           email: user.email,
@@ -265,6 +276,9 @@ const LoginDermatologist = () => {
           { merge: true }
         );
       }
+
+      // Ensure `isOtpVerified` is not overwritten if the account exists
+      const isOtpVerified = userSnap.exists() ? userData.isOtpVerified : true;
 
       // Validate userType
       const { userType } = userData;
@@ -286,6 +300,7 @@ const LoginDermatologist = () => {
       });
       setIsOtpVerified(true);
 
+      // Shows the message
       message.success({
         content: "Google Login Successful!",
         key: "googleLogin",
@@ -386,7 +401,10 @@ const LoginDermatologist = () => {
         showNotification("error", "User data not found.");
       }
     } catch (error) {
-      showNotification("error", "Login failed. Check your credentials or create an account!");
+      showNotification(
+        "error",
+        "Login failed. Check your credentials or create an account!"
+      );
       console.error("Login error:", error);
     } finally {
       setIsLoading(false);
