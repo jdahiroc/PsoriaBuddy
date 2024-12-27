@@ -6,7 +6,7 @@ const AuthRedirectRoute = () => {
   const { currentUser, isOtpVerified, loading } = useContext(AuthContext);
 
   if (loading) {
-    return null; 
+    return null;
   }
 
   if (currentUser && isOtpVerified) {
@@ -20,7 +20,7 @@ const AuthRedirectRoute = () => {
       return isVerified ? (
         <Navigate to="/d/profile" replace />
       ) : (
-        <Navigate to="/d/verify" replace />
+        <Navigate to="/d/verification" replace />
       );
     }
 
