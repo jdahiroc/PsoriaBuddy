@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.verification-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.verification-contents {
+  background-color: #f7f7f7;
+  width: 800px;
+  height: auto;
+  padding: 20px 45px;
+  overflow: auto;
+}
+
+/* ---------------- Step 1 ---------------- */
+.step1-container {
+  padding: 0 55px;
+}
+
+.step1-header-container {
+  padding-top: 2.5em;
+}
+
+.step1-notice {
+  display: flex;
+  padding-top: 1em;
+}
+
+/* ---------------- Step 2 ---------------- */
+.step2-container {
+  padding: 0 55px;
+}
+
+.step2-header-container {
+  padding-top: 2.5em;
+}
+
+.step2-notice {
+  display: flex;
+  padding-bottom: 1rem;
+}
+
+/* ---------------- Step 3 ---------------- */
+.step3-container {
+  padding: 0 55px;
+}
+
+.step3-header-container {
+  padding-top: 2.5em;
+}
