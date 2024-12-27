@@ -3,7 +3,11 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
 const ProtectedRoute = () => {
-  const { currentUser, isOtpVerified, loading } = useContext(AuthContext);
+  // Fetched Auth Context current user
+  const { currentUser, isOtpVerified, loading, verification } =
+    useContext(AuthContext);
+
+  // Initialize the useLocation
   const location = useLocation();
 
   // Prevent rendering or navigation during loading state
@@ -17,8 +21,9 @@ const ProtectedRoute = () => {
 
   // Redirect to login if the user is not authenticated or OTP is not verified
   if (!currentUser || !isOtpVerified) {
-    if (location.pathname !== "/login") {
-      return <Navigate to="/login" replace state={{ from: location }} />;
+    const allowedPaths = ["/login", "/signup", "/d/login", "/d/signup"];
+    if (!allowedPaths.includes(location.pathname)) {
+      return <Navigate to="/" replace state={{ from: location }} />;
     }
     return null; // Avoids unnecessary renders
   }
@@ -26,39 +31,49 @@ const ProtectedRoute = () => {
   // Redirect to profile based on userType
   const { userType, isVerified } = currentUser;
 
-  // Restrict access based on path and userType
-  // Conditional redirection logic based on user type
+  // Checks if userType is "Patient"
   if (location.pathname.startsWith("/u/") && userType !== "Patient") {
-    if (location.pathname !== "/d/profile") {
-      return <Navigate to="/d/profile" replace />;
-    }
-    return null;
+    return <Navigate to="/d/profile" replace />;
   }
 
-  if (location.pathname.startsWith("/d/")) {
+  // Checks if userType is "Dermatologist"
+  if (location.pathname.startsWith("/d/") && userType !== "Dermatologist") {
     if (userType !== "Dermatologist") {
+      // Restrict "Dermatologist Account Type" to access Patient Routes
       if (location.pathname !== "/u/profile") {
         return <Navigate to="/u/profile" replace />;
       }
       return null;
     }
 
-    if (!isVerified && location.pathname !== "/d/verify") {
-      return <Navigate to="/d/verify" replace />;
+    // Checks if account is verified
+    if (!isVerified && location.pathname !== "/d/verification") {
+      return <Navigate to="/d/verification" replace />;
+    }
+
+    // Redirect to verification status page if verification is "pending"
+    if (
+      verification === "pending" &&
+      location.pathname !== "/d/verification-status"
+    ) {
+      return <Navigate to="/d/verification-status" replace />;
+    }
+
+    // Redirect to verification form if not verified
+    if (
+      verification !== "verified" &&
+      location.pathname !== "/d/verification"
+    ) {
+      return <Navigate to="/d/verification" replace />;
     }
   }
 
+  // Checks if userType is "Admin"
   if (location.pathname.startsWith("/a/") && userType !== "Admin") {
-    if (location.pathname !== "/a/accounts") {
-      return <Navigate to="/status/403" replace />;
-    }
-    if (userType === "Admin" && !location.pathname.startsWith("/a/")) {
-      return <Navigate to="/a/accounts" replace />;
-    }
-
-    return null;
+    return <Navigate to="/status/403" replace />;
   }
 
+  // Allow rendering of the requested route
   return <Outlet />;
 };
 
