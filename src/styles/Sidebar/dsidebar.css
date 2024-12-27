@@ -203,6 +203,13 @@
   height: auto;
 }
 
+/* Disable Appointment & Videocall Button */
+.disabled-link {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Go to Homepage */
 .dlogout-nav-container {
   width: 100%;
@@ -210,7 +217,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 280px;
+  margin-top: 180px;
 }
 
 .dlogout-nav-content {

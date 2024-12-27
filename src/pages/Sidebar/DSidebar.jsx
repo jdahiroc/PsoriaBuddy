@@ -13,19 +13,54 @@ import avatar from "../../assets/patient/avatar.png";
 // Firebase Hooks
 import useLogout from "../../context/useLogout";
 import { useEffect, useState, useContext } from "react";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../../firebaseConfig";
+
+// MUI Components
+import Alert from "@mui/material/Alert";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Sidebar = () => {
   // Initialize the custom logout hook
   const { logout } = useLogout();
   // Initialize the AuthContext to get the current user
   const { currentUser } = useContext(AuthContext);
-
   // Fetch the current user data
   const [user, setUser] = useState([]);
+  // Initialize showAlert from MUI Component
+  const [showAlert, setShowAlert] = useState(false);
 
+  // Real time listening to isVerified & verification
+  // to update navigation button
   useEffect(() => {
-    setUser(currentUser);
+    if (currentUser?.uid) {
+      const userDocRef = doc(db, "users", currentUser.uid);
+      const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const userData = docSnapshot.data();
+          setUser(userData);
+
+          // Show alert if isVerified is false and verification is pending
+          if (
+            userData.isVerified === false &&
+            userData.verification === "pending"
+          ) {
+            setShowAlert(true);
+          } else {
+            setShowAlert(false);
+          }
+        }
+      });
+      // Clean up the listener on unmount
+      return () => unsubscribe();
+    }
   }, [currentUser]);
+
+  // Check if navigation buttons should be disabled
+  const isNavigationDisabled = !(
+    user?.isVerified === true && user?.verification === "verified"
+  );
 
   return (
     <>
@@ -54,6 +89,27 @@ const Sidebar = () => {
               </div>
             </div>
           )}
+
+          {/* Alert for Verification is pending */}
+          {showAlert && (
+            <Alert
+              severity="warning"
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => setShowAlert(false)}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+              sx={{ mb: 2 }}
+            >
+              Your account is not yet verified. Please wait for verification to
+              be completed.
+            </Alert>
+          )}
           {/* Navigations */}
           <div className="dsidebar-nav-naviations">
             <div className="dsidebar-nav-profile">
@@ -63,13 +119,19 @@ const Sidebar = () => {
               </Link>
             </div>
             <div className="dsidebar-nav-appointment">
-              <Link to="/d/appointment">
+              <Link
+                to="/d/appointment"
+                className={isNavigationDisabled ? "disabled-link" : ""}
+              >
                 <img src={appointmenticon} alt="appointment" />
                 Appointment
               </Link>
             </div>
             <div className="dsidebar-nav-videocall">
-              <Link to="/d/video">
+              <Link
+                to="/d/video"
+                className={isNavigationDisabled ? "disabled-link" : ""}
+              >
                 <img src={videocallicon} alt="videocall" />
                 Video Call
               </Link>
