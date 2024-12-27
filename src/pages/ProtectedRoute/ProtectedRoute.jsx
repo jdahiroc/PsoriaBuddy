@@ -68,6 +68,13 @@ const ProtectedRoute = () => {
     }
   }
 
+  // Restrict appointment and video navigation
+  if (location.pathname === "/d/appointment" || location.pathname === "/d/video") {
+    if (!isVerified || verification !== "verified") {
+      return <Navigate to="/d/profile" replace />;
+    }
+  }
+
   // Checks if userType is "Admin"
   if (location.pathname.startsWith("/a/") && userType !== "Admin") {
     return <Navigate to="/status/403" replace />;
