@@ -28,6 +28,7 @@ import VerificationPending from "./pages/VerificationPending";
 import DermatologistProfile from "./pages/Dermatologist/Dermatologistprofile";
 import DermatologistAppointment from "./pages/Dermatologist/DermatologistAppointment";
 import DermatologistVideoMeet from "./pages/Dermatologist/DermatologistVideoMeet";
+import DermatologistVerification from "./pages/Dermatologist/DermatologistVerification";
 // Admin Routes
 import AdminRoute from "./pages/ProtectedRoute/AdminRoute";
 import AdminAccounts from "./pages/Admin/AdminAccounts";
@@ -46,7 +47,6 @@ function App() {
         <Route path="/post" element={<PostCreationAcc />} />
         <Route path="/d/post" element={<PostCreationDerma />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/d/verify" element={<VerificationPending />} />
 
         {/* Pre-Join Setup Video Meeting Route */}
         <Route path="/prejoin" element={<MeetingPage />} />
@@ -69,11 +69,19 @@ function App() {
           <Route path="/u/video" element={<PatientVideoMeet />} />
 
           {/* Dermatologist Routes */}
-
           {/* Only verified Dermatologists can access the following routes */}
           <Route path="/d/profile" element={<DermatologistProfile />} />
           <Route path="/d/appointment" element={<DermatologistAppointment />} />
           <Route path="/d/video" element={<DermatologistVideoMeet />} />
+          {/* Verification Routes */}
+          <Route
+            path="/d/verification"
+            element={<DermatologistVerification />}
+          />
+          <Route
+            path="/d/verification-status"
+            element={<VerificationPending />}
+          />
 
           {/* Admin Routes */}
           <Route element={<AdminRoute />}>
