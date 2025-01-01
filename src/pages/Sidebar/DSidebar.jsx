@@ -18,8 +18,8 @@ import { db } from "../../../firebaseConfig";
 
 // MUI Components
 import Alert from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import Button from "@mui/material/Button";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
 
 const Sidebar = () => {
   // Initialize the custom logout hook
@@ -92,22 +92,26 @@ const Sidebar = () => {
 
           {/* Alert for Verification is pending */}
           {showAlert && (
-            <Alert
-              severity="warning"
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => setShowAlert(false)}
-                >
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
-              sx={{ mb: 2 }}
-            >
+            <Alert severity="warning" sx={{ mb: 2 }}>
               Your account is not yet verified. Please wait for verification to
               be completed.
+              <Button
+                color="inherit"
+                size="small"
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  padding: "10px",
+                  marginTop: "1rem",
+                  fontWeight: "600",
+                  fontSize: "12px",
+                }}
+                component={Link}
+                to="/d/verification-status"
+              >
+                <PendingActionsIcon style={{ marginRight: "5px" }} /> Check
+                status
+              </Button>
             </Alert>
           )}
           {/* Navigations */}
