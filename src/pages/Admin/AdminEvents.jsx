@@ -126,7 +126,7 @@ const AdminEvents = () => {
       dateCreated: isEditMode
         ? formData.dateCreated
         : new Date().toLocaleDateString(),
-      isOpened: false, 
+      isOpened: false,
     };
 
     try {
@@ -269,6 +269,10 @@ const AdminEvents = () => {
             columns={columns}
             dataSource={tableData}
             rowKey="id"
+            pagination={{
+              pageSize: 2, // Display 2 records per page
+              showSizeChanger: false, // Hide the page size changer
+            }}
           />
         </div>
 
