@@ -191,45 +191,6 @@ const AdminAccounts = () => {
     }
   };
 
-  // Handles Verify (Check Mark) Button
-  const handleVerify = async (key) => {
-    try {
-      const userRef = doc(db, "users", key);
-      const userSnapshot = await getDoc(userRef);
-      if (!userSnapshot.exists()) {
-        throw new Error("User does not exist");
-      }
-
-      const userData = userSnapshot.data();
-
-      await updateDoc(userRef, { isVerified: true });
-
-      setTableData((prev) =>
-        prev.map((item) =>
-          item.key === key ? { ...item, isVerified: true } : item
-        )
-      );
-
-      const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID2;
-      const templateID = import.meta.env.VITE_EMAILJS_VERIFICATION_TEMPLATE_ID;
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY2;
-
-      const emailParams = {
-        to_name: userData.fullName || "User",
-        to_email: userData.email,
-      };
-
-      await emailjs.send(serviceID, templateID, emailParams, publicKey);
-
-      showMessage(
-        "success",
-        "User verified successfully! Email notification sent."
-      );
-    } catch (error) {
-      console.error("Error verifying user or sending email:", error);
-      showMessage("error", "Failed to verify user or send email.");
-    }
-  };
 
   // Submit Edited Data
   const handleEditSubmit = async () => {
@@ -333,20 +294,6 @@ const AdminAccounts = () => {
       key: "action",
       render: (record) => (
         <Space size="middle">
-          {record.userType === "Dermatologist" && (
-            <CheckOutlined
-              onClick={() => {
-                if (!record.isVerified) {
-                  handleVerify(record.key);
-                }
-              }}
-              style={{
-                color: record.isVerified ? "gray" : "green",
-                cursor: record.isVerified ? "not-allowed" : "pointer",
-                pointerEvents: record.isVerified ? "none" : "auto",
-              }}
-            />
-          )}
           <EditOutlined
             onClick={() => handleEdit(record)}
             style={{ color: "#1890ff", cursor: "pointer" }}
@@ -387,8 +334,7 @@ const AdminAccounts = () => {
         ...doc.data(),
       }));
 
-      // Update the state with real-time data
-      // setTableData(users);
+      // Update the state with real-time data and sort them by date created
       setTableData(
         users.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated))
       );
@@ -421,6 +367,10 @@ const AdminAccounts = () => {
             columns={columns}
             dataSource={tableData}
             rowKey="key"
+            pagination={{
+              pageSize: 7, // Display 7 records per page
+              showSizeChanger: false, // Hide the page size changer
+            }}
           />
         </div>
 
