@@ -32,6 +32,7 @@ import DermatologistVerification from "./pages/Dermatologist/DermatologistVerifi
 // Admin Routes
 import AdminRoute from "./pages/ProtectedRoute/AdminRoute";
 import AdminAccounts from "./pages/Admin/AdminAccounts";
+import AdminAccountsVerification from "./pages/Admin/AdminAccountsVerification";
 import AdminEvents from "./pages/Admin/AdminEvents";
 // No Authorized Access Routes
 import NoAuthorizedAccess from "./pages/Results/NotAuthorizedPage";
@@ -86,6 +87,10 @@ function App() {
           {/* Admin Routes */}
           <Route element={<AdminRoute />}>
             <Route path="/a/accounts" element={<AdminAccounts />} />
+            <Route
+              path="/a/accounts/verification"
+              element={<AdminAccountsVerification />}
+            />
             <Route path="/a/events" element={<AdminEvents />} />
           </Route>
           {/* Access Denied */}
