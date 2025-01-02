@@ -1,5 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
+.ant-menu-item-selected,
+.ant-menu-item-active {
+  background-color: transparent !important; /* Remove the highlight */
+  color: inherit !important; /* Retain normal text color */
+  box-shadow: none !important; /* Remove focus or shadow effect */
+}
+
+.ant-menu-item:hover {
+  background-color: #f0f5ff !important; /* Subtle blue on hover */
+  color: #40a9ff !important; /* Slightly brighter blue text */
+}
+
 .asidebar-container {
   max-width: 250px;
   width: 100%;

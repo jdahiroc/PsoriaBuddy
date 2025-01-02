@@ -7,10 +7,18 @@ import { AuthContext } from "../../context/AuthContext";
 import useLogout from "../../context/useLogout";
 import { useEffect, useState, useContext } from "react";
 
-import profileicon from "../../assets/patient/profile-icon.png";
-import eventsicon from "../../assets/patient/events-icon.png";
-import logouticon from "../../assets/patient/logout-icon.png";
+// Assets
+import LogoutIcon from "@mui/icons-material/Logout";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import MenuOpenRoundedIcon from "@mui/icons-material/MenuOpenRounded";
+
 import avatar from "../../assets/patient/avatar.png";
+
+import { Menu, Layout, Divider } from "antd";
+import { UserOutlined, CalendarOutlined } from "@ant-design/icons";
+
+const { Sider } = Layout;
 
 const ASidebar = () => {
   // Initialize the custom logout hook
@@ -18,82 +26,121 @@ const ASidebar = () => {
   // Initialize the AuthContext to get the current user
   const { currentUser } = useContext(AuthContext);
 
-  // Fetch the current user data
+  // Initialize the user
   const [user, setUser] = useState([]);
 
+  // Fetch the current user data
   useEffect(() => {
     setUser(currentUser);
   }, [currentUser]);
 
+  // State to manage sidebar collapse
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
     <>
-      <div className="asidebar-container">
-        <div className="asidebar-content">
-          {/* heading */}
-          {user && (
-            <div className="asidebar-profile">
-              <div className="asidebar-avatar">
-                <img
-                  src={user?.photoURL || avatar}
-                  alt="avatar"
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={(value) => setCollapsed(value)}
+        className="asidebar-container"
+        trigger={
+          <div
+            style={{
+              backgroundColor: "#F5FAFF",
+              color: "#393939",
+              fontWeight: 700,
+              fontFamily: "Inter, sans-serif",
+              padding: "10px",
+              textAlign: "center",
+              outline: "none",
+              cursor: "pointer",
+            }}
+            tabIndex={-1}
+          >
+            {collapsed ? <MenuRoundedIcon /> : <MenuOpenRoundedIcon />}
+          </div>
+        }
+      >
+        {/* Profile Section */}
+        <div className="asidebar-profile">
+          <div className="asidebar-avatar">
+            <img
+              src={user?.photoURL || avatar}
+              alt="avatar"
+              style={{
+                width: collapsed ? "40px" : "55px",
+                height: collapsed ? "40px" : "55px",
+                borderRadius: "50%",
+                objectFit: "cover",
+                margin: "10px auto",
+              }}
+            />
+          </div>
+          {!collapsed && (
+            <div className="asidebar-username">
+              <h3>
+                {user.fullName}
+                <br />
+                <sub
                   style={{
-                    width: "55px",
-                    height: "55px",
-                    borderRadius: "50%",
-                    objectFit: "cover",
+                    fontSize: "12px",
+                    fontFamily: "Inter, sans-serif",
+                    fontWeight: "400",
+                    paddingTop: "5px",
+                    display: "flex",
+                    justifyContent: "center",
                   }}
-                />
-              </div>
-              <div className="asidebar-username">
-                <h3>
-                  {user.fullName} <br />
-                  <sub
-                    style={{
-                      fontSize: "12px",
-                      fontFamily: "Inter, sans-serif",
-                      fontWeight: "400",
-                      display: "flex",
-                      justifyContent: "center",
-                      paddingTop: "5px",
-                    }}
-                  >
-                    {user.userType || "Loading..."}
-                  </sub>
-                </h3>
-              </div>
+                >
+                  {user.userType || "Loading..."}
+                </sub>
+              </h3>
             </div>
           )}
-          {/* navigations */}
-          <div className="asidebar-nav-naviations">
-            <div className="asidebar-nav-profile">
-              <Link to="/a/accounts">
-                <img src={profileicon} alt="accounts" />
-                Accounts
-              </Link>
-            </div>
-            <div className="asidebar-nav-appointment">
-              <Link to="/a/events">
-                <img src={eventsicon} alt="events" />
-                Events
-              </Link>
-            </div>
-          </div>
-          {/* logout navigations */}
-          <div className="alogout-nav-container">
-            <div className="alogout-nav-content">
-              <div className="dsidebar-nav-homepage">
-                <Link to="/">Go to homepage</Link>
-              </div>
-              <div className="asidebar-nav-logout">
-                <button onClick={logout}>
-                  <img src={logouticon} alt="logout" />
-                  <p>Logout</p>
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
+
+        {/* Navigation Menu */}
+        <Menu
+          theme="light"
+          style={{
+            backgroundColor: "#F5FAFF",
+            fontFamily: "Inter, sans-serif",
+            fontWeight: 500,
+          }}
+          mode="inline"
+          defaultSelectedKeys={["1"]}
+          className="asidebar-nav-naviations"
+        >
+          <Menu.SubMenu key="1" icon={<UserOutlined />} title="Accounts">
+            <Menu.Item key="1-1">
+              <Link to="/a/accounts">Accounts</Link>
+            </Menu.Item>
+            <Menu.Item key="1-2">
+              <Link to="/a/accounts/verification">Verifications</Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+          <Menu.Item key="2" icon={<CalendarOutlined />}>
+            <Link to="/a/events">Events</Link>
+          </Menu.Item>
+
+          {/* Divider */}
+          <Divider />
+
+          <Menu.Item key="3" icon={<ArrowBackIcon />}>
+            <Link to="/">Go to Home</Link>
+          </Menu.Item>
+
+          <Menu.Item
+            key="4"
+            icon={<LogoutIcon />}
+            onClick={logout}
+            className="asidebar-nav-logout"
+            style={{ color: "#EE4E4E" }}
+          >
+            Logout
+          </Menu.Item>
+        </Menu>
+      </Sider>
     </>
   );
 };
