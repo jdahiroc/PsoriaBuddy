@@ -310,7 +310,7 @@ const LoginDermatologist = () => {
       if (userType === "Dermatologist") {
         navigate("/d/profile", { replace: true });
       } else if (userType === "Admin") {
-        navigate("/a/dashboard", { replace: true });
+        navigate("/a/accounts", { replace: true });
       }
     } catch (error) {
       console.error("Google Login Failed:", error.message);
