@@ -40,7 +40,8 @@
 
 .step2-notice {
   display: flex;
-  padding-bottom: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
 }
 
 /* ---------------- Step 3 ---------------- */
@@ -49,5 +50,19 @@
 }
 
 .step3-header-container {
+  padding-top: 2.5em;
+}
+
+.step3-notice {
+  display: flex;
+  padding-bottom: 1rem;
+}
+
+/* ---------------- Step 4 ---------------- */
+.step4-container {
+  padding: 0 55px;
+}
+
+.step4-header-container {
   padding-top: 2.5em;
 }
