@@ -32,15 +32,24 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Autocomplete from "@mui/material/Autocomplete";
 import Alert from "@mui/material/Alert";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 // Ant Design Component
 import { Divider, message, Upload, Descriptions } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
 // Steps Name
-const steps = ["Personal Information", "Submit your ID", "Review"];
+const steps = [
+  "Personal Information",
+  "Professional Information",
+  "Submit your ID",
+  "Review",
+];
 
 // ID TYPES
+// Submit Your ID
 const idTypeLabels = {
   professional_regulation_commission_PRC:
     "Professional Regulation Commission (PRC)",
@@ -58,6 +67,10 @@ const DermatologistVerification = () => {
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
   const [filteredCities, setFilteredCities] = useState([]);
+
+  // Credentials as Dermatologist State
+  const [selectedOption, setSelectedOption] = useState();
+  const [otherCredentials, setOtherCredentials] = useState();
 
   // Preview Images or PDF
   const [previewUrl, setPreviewUrl] = useState("");
@@ -82,6 +95,7 @@ const DermatologistVerification = () => {
 
   // State for form data
   const [formData, setFormData] = useState({
+    // ----- Personal Information -----
     firstName: "",
     middleName: "",
     lastName: "",
@@ -91,11 +105,47 @@ const DermatologistVerification = () => {
     fullAddress: "",
     additionalAddress: "",
     zipCode: "",
+    prc_license_number: "",
+    prc_expiry_date: "",
+
+    // ----- Credentials and Professional Information -----
+    // Speciality Credentials
+    isDermatologist: "",
+
+    // Credentials as a Dermatologist
+    cred_Dermatologist: "",
+    // cred_Dermatologist_attachment: [],      // Removed because don't have access to Firebase Storage yet!
+
+    // Residency Training Details
+    residency_name: "",
+    residency_completion_date: "",
+    // residency_completion_attachment: [],    // Removed because don't have access to Firebase Storage yet!
+
+    // Speciality Board Exam
+    isPassSpecialityBoardExam: "",
+    // speciality_board_exam_attachment: [],   // Removed because don't have access to Firebase Storage yet!
+
+    // ----- Submit my ID -----
+    // Accepted IDs
     idType: "",
-    // uploadedFile: [], // Removed because don't have access to Firebase Storage yet!
     idNumber: "",
     idExpirationDate: "",
+    // uploadedFile: [],  // Removed because don't have access to Firebase Storage yet!
+
+    // Clinic/Hospital Affiliation
+    clinic_hospital_affiliation_name: "",
+    clinic_hospital_address: "",
+    // proof_of_affiliation: [],   // Removed because don't have access to Firebase Storage yet!
   });
+
+  // Handle Option Change
+  // Credentials as a Dermatologist
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+    if (event.target.value !== "Other") {
+      setOtherCredentials("");
+    }
+  };
 
   // Handle input changes
   const handleInputChange = (field, value) => {
@@ -142,18 +192,22 @@ const DermatologistVerification = () => {
     setError(""); // Reset error on success
   };
 
+  //   Handles the Next Steps
   const handleNext = () => {
     // Allows to proceed to next step
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
+  //   Handles the Back Steps
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  //   Handles the Reset
   const handleReset = () => {
     setActiveStep(0);
     setFormData({
+      // ----- Personal Information -----
       firstName: "",
       middleName: "",
       lastName: "",
@@ -163,10 +217,37 @@ const DermatologistVerification = () => {
       fullAddress: "",
       additionalAddress: "",
       zipCode: "",
+      prc_license_number: "",
+      prc_expiry_date: "",
+
+      // ----- Credentials and Professional Information -----
+      // Speciality Credentials
+      isDermatologist: "",
+
+      // Credentials as a Dermatologist
+      cred_Dermatologist: "",
+      // cred_Dermatologist_attachment: [],       // Removed because don't have access to Firebase Storage yet!
+
+      // Residency Training Details
+      residency_name: "",
+      residency_completion_date: "",
+      // residency_completion_attachment: [],    // Removed because don't have access to Firebase Storage yet!
+
+      // Speciality Board Exam
+      isPassSpecialityBoardExam: "",
+      // speciality_board_exam_attachment: [],   // Removed because don't have access to Firebase Storage yet!
+
+      // ----- Submit my ID -----
+      // Accepted IDs
       idType: "",
-      // uploadedFile: null, // REMOVED because don't have access to Firebase Storage
       idNumber: "",
       idExpirationDate: "",
+      // uploadedFile: [],  // Removed because don't have access to Firebase Storage yet!
+
+      // Clinic/Hospital Affiliation
+      clinic_hospital_affiliation_name: "",
+      clinic_hospital_address: "",
+      // proof_of_affiliation: [],   // Removed because don't have access to Firebase Storage yet!
     });
   };
 
@@ -180,9 +261,23 @@ const DermatologistVerification = () => {
       "placeOfBirth",
       "fullAddress",
       "zipCode",
+      "prc_license_number",
+      "prc_expiry_date",
+      "isDermatologist",
+      "cred_Dermatologist",
+      // cred_Dermatologist_attachment: [],        // Removed because don't have access to Firebase Storage yet!
+      "residency_name",
+      "residency_completion_date",
+      // residency_completion_attachment: [],    // Removed because don't have access to Firebase Storage yet!
+      "isPassSpecialityBoardExam",
+      // speciality_board_exam_attachment: [],   // Removed because don't have access to Firebase Storage yet!
       "idType",
       "idNumber",
       "idExpirationDate",
+      // uploadedFile: [],  // Removed because don't have access to Firebase Storage yet!
+      "clinic_hospital_affiliation_name",
+      "clinic_hospital_address",
+      // proof_of_affiliation: [],   // Removed because don't have access to Firebase Storage yet!
     ];
     for (let field of requiredFields) {
       if (!formData[field]) {
@@ -205,6 +300,10 @@ const DermatologistVerification = () => {
     try {
       await addDoc(collection(db, "verification"), {
         ...formData,
+        cred_Dermatologist:
+          formData.cred_Dermatologist === "Other"
+            ? formData.otherCredentials
+            : formData.cred_Dermatologist, // Use specified value for "Other"
         user_uid: currentUser.uid,
         verification: "pending",
         createdAt: new Date(),
@@ -237,7 +336,7 @@ const DermatologistVerification = () => {
   //   }
   // }, [currentUser]);
 
-  // Fetch cities in the Philippines using JSON
+  // Fetch cities in the Philippines using JSON File from "/assets/dataset/cities.json"
   useEffect(() => {
     const formattedLocations = [
       ...new Set(
@@ -292,8 +391,8 @@ const DermatologistVerification = () => {
 
   // STEP CONTENTS
   const stepContents = [
+    //  Step 1
     <>
-      {/* Step 1 */}
       <div className="step1-container">
         <div className="step1-header-container">
           <div className="step1-header">
@@ -361,6 +460,7 @@ const DermatologistVerification = () => {
           >
             Full Name<span style={{ color: "#1976D2" }}>*</span>
           </Typography>
+          {/* ----- FULL NAME ----- */}
           <TextField
             label="First Name"
             variant="filled"
@@ -388,7 +488,7 @@ const DermatologistVerification = () => {
 
           <Divider />
 
-          {/* Nationality */}
+          {/* ----- Nationality ----- */}
           <Typography
             style={{
               fontFamily: "Inter, sans-serif",
@@ -417,7 +517,7 @@ const DermatologistVerification = () => {
 
           <Divider />
 
-          {/* Date of Birth */}
+          {/* ----- Date of Birth ----- */}
           <Typography
             style={{
               fontFamily: "Inter, sans-serif",
@@ -443,7 +543,7 @@ const DermatologistVerification = () => {
 
           <Divider />
 
-          {/* Place of Birth */}
+          {/* ----- Place of Birth ----- */}
           <Typography
             style={{
               fontFamily: "Inter, sans-serif",
@@ -485,7 +585,7 @@ const DermatologistVerification = () => {
 
           <Divider />
 
-          {/* Current */}
+          {/* ----- Current Address ----- */}
           <Typography
             style={{
               fontFamily: "Inter, sans-serif",
@@ -522,6 +622,45 @@ const DermatologistVerification = () => {
             value={formData.zipCode || ""}
             onChange={(e) => handleInputChange("zipCode", e.target.value)}
           />
+
+          <Divider />
+
+          {/* ----- PRC Information ----- */}
+          <Typography
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: "17px",
+              fontWeight: 600,
+              color: "#0B0B0C",
+            }}
+          >
+            Professional Regulation Commission (PRC) Information
+            <span style={{ color: "#1976D2" }}>*</span>
+          </Typography>
+          <TextField
+            label="License Number"
+            variant="filled"
+            fullWidth
+            margin="normal"
+            value={formData.prc_license_number || ""}
+            onChange={(e) =>
+              handleInputChange("prc_license_number", e.target.value)
+            }
+          />
+          <TextField
+            label="Expiry Date"
+            variant="filled"
+            type="date"
+            fullWidth
+            margin="normal"
+            value={formData.prc_expiry_date || ""}
+            onChange={(e) =>
+              handleInputChange("prc_expiry_date", e.target.value)
+            }
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
         </form>
       </div>
     </>,
@@ -539,10 +678,423 @@ const DermatologistVerification = () => {
                 paddingBottom: "0.15em",
               }}
             >
-              Submit Your ID
+              Credentials and Professional Information
             </Typography>
           </div>
           <div className="step2-subheader">
+            <Typography
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: "17px",
+                fontWeight: 500,
+                color: "#0B0B0C",
+                opacity: "60%",
+                paddingBottom: "1em",
+              }}
+            >
+              Please provide the following information Credentials and
+              Professional Information.
+            </Typography>
+          </div>
+        </div>
+        <form>
+          <div className="step2-notice">
+            <InfoRoundedIcon
+              fontSize="small"
+              style={{
+                color: "#1976D2",
+                display: "flex",
+                alignItems: "start",
+              }}
+            />
+            <Typography
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: "14px",
+                fontWeight: 500,
+                color: "#0B0B0C",
+                opacity: "60%",
+                display: "flex",
+                alignItems: "center",
+                paddingLeft: ".2em",
+              }}
+            >
+              Please check if the following information details are complete.
+            </Typography>
+          </div>
+          <div className="step2-speciality-credentials">
+            <Typography
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: "17px",
+                fontWeight: 600,
+                color: "#0B0B0C",
+                marginTop: "1.5rem",
+              }}
+            >
+              Speciality Credentials
+              <span style={{ color: "#1976D2" }}>*</span>
+            </Typography>
+            <Typography
+              style={{
+                paddingTop: "1rem",
+                fontSize: "17px",
+                fontFamily: "Inter, sans-serif",
+                color: "#0B0B0C",
+              }}
+            >
+              Are you a certified dermatologist?{" "}
+              <RadioGroup
+                row
+                name="radio-buttons-group"
+                value={formData.isDermatologist || ""}
+                onChange={(e) =>
+                  handleInputChange("isDermatologist", e.target.value)
+                }
+              >
+                <FormControlLabel
+                  value="true"
+                  control={
+                    <Radio
+                      style={{
+                        color: "#0B0B0C",
+                      }}
+                      size="small"
+                    />
+                  }
+                  label="Yes"
+                />
+                <FormControlLabel
+                  value="false"
+                  control={
+                    <Radio
+                      style={{
+                        color: "#0B0B0C",
+                      }}
+                      size="small"
+                    />
+                  }
+                  label="No"
+                />
+              </RadioGroup>
+            </Typography>
+
+            <Divider />
+
+            {/* Credentials as a Dermatologist */}
+            <Typography
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: "17px",
+                fontWeight: 600,
+                color: "#0B0B0C",
+              }}
+            >
+              Credentials as a Dermatologist
+              <span style={{ color: "#1976D2" }}>*</span>
+            </Typography>
+            <FormControl variant="filled" fullWidth margin="normal">
+              <InputLabel id="cred_Dermatologist-label">
+                Select a credential
+              </InputLabel>
+              <Select
+                labelId="cred_Dermatologist-label"
+                id="cred_Dermatologist-select"
+                value={formData.cred_Dermatologist || ""}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  handleOptionChange(event); // Call your handleOptionChange
+                  handleInputChange("cred_Dermatologist", value); // Update formData
+                }}
+              >
+                <MenuItem value="PDS">
+                  Diplomate of the Philippine Dermatological Society (PDS)
+                </MenuItem>
+                <MenuItem value="FPDS">
+                  Fellow of the Philippine Dermatological Society (FPDS)
+                </MenuItem>
+                <MenuItem value="Other">Other credentials</MenuItem>
+              </Select>
+
+              {formData.cred_Dermatologist === "Other" && (
+                <TextField
+                  label="Please specify:"
+                  variant="standard"
+                  fullWidth
+                  margin="normal"
+                  value={formData.otherCredentials || ""}
+                  onChange={(e) =>
+                    handleInputChange("otherCredentials", e.target.value)
+                  }
+                />
+              )}
+            </FormControl>
+            <Typography
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: "16px",
+                fontWeight: 500,
+                color: "#0B0B0C",
+                display: "flex",
+                alignItems: "center",
+                marginTop: "1rem",
+                marginBottom: "0.5rem",
+                paddingLeft: "0.2em",
+              }}
+            >
+              Attachments (ID or Certificate)
+            </Typography>
+
+            {/* Error Message (MUI Alert) */}
+            {error && (
+              <Alert
+                severity="error"
+                onClose={() => setError("")}
+                style={{ marginBottom: "1rem" }}
+              >
+                {error}
+              </Alert>
+            )}
+
+            <Upload.Dragger
+              name="file"
+              maxCount={3}
+              listType="picture"
+              beforeUpload={() => false}
+              onChange={(e) =>
+                handleFileChange(e.fileList.map((f) => f.originFileObj))
+              }
+              accept=".jpg,.jpeg,.png,.pdf"
+            >
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined />
+              </p>
+              <p className="ant-upload-text">
+                Click or drag files here to upload
+              </p>
+              <p className="ant-upload-hint">
+                Supported formats: .jpg, .jpeg, .png, .pdf. Maximum file size:
+                50MB.
+              </p>
+              <p className="ant-upload-hint">Maximum file size: 50MB.</p>
+            </Upload.Dragger>
+          </div>
+
+          <Divider />
+
+          {/* Residency Training Details */}
+          <Typography
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: "17px",
+              fontWeight: 600,
+              color: "#0B0B0C",
+              marginTop: "1.5rem",
+            }}
+          >
+            Residency Training Details
+            <span style={{ color: "#1976D2" }}>*</span>
+          </Typography>
+          <TextField
+            label="Hospital/Institution Name"
+            variant="filled"
+            fullWidth
+            margin="normal"
+            value={formData.residency_name || ""}
+            onChange={(e) =>
+              handleInputChange("residency_name", e.target.value.toUpperCase())
+            }
+          />
+          <TextField
+            label="Completion Date"
+            variant="filled"
+            type="date"
+            fullWidth
+            margin="normal"
+            value={formData.residency_completion_date || ""}
+            onChange={(e) =>
+              handleInputChange("residency_completion_date", e.target.value)
+            }
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <Typography
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: "16px",
+              fontWeight: 500,
+              color: "#0B0B0C",
+              display: "flex",
+              alignItems: "center",
+              marginTop: "1rem",
+              marginBottom: "0.5rem",
+              paddingLeft: "0.2em",
+            }}
+          >
+            Residency Completion Certificate
+          </Typography>
+
+          {/* Error Message (MUI Alert) */}
+          {error && (
+            <Alert
+              severity="error"
+              onClose={() => setError("")}
+              style={{ marginBottom: "1rem" }}
+            >
+              {error}
+            </Alert>
+          )}
+
+          <Upload.Dragger
+            name="file"
+            maxCount={3}
+            listType="picture"
+            beforeUpload={() => false}
+            onChange={(e) =>
+              handleFileChange(e.fileList.map((f) => f.originFileObj))
+            }
+            accept=".jpg,.jpeg,.png,.pdf"
+          >
+            <p className="ant-upload-drag-icon">
+              <InboxOutlined />
+            </p>
+            <p className="ant-upload-text">
+              Click or drag files here to upload
+            </p>
+            <p className="ant-upload-hint">
+              Supported formats: .jpg, .jpeg, .png, .pdf. Maximum file size:
+              50MB.
+            </p>
+            <p className="ant-upload-hint">Maximum file size: 50MB.</p>
+          </Upload.Dragger>
+
+          {/* Speciality Board Exam */}
+          <Typography
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: "17px",
+              fontWeight: 600,
+              color: "#0B0B0C",
+              marginTop: "1.5rem",
+            }}
+          >
+            Speciality Board Exam
+            <span style={{ color: "#1976D2" }}>*</span>
+          </Typography>
+          <Typography
+            style={{
+              paddingTop: "1rem",
+              fontSize: "17px",
+              fontFamily: "Inter, sans-serif",
+              color: "#0B0B0C",
+            }}
+          >
+            Did you pass the Dermatology Specialty Board Exam?
+            <RadioGroup
+              row
+              name="radio-buttons-group"
+              value={formData.isPassSpecialityBoardExam || ""}
+              onChange={(e) =>
+                handleInputChange("isPassSpecialityBoardExam", e.target.value)
+              }
+            >
+              <FormControlLabel
+                value="true"
+                control={
+                  <Radio
+                    style={{
+                      color: "#0B0B0C",
+                    }}
+                    size="small"
+                  />
+                }
+                label="Yes"
+              />
+              <FormControlLabel
+                value="false"
+                control={
+                  <Radio
+                    style={{
+                      color: "#0B0B0C",
+                    }}
+                    size="small"
+                  />
+                }
+                label="No"
+              />
+            </RadioGroup>
+          </Typography>
+          <Typography
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: "16px",
+              fontWeight: 500,
+              color: "#0B0B0C",
+              display: "flex",
+              alignItems: "center",
+              marginTop: "1rem",
+              marginBottom: "0.5rem",
+              paddingLeft: "0.2em",
+            }}
+          >
+            Speciality Board Exam Certificate
+          </Typography>
+
+          {/* Error Message (MUI Alert) */}
+          {error && (
+            <Alert
+              severity="error"
+              onClose={() => setError("")}
+              style={{ marginBottom: "1rem" }}
+            >
+              {error}
+            </Alert>
+          )}
+
+          <Upload.Dragger
+            name="file"
+            maxCount={3}
+            listType="picture"
+            beforeUpload={() => false}
+            onChange={(e) =>
+              handleFileChange(e.fileList.map((f) => f.originFileObj))
+            }
+            accept=".jpg,.jpeg,.png,.pdf"
+          >
+            <p className="ant-upload-drag-icon">
+              <InboxOutlined />
+            </p>
+            <p className="ant-upload-text">
+              Click or drag files here to upload
+            </p>
+            <p className="ant-upload-hint">
+              Supported formats: .jpg, .jpeg, .png, .pdf. Maximum file size:
+              50MB.
+            </p>
+            <p className="ant-upload-hint">Maximum file size: 50MB.</p>
+          </Upload.Dragger>
+        </form>
+      </div>
+    </>,
+    // Step 3
+    <>
+      <div className="step3-container">
+        <div className="step3-header-container">
+          <div className="step3-header">
+            <Typography
+              variant="h3"
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 700,
+                color: "#0B0B0C",
+                paddingBottom: "0.15em",
+              }}
+            >
+              Submit Your ID
+            </Typography>
+          </div>
+          <div className="step3-subheader">
             <Typography
               style={{
                 fontFamily: "Inter, sans-serif",
@@ -581,6 +1133,66 @@ const DermatologistVerification = () => {
               onChange={(e) => handleInputChange("idType", e.target.value)}
             >
               <MenuItem
+                value="driver's_license"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "17px",
+                  fontWeight: 500,
+                  color: "#0B0B0C",
+                  opacity: "82%",
+                }}
+              >
+                Driver&apos;s License
+              </MenuItem>
+              <MenuItem
+                value="national_id"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "17px",
+                  fontWeight: 500,
+                  color: "#0B0B0C",
+                  opacity: "82%",
+                }}
+              >
+                National ID (PhilSys)
+              </MenuItem>
+              <MenuItem
+                value="unified_multi_purpose_id"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "17px",
+                  fontWeight: 500,
+                  color: "#0B0B0C",
+                  opacity: "82%",
+                }}
+              >
+                Unified Multi-Purpose ID (UMID)
+              </MenuItem>
+              <MenuItem
+                value="passport"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "17px",
+                  fontWeight: 500,
+                  color: "#0B0B0C",
+                  opacity: "82%",
+                }}
+              >
+                Passport
+              </MenuItem>
+              <MenuItem
+                value="unified_multi_purpose_id"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "17px",
+                  fontWeight: 500,
+                  color: "#0B0B0C",
+                  opacity: "82%",
+                }}
+              >
+                Social Security System (SSS) ID
+              </MenuItem>
+              <MenuItem
                 value="professional_regulation_commission_PRC"
                 style={{
                   fontFamily: "Inter, sans-serif",
@@ -590,19 +1202,7 @@ const DermatologistVerification = () => {
                   opacity: "82%",
                 }}
               >
-                Professional Regulation Commission (PRC)
-              </MenuItem>
-              <MenuItem
-                value="board_certifications"
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "17px",
-                  fontWeight: 500,
-                  color: "#0B0B0C",
-                  opacity: "82%",
-                }}
-              >
-                Board Certifications
+                PRC ID
               </MenuItem>
             </Select>
           </FormControl>
@@ -714,14 +1314,114 @@ const DermatologistVerification = () => {
             </p>
             <p className="ant-upload-hint">Maximum file size: 50MB.</p>
           </Upload.Dragger>
+
+          <Divider />
+
+          {/* Clinic/Hospital Affiliation */}
+          <Typography
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: "17px",
+              fontWeight: 500,
+              color: "#0B0B0C",
+              paddingTop: "0.5em",
+            }}
+          >
+            Clinic/Hospital Affiliation{" "}
+            <span style={{ color: "#1976D2" }}>(Optional)</span>
+          </Typography>
+          <TextField
+            label="Clinic/Hospital Affiliation Name"
+            variant="filled"
+            fullWidth
+            margin="normal"
+            value={formData.clinic_hospital_affiliation_name || ""}
+            onChange={(e) =>
+              handleInputChange(
+                "clinic_hospital_affiliation_name",
+                e.target.value
+              )
+            }
+          />
+          <Typography
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: "17px",
+              fontWeight: 500,
+              color: "#0B0B0C",
+              paddingTop: "0.5em",
+            }}
+          >
+            Clinic/Hospital Affiliation Address{" "}
+            <span style={{ color: "#1976D2" }}>(Optional)</span>
+          </Typography>
+          <TextField
+            label="Clinic Address"
+            variant="filled"
+            fullWidth
+            margin="normal"
+            value={formData.clinic_hospital_address || ""}
+            onChange={(e) =>
+              handleInputChange("clinic_hospital_address", e.target.value)
+            }
+          />
+          <div className="step2-notice">
+            <Typography
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontSize: "16px",
+                fontWeight: 500,
+                color: "#0B0B0C",
+                opacity: "60%",
+                display: "flex",
+                alignItems: "center",
+                paddingLeft: ".2em",
+              }}
+            >
+              Attachments (Proof of Affiliation)
+            </Typography>
+          </div>
+          {/* Error Message (MUI Alert) */}
+          {error && (
+            <Alert
+              severity="error"
+              onClose={() => setError("")}
+              style={{ marginBottom: "1rem" }}
+            >
+              {error}
+            </Alert>
+          )}
+
+          <Upload.Dragger
+            name="file"
+            maxCount={3}
+            listType="picture"
+            beforeUpload={() => false}
+            onChange={(e) =>
+              handleFileChange(e.fileList.map((f) => f.originFileObj))
+            }
+            accept=".jpg,.jpeg,.png,.pdf"
+          >
+            <p className="ant-upload-drag-icon">
+              <InboxOutlined />
+            </p>
+            <p className="ant-upload-text">
+              Click or drag files here to upload
+            </p>
+            <p className="ant-upload-hint">
+              Supported formats: .jpg, .jpeg, .png, .pdf. Maximum file size:
+              50MB.
+            </p>
+            <p className="ant-upload-hint">Maximum file size: 50MB.</p>
+          </Upload.Dragger>
         </form>
       </div>
     </>,
-    // Step 3
+    // Step 4
     <>
-      <div className="step3-container">
-        <div className="step3-header-container">
-          <div className="step3-header">
+      <div className="step4-container">
+        <div className="step4-header-container">
+          <div className="step4-header">
             <Typography
               variant="h3"
               style={{
@@ -734,7 +1434,7 @@ const DermatologistVerification = () => {
               Review your information
             </Typography>
           </div>
-          <div className="step2-subheader">
+          <div className="step4-subheader">
             <Typography
               style={{
                 fontFamily: "Inter, sans-serif",
@@ -765,7 +1465,7 @@ const DermatologistVerification = () => {
 
         {/* Nationality */}
         <Descriptions.Item label="Nationality">
-          {formData.nationality || "Not Provided"}
+          {formData.nationality || ""}
         </Descriptions.Item>
 
         {/* Date of Birth */}
@@ -776,17 +1476,17 @@ const DermatologistVerification = () => {
                 month: "long",
                 day: "numeric",
               })
-            : "Not Provided"}
+            : ""}
         </Descriptions.Item>
 
         {/* Place of Birth */}
         <Descriptions.Item label="Place of Birth">
-          {formData.placeOfBirth || "Not Provided"}
+          {formData.placeOfBirth || ""}
         </Descriptions.Item>
 
         {/* Address */}
         <Descriptions.Item label="Current Address">
-          {`${formData.fullAddress || "Not Provided"}`}
+          {`${formData.fullAddress || ""}`}
         </Descriptions.Item>
 
         {/* Additional Address */}
@@ -798,17 +1498,78 @@ const DermatologistVerification = () => {
 
         {/* Zip Code */}
         <Descriptions.Item label="Zip Code">
-          {formData.zipCode || "Not Provided"}
+          {formData.zipCode || ""}
         </Descriptions.Item>
+
+        {/* PRC License Number */}
+        <Descriptions.Item label="Professional Regulation Commission (PRC) Information">
+          {formData.prc_license_number || ""}
+        </Descriptions.Item>
+
+        {/* PRC Expiry Date */}
+        <Descriptions.Item label="Expiry Date">
+          {formData.prc_expiry_date
+            ? new Date(formData.prc_expiry_date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            : ""}
+        </Descriptions.Item>
+
+        {/* Speciality Credentials */}
+        <Descriptions.Item label="Speciality Credentials">
+          {formData.isDermatologist || ""}
+        </Descriptions.Item>
+
+        {/* Credentials as a Dermatologist */}
+        <Descriptions.Item label="Credentials as a Dermatologist">
+          {formData.cred_Dermatologist || ""}
+        </Descriptions.Item>
+
+        {/* -------------------------------------------------- 
+            ADD HERE Credentials as a Dermatologist Attachment 
+            -------------------------------------------------- */}
+
+        {/* Residency Training Details */}
+        <Descriptions.Item label="Residency Hospital/Institution Name">
+          {formData.residency_name || ""}
+        </Descriptions.Item>
+
+        <Descriptions.Item label="Residency Completion Date">
+          {formData.residency_completion_date
+            ? new Date(formData.residency_completion_date).toLocaleDateString(
+                "en-US",
+                {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                }
+              )
+            : ""}
+        </Descriptions.Item>
+
+        {/* -------------------------------------------------- 
+            ADD HERE Residency Completion Certificate Attachment 
+            -------------------------------------------------- */}
+
+        {/*  Speciality Board Exam  */}
+        <Descriptions.Item label="Speciality Board Exam">
+          {formData.isPassSpecialityBoardExam || ""}
+        </Descriptions.Item>
+
+        {/* -------------------------------------------------- 
+            ADD HERE Speciality Board Exam Certificate Attachment 
+            -------------------------------------------------- */}
 
         {/* ID Type */}
         <Descriptions.Item label="ID Type">
-          {idTypeLabels[formData.idType] || "Not Provided"}
+          {idTypeLabels[formData.idType] || ""}
         </Descriptions.Item>
 
         {/* ID Number */}
         <Descriptions.Item label="ID Number">
-          {formData.idNumber || "Not Provided"}
+          {formData.idNumber || ""}
         </Descriptions.Item>
 
         {/* ID Expiration Date */}
@@ -819,11 +1580,11 @@ const DermatologistVerification = () => {
                 month: "long",
                 day: "numeric",
               })
-            : "Not Provided"}
+            : ""}
         </Descriptions.Item>
 
-        {/* Attachments */}
-        <Descriptions.Item label="Attachments" span={2}>
+        {/* Attachments of Verification ID */}
+        <Descriptions.Item label="Attachments of Valid IDs" span={2}>
           {formData.uploadedFile && formData.uploadedFile.length > 0
             ? formData.uploadedFile.map((file, index) => {
                 // Generate object URL for preview
@@ -867,8 +1628,21 @@ const DermatologistVerification = () => {
                   </div>
                 );
               })
-            : "No files uploaded."}
+            : ""}
         </Descriptions.Item>
+
+        {/* Clinic/Hospital Affiliation */}
+        <Descriptions.Item label="Clinic/Hospital Affiliation Name">
+          {formData.clinic_hospital_affiliation_name || ""}
+        </Descriptions.Item>
+
+        <Descriptions.Item label="Clinic/Hospital Affiliation Address">
+          {formData.clinic_hospital_address || ""}
+        </Descriptions.Item>
+
+        {/* -------------------------------------------------- 
+            ADD HERE Clinic/Hospital Affiliation Attachment 
+            -------------------------------------------------- */}
       </Descriptions>
     </>,
   ];
