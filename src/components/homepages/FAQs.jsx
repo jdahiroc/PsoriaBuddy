@@ -32,7 +32,7 @@ const FAQs = () => {
 
   const description_6 = `The materials and information provided come directly from OroDerm and reflect the expertise and extensive experience of Dr. Neil S. Oropeza, M.D., FPDS. All content is carefully prepared, reviewed, and verified to ensure accuracy and uphold the highest standards in dermatological care and aesthetic treatments. Dr. Oropeza’s dedication to providing reliable and professional guidance is evident in every aspect of the information shared.
 
-              <br> <br>  You can visit his clinics located in Davao, Cebu, Metro Manila, Zamboanga, General Santos (Gensan), Cotabato, Cagayan de Oro (CDO), Butuan, Bacolod, and Tagum, Davao City, Philippines. <br> <br>For more details, you can also visit their official Facebook page at <a href="https://www.facebook.com/orodermofficial" target="_blank">https://www.facebook.com/orodermofficial</a>.`;
+              <br> <br>  You can visit his clinics located in Davao, Cebu, Metro Manila, Zamboanga, General Santos (Gensan), Cotabato, Cagayan de Oro (CDO), Butuan, Bacolod, and Tagum, Philippines. <br> <br>For more details, you can also visit their official Facebook page at <a href="https://www.facebook.com/orodermofficial" target="_blank">https://www.facebook.com/orodermofficial</a>.`;
 
   return (
     <>
